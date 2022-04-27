@@ -1,0 +1,44 @@
+{
+  "name": "vue-composable-form",
+  "workspaces": [
+    "packages/*"
+  ],
+  "description": "vue fome validate",
+  "scripts": {
+    "dev": "pnpm -r --parallel run dev",
+    "build": "pnpm -r --parallel run build",
+    "lint": "eslint './packages/**/*.{js,ts}'",
+    "lint:fix": "pnpm lint -- --fix",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "{packages}/**/*.{js,ts}": [
+      "pnpm lint:fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "author": "Alex Liu <dsa1314@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mini-ghost/vue-composable-form"
+  },
+  "dependencies": {
+    "typescript": "^4.6.3"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
+    "@typescript-eslint/parser": "^5.20.0",
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.0",
+    "lint-staged": "^12.4.1",
+    "prettier": "^2.6.2",
+    "vue": "^3.0.0"
+  }
+}
