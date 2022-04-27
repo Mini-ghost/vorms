@@ -5,8 +5,8 @@
 import { useForm } from '@vue-composable-form/core'
 
 const {
-  values
-
+  values,
+  handleSubmit
 } = useForm({
   initialValues: {
     firstName: '',
