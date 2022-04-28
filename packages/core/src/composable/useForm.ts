@@ -200,7 +200,9 @@ export function useForm<Values extends FormValues = FormValues>({
     });
 
     return validateTiming.value === 'blur'
-      ? runAllValidateHandler(state.values)
+      ? runAllValidateHandler(state.values).then((errors) => {
+          dispatch({ type: 'SET_ERRORS', payload: errors });
+        })
       : Promise.resolve();
   };
 
@@ -214,7 +216,9 @@ export function useForm<Values extends FormValues = FormValues>({
     });
 
     return validateTiming.value === 'change'
-      ? runAllValidateHandler(state.values)
+      ? runAllValidateHandler(state.values).then((errors) => {
+          dispatch({ type: 'SET_ERRORS', payload: errors });
+        })
       : Promise.resolve();
   };
 
@@ -236,7 +240,9 @@ export function useForm<Values extends FormValues = FormValues>({
 
   const handleChange: FormEventHandler['handleChange'] = () => {
     if (validateTiming.value === 'change') {
-      runAllValidateHandler(state.values);
+      runAllValidateHandler(state.values).then((errors) => {
+        dispatch({ type: 'SET_ERRORS', payload: errors });
+      });
     }
   };
 
