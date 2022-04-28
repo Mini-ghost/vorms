@@ -22,7 +22,7 @@ import useFormStore from './useFormStore';
 import isString from '../utils/isString';
 
 import type { Reducer } from './useFormStore';
-import type { FormValues } from '../types';
+import type { FormValues, FieldValidator, Path, PathValue } from '../types';
 
 export type FormikTouched<Values> = {
   [K in keyof Values]?: Values[K] extends any[]
@@ -54,6 +54,10 @@ interface FieldArrayRefistry {
   [field: string]: {
     reset: () => void;
   };
+}
+
+interface FieldRegisterOptions<Values> {
+  validate?: FieldValidator<Values>;
 }
 
 export interface FormState<Values extends FormValues> {
@@ -398,6 +402,18 @@ export function useForm<Values extends FormValues = FormValues>({
     resetForm();
   };
 
+  const register = <Name extends Path<Values>, Value = PathValue<Values, Name>>(
+    name: Name,
+    options?: FieldRegisterOptions<Value>,
+  ) => {
+    registerField(name, options);
+
+    return {
+      value: getFieldValue<Value>(name),
+      ...getFieldProps(name),
+    };
+  };
+
   provide(FormContextKey, {
     getFieldProps,
     getFieldValue,
@@ -420,6 +436,7 @@ export function useForm<Values extends FormValues = FormValues>({
     submitCount: computed(() => state.submitCount.value),
     isSubmitting: state.isSubmitting,
     dirty,
+    register,
     handleBlur,
     handleChange,
     handleSubmit,
