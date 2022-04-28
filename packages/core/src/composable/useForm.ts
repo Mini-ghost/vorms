@@ -263,12 +263,15 @@ export function useForm<Values extends FormValues = FormValues>({
 
   const getFieldProps = (name: string) => {
     const value = get(state.values, name);
+
+    const error = computed<string>(() => get(state.errors.value, name));
     const dirty = computed(
       () => !isEqual(get(initalValues, name), value.value),
     );
 
     return {
       dirty,
+      error,
       onBlur: handleBlur(name),
       onChange: handleChange,
     };
