@@ -16,7 +16,7 @@ export function useField<Value>(
   registerField(name, options);
 
   return {
-    value: getFieldValue(name),
+    value: getFieldValue<Value>(name),
     ...getFieldProps(name),
   };
 }

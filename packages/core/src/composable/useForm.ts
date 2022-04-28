@@ -256,13 +256,12 @@ export function useForm<Values extends FormValues = FormValues>({
   };
 
   const getFieldProps = (name: string) => {
-    const value = getFieldValue(name);
+    const value = get(state.values, name);
     const dirty = computed(
       () => !isEqual(get(initalValues, name), value.value),
     );
 
     return {
-      value,
       dirty,
       onBlur: handleBlur(name),
       onChange: handleChange,
