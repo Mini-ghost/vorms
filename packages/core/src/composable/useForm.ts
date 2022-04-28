@@ -4,6 +4,7 @@ import {
   ref,
   onMounted,
   provide,
+  readonly,
   Ref,
   UnwrapNestedRefs,
 } from 'vue';
@@ -430,7 +431,7 @@ export function useForm<Values extends FormValues = FormValues>({
   });
 
   const context = {
-    values: state.values,
+    values: readonly(state.values),
     touched: computed(() => state.touched.value),
     errors: computed(() => state.errors.value),
     submitCount: computed(() => state.submitCount.value),
