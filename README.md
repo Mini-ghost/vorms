@@ -4,10 +4,12 @@
 <script setup lang="ts">
 import { useForm } from '@vue-composable-form/core'
 
-const {
-  values,
-  handleSubmit
-} = useForm({
+interface InitialValues {
+  firstName: string,
+  lastName: string
+}
+
+const { register, handleSubmit } = useForm<InitialValues>({
   initialValues: {
     firstName: '',
     lastName: ''
@@ -16,12 +18,15 @@ const {
     console.log(data)
   }
 })
+
+const { value: firstName } = register('firstName')
+const { value: lastName } = register('lastName')
 </script>
 
 <template>
   <form @submit="handleSubmit">
-    <input type="text" v-model="values.firstName">
-    <input type="text" v-model="values.lastName">
+    <input v-model="firstName" type="text">
+    <input v-model="lastName" type="text">
     <button type="submit">
       submit
     </button>
