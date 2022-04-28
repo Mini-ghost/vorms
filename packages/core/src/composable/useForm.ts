@@ -366,7 +366,7 @@ export function useForm<Values extends FormValues = FormValues>({
     const touched = nextState && nextState.touched ? nextState.touched : {};
     const errors = nextState && nextState.errors ? nextState.errors : {};
 
-    initalValues = values;
+    initalValues = deepClone(values);
 
     dispatch({
       type: 'RESET_FORM',
