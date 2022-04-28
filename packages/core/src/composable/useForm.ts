@@ -406,7 +406,7 @@ export function useForm<Values extends FormValues = FormValues>({
 
   onMounted(() => {
     if (!validateOnMounted) return;
-    runValidateHandler(initalValues).then((errors) => {
+    runAllValidateHandler(initalValues).then((errors) => {
       dispatch({ type: 'SET_ERRORS', payload: errors });
     });
   });
