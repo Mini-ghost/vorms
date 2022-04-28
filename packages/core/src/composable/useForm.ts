@@ -22,8 +22,7 @@ import useFormStore from './useFormStore';
 import isString from '../utils/isString';
 
 import type { Reducer } from './useFormStore';
-
-export type FormValues = Record<string, any>;
+import type { FormValues } from '../types';
 
 export type FormikTouched<Values> = {
   [K in keyof Values]?: Values[K] extends any[]

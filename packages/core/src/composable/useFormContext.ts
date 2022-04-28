@@ -5,7 +5,7 @@ import {
   ComputedRef,
   WritableComputedRef,
 } from 'vue';
-import { FieldValidator } from './useField';
+import { FieldValidator } from '../types';
 
 function injectMaybeSelf<T>(
   key: InjectionKey<T>,

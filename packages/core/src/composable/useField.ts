@@ -1,8 +1,5 @@
 import { useFormContext } from './useFormContext';
-
-export type FieldValidator<Value> = (
-  value: Value,
-) => string | void | Promise<string | void>;
+import type { FieldValidator } from '../types';
 
 type UseFieldOptions<Value> = {
   validate?: FieldValidator<Value>;

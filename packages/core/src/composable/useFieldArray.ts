@@ -1,14 +1,12 @@
 import { ref, computed, Ref } from 'vue';
 import { useFormContext } from './useFormContext';
 
+import type { FieldValidator } from '../types';
+
 interface FieldEntry<Values extends any[]> {
   key: any;
   value: Values[number];
 }
-
-type FieldValidator<Value> = (
-  value: Value,
-) => string | void | Promise<string | void>;
 
 type UseFieldArrayOptions<Value> = {
   validate?: FieldValidator<Value>;
