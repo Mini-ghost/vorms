@@ -17,7 +17,7 @@ export function createRollupConfig(options, callback) {
     output: {
       file: output,
       format: options.format,
-      name: 'VueComposableForm',
+      name: 'VueCompositionForm',
       sourcemap: true,
       globals: {
         vue: 'Vue',

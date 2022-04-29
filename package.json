@@ -1,5 +1,5 @@
 {
-  "name": "vue-composable-form",
+  "name": "vue-composition-form",
   "workspaces": [
     "packages/*"
   ],

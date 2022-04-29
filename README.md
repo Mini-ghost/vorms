@@ -2,7 +2,7 @@
 
 ```vue
 <script setup lang="ts">
-import { useForm } from '@vue-composable-form/core'
+import { useForm } from '@vue-composition-form/core'
 
 interface InitialValues {
   firstName: string,

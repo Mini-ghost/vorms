@@ -51,13 +51,13 @@ importers:
   playground:
     specifiers:
       '@vitejs/plugin-vue': ^2.3.1
-      '@vue-composable-form/core': latest
+      '@vue-composition-form/core': latest
       typescript: ^4.5.4
       vite: ^2.9.5
       vue: ^3.0.0
       vue-tsc: ^0.34.7
     dependencies:
-      '@vue-composable-form/core': link:../packages/core
+      '@vue-composition-form/core': link:../packages/core
       vue: 3.2.33
     devDependencies:
       '@vitejs/plugin-vue': 2.3.1_vite@2.9.6+vue@3.2.33

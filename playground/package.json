@@ -7,7 +7,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vue-composable-form/core": "latest",
+    "@vue-composition-form/core": "latest",
     "vue": "^3.0.0"
   },
   "devDependencies": {

@@ -38,7 +38,7 @@ export interface FromContextValuse {
 }
 
 export const FormContextKey: InjectionKey<FromContextValuse> = Symbol(
-  'vue-composable-form',
+  'vue-composition-form',
 );
 
 export function useFormContext() {
