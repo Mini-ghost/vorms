@@ -1,8 +1,17 @@
+import { ComputedRef } from 'vue';
+
 export type FormValues = Record<string, any>;
 
 export type FieldValidator<Value> = (
   value: Value,
 ) => string | void | Promise<string | void>;
+
+export interface FieldProps {
+  dirty: ComputedRef<boolean>;
+  error: ComputedRef<string>;
+  onBlur: () => void;
+  onChange: () => void;
+}
 
 export type Primitive =
   | null

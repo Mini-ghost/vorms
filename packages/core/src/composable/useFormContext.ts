@@ -2,10 +2,9 @@ import {
   inject,
   getCurrentInstance,
   InjectionKey,
-  ComputedRef,
   WritableComputedRef,
 } from 'vue';
-import { FieldValidator } from '../types';
+import { FieldValidator, FieldProps } from '../types';
 
 function injectMaybeSelf<T>(
   key: InjectionKey<T>,
@@ -13,12 +12,6 @@ function injectMaybeSelf<T>(
 ): T | undefined {
   const vm = getCurrentInstance() as any;
   return vm?.provides[key as any] || inject(key, def);
-}
-
-export interface FieldProps {
-  dirty: ComputedRef<boolean>;
-  onBlur(e: Event): void;
-  onChange(): void;
 }
 
 export interface FromContextValuse {

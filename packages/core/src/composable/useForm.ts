@@ -23,7 +23,13 @@ import useFormStore from './useFormStore';
 import isString from '../utils/isString';
 
 import type { Reducer } from './useFormStore';
-import type { FormValues, FieldValidator, Path, PathValue } from '../types';
+import type {
+  FormValues,
+  FieldProps,
+  FieldValidator,
+  Path,
+  PathValue,
+} from '../types';
 
 export type FormikTouched<Values> = {
   [K in keyof Values]?: Values[K] extends any[]
@@ -279,7 +285,7 @@ export function useForm<Values extends FormValues = FormValues>({
     });
   };
 
-  const getFieldProps = (name: string) => {
+  const getFieldProps = (name: string): FieldProps => {
     const value = get(state.values, name);
 
     const error = computed<string>(() => get(state.errors.value, name));
