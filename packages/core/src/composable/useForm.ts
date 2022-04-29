@@ -100,44 +100,58 @@ export interface UseFormOptions<Values extends FormValues> {
   validate?: (valuse: Values) => void | object | Promise<FormErrors<Values>>;
 }
 
+const enum ACTION_TYPE {
+  SUBMIT_ATTEMPT,
+  SUBMIT_SUCCESS,
+  SUBMIT_FAILURE,
+  SET_FIELD_VALUE,
+  SET_TOUCHED,
+  SET_ERRORS,
+  SET_ISSUBMITTING,
+  RESET_FORM,
+}
+
 type FormMessage<Values extends FormValues> =
-  | { type: 'SUBMIT_ATTEMPT' }
-  | { type: 'SUBMIT_SUCCESS' }
-  | { type: 'SUBMIT_FAILURE' }
-  | { type: 'SET_VALUE'; payload: { path: string; value: any } }
-  | { type: 'SET_TOUCHED'; payload: { path: string; touched?: boolean } }
-  | { type: 'SET_ERRORS'; payload: FormErrors<Values> }
-  | { type: 'SET_ISSUBMITTING'; payload: boolean }
-  | { type: 'RESET_FORM'; payload: FormResetState<Values> };
+  | { type: ACTION_TYPE.SUBMIT_ATTEMPT }
+  | { type: ACTION_TYPE.SUBMIT_SUCCESS }
+  | { type: ACTION_TYPE.SUBMIT_FAILURE }
+  | { type: ACTION_TYPE.SET_FIELD_VALUE; payload: { path: string; value: any } }
+  | {
+      type: ACTION_TYPE.SET_TOUCHED;
+      payload: { path: string; touched?: boolean };
+    }
+  | { type: ACTION_TYPE.SET_ERRORS; payload: FormErrors<Values> }
+  | { type: ACTION_TYPE.SET_ISSUBMITTING; payload: boolean }
+  | { type: ACTION_TYPE.RESET_FORM; payload: FormResetState<Values> };
 
 function reducer<Values extends FormValues>(
   state: FormState<Values>,
   message: FormMessage<Values>,
 ) {
   switch (message.type) {
-    case 'SUBMIT_ATTEMPT':
+    case ACTION_TYPE.SUBMIT_ATTEMPT:
       state.isSubmitting.value = true;
       state.submitCount.value = state.submitCount.value + 1;
       return;
-    case 'SUBMIT_SUCCESS':
+    case ACTION_TYPE.SUBMIT_SUCCESS:
       state.isSubmitting.value = false;
       return;
-    case 'SUBMIT_FAILURE':
+    case ACTION_TYPE.SUBMIT_FAILURE:
       state.isSubmitting.value = false;
       return;
-    case 'SET_VALUE':
+    case ACTION_TYPE.SET_FIELD_VALUE:
       set(state.values, message.payload.path, message.payload.value);
       return;
-    case 'SET_TOUCHED':
+    case ACTION_TYPE.SET_TOUCHED:
       set(state.touched.value, message.payload.path, message.payload.touched);
       return;
-    case 'SET_ERRORS':
+    case ACTION_TYPE.SET_ERRORS:
       state.errors.value = message.payload;
       return;
-    case 'SET_ISSUBMITTING':
+    case ACTION_TYPE.SET_ISSUBMITTING:
       state.isSubmitting.value = message.payload;
       return;
-    case 'RESET_FORM':
+    case ACTION_TYPE.RESET_FORM:
       keysOf(state.values).forEach((key) => {
         delete state.values[key];
       });
@@ -196,7 +210,7 @@ export function useForm<Values extends FormValues = FormValues>({
 
   const setFieldTouched = (name: string, touched = true) => {
     dispatch({
-      type: 'SET_TOUCHED',
+      type: ACTION_TYPE.SET_TOUCHED,
       payload: {
         path: name,
         touched,
@@ -205,14 +219,14 @@ export function useForm<Values extends FormValues = FormValues>({
 
     return validateTiming.value === 'blur'
       ? runAllValidateHandler(state.values).then((errors) => {
-          dispatch({ type: 'SET_ERRORS', payload: errors });
+          dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
         })
       : Promise.resolve();
   };
 
   const setFieldValue = (name: string, value: any) => {
     dispatch({
-      type: 'SET_VALUE',
+      type: ACTION_TYPE.SET_FIELD_VALUE,
       payload: {
         path: name,
         value,
@@ -221,7 +235,7 @@ export function useForm<Values extends FormValues = FormValues>({
 
     return validateTiming.value === 'change'
       ? runAllValidateHandler(state.values).then((errors) => {
-          dispatch({ type: 'SET_ERRORS', payload: errors });
+          dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
         })
       : Promise.resolve();
   };
@@ -245,13 +259,13 @@ export function useForm<Values extends FormValues = FormValues>({
   const handleChange: FormEventHandler['handleChange'] = () => {
     if (validateTiming.value === 'change') {
       runAllValidateHandler(state.values).then((errors) => {
-        dispatch({ type: 'SET_ERRORS', payload: errors });
+        dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
       });
     }
   };
 
   const setSubmitting = (isSubmitting: boolean) => {
-    dispatch({ type: 'SET_ISSUBMITTING', payload: isSubmitting });
+    dispatch({ type: ACTION_TYPE.SET_ISSUBMITTING, payload: isSubmitting });
   };
 
   const getFieldValue = <Value>(name: string) => {
@@ -344,10 +358,10 @@ export function useForm<Values extends FormValues = FormValues>({
       event.preventDefault();
     }
 
-    dispatch({ type: 'SUBMIT_ATTEMPT' });
+    dispatch({ type: ACTION_TYPE.SUBMIT_ATTEMPT });
     runAllValidateHandler(state.values).then((errors) => {
       const isValid = keysOf(errors).length === 0;
-      dispatch({ type: 'SET_ERRORS', payload: errors });
+      dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
 
       if (isValid) {
         const maybePromise = onSubmit({ ...state.values }, submitHelper);
@@ -357,15 +371,15 @@ export function useForm<Values extends FormValues = FormValues>({
 
         maybePromise
           .then((result) => {
-            dispatch({ type: 'SUBMIT_SUCCESS' });
+            dispatch({ type: ACTION_TYPE.SUBMIT_SUCCESS });
             return result;
           })
           .catch((error) => {
-            dispatch({ type: 'SUBMIT_FAILURE' });
+            dispatch({ type: ACTION_TYPE.SUBMIT_FAILURE });
             throw error;
           });
       } else {
-        dispatch({ type: 'SUBMIT_FAILURE' });
+        dispatch({ type: ACTION_TYPE.SUBMIT_FAILURE });
         onError?.(errors);
       }
     });
@@ -381,7 +395,7 @@ export function useForm<Values extends FormValues = FormValues>({
     initalValues = deepClone(values);
 
     dispatch({
-      type: 'RESET_FORM',
+      type: ACTION_TYPE.RESET_FORM,
       payload: {
         values,
         touched,
@@ -426,7 +440,7 @@ export function useForm<Values extends FormValues = FormValues>({
   onMounted(() => {
     if (!validateOnMounted) return;
     runAllValidateHandler(initalValues).then((errors) => {
-      dispatch({ type: 'SET_ERRORS', payload: errors });
+      dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
     });
   });
 
