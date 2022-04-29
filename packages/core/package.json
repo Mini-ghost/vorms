@@ -13,8 +13,13 @@
     "build": "rollup -c ./scripts/rollup/rollup.config.js",
     "dev": "pnpm build -- -w"
   },
-  "author": "Alex Liu <dsa1314@gmail.com>",
   "license": "MIT",
+  "author": "Alex Liu <dsa1314@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mini-ghost/vue-composable-form",
+    "directory": "packages/core"
+  },
   "peerDependencies": {
     "vue": "^3.0.0"
   },

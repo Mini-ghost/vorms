@@ -21,12 +21,8 @@
       "pre-commit": "lint-staged"
     }
   },
-  "author": "Alex Liu <dsa1314@gmail.com>",
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mini-ghost/vue-composable-form"
-  },
+  "author": "Alex Liu <dsa1314@gmail.com>",
   "dependencies": {
     "typescript": "^4.6.3"
   },
