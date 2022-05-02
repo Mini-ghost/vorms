@@ -11,8 +11,8 @@
   ],
   "plugins": ["@typescript-eslint", "prettier"],
   "rules": {
+    "no-console": "error",
     "eol-last": ["error", "always"],
-    // "no-console": ["error"],
 
     // typescript
     "@typescript-eslint/ban-types": "off",
