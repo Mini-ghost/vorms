@@ -372,7 +372,7 @@ export function useForm<Values extends FormValues = FormValues>({
       dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
 
       if (isValid) {
-        const maybePromise = onSubmit({ ...state.values }, submitHelper);
+        const maybePromise = onSubmit(deepClone(state.values), submitHelper);
         if (maybePromise == null) {
           return;
         }
