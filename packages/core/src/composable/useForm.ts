@@ -94,7 +94,7 @@ export interface FormEventHandler {
   handleChange: () => void;
 }
 
-export type ValidateMode = 'blur' | 'change' | 'submit';
+export type ValidateMode = 'blur' | 'input' | 'change' | 'submit';
 
 export interface UseFormOptions<Values extends FormValues> {
   initialValues: Values;
@@ -239,7 +239,7 @@ export function useForm<Values extends FormValues = FormValues>({
       },
     });
 
-    return validateTiming.value === 'change'
+    return validateTiming.value === 'input'
       ? runAllValidateHandler(state.values).then((errors) => {
           dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
         })
