@@ -9,6 +9,7 @@ export type FieldValidator<Value> = (
 export interface FieldProps {
   dirty: ComputedRef<boolean>;
   error: ComputedRef<string>;
+  touched: ComputedRef<boolean>;
   onBlur: () => void;
   onChange: () => void;
 }
