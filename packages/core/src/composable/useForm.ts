@@ -25,31 +25,13 @@ import isString from '../utils/isString';
 import type { Reducer } from './useFormStore';
 import type {
   FormValues,
+  FormikTouched,
+  FormErrors,
+  FormEventHandler,
   FieldProps,
-  FieldValidator,
-  Path,
-  PathValue,
+  UseFormRegister,
+  UseFormReturn,
 } from '../types';
-
-export type FormikTouched<Values> = {
-  [K in keyof Values]?: Values[K] extends any[]
-    ? Values[K][number] extends object
-      ? FormikTouched<Values[K][number]>[]
-      : boolean
-    : Values[K] extends object
-    ? FormikTouched<Values[K]>
-    : boolean;
-};
-
-export type FormErrors<Values> = {
-  [K in keyof Values]?: Values[K] extends any[]
-    ? Values[K][number] extends object
-      ? FormErrors<Values[K][number]>[] | string | string[]
-      : string | string[]
-    : Values[K] extends object
-    ? FormErrors<Values[K]>
-    : string;
-};
 
 interface FieldRegistry {
   [field: string]: {
@@ -61,10 +43,6 @@ interface FieldArrayRefistry {
   [field: string]: {
     reset: () => void;
   };
-}
-
-interface FieldRegisterOptions<Values> {
-  validate?: FieldValidator<Values>;
 }
 
 export interface FormState<Values extends FormValues> {
@@ -83,15 +61,6 @@ export interface FormResetState<Values extends FormValues = FormValues> {
 
 export interface FormSubmitHelper {
   setSubmitting: (isSubmitting: boolean) => void;
-}
-
-export interface FormEventHandler {
-  handleBlur: {
-    (event: Event, name?: string): void;
-    <T = string | Event>(name: T): T extends string ? () => void : void;
-  };
-
-  handleChange: () => void;
 }
 
 export type ValidateMode = 'blur' | 'input' | 'change' | 'submit';
@@ -171,14 +140,17 @@ function reducer<Values extends FormValues>(
   }
 }
 
-export function useForm<Values extends FormValues = FormValues>({
-  validateOnMounted = false,
-  validateMode = 'submit',
-  reValidateMode = 'change',
-  onSubmit,
-  onError,
-  ...options
-}: UseFormOptions<Values>) {
+export function useForm<Values extends FormValues = FormValues>(
+  options: UseFormOptions<Values>,
+): UseFormReturn<Values> {
+  const {
+    validateOnMounted = false,
+    validateMode = 'submit',
+    reValidateMode = 'change',
+    onSubmit,
+    onError,
+  } = options;
+
   const [state, dispatch] = useFormStore<
     Reducer<FormState<Values>, FormMessage<Values>>
   >(reducer, {
@@ -417,22 +389,19 @@ export function useForm<Values extends FormValues = FormValues>({
     });
   };
 
-  const handleReset = (e?: Event) => {
-    if (e && e.preventDefault) {
-      e.preventDefault();
+  const handleReset = (event?: Event) => {
+    if (event && event.preventDefault) {
+      event.preventDefault();
     }
 
     resetForm();
   };
 
-  const register = <Name extends Path<Values>, Value = PathValue<Values, Name>>(
-    name: Name,
-    options?: FieldRegisterOptions<Value>,
-  ) => {
+  const register: UseFormRegister<Values> = (name, options) => {
     registerField(name, options);
 
     return {
-      value: getFieldValue<Value>(name),
+      value: getFieldValue(name),
       ...getFieldProps(name),
     };
   };

@@ -1,10 +1,80 @@
-import { ComputedRef } from 'vue';
+import {
+  ComputedRef,
+  DeepReadonly,
+  WritableComputedRef,
+  UnwrapNestedRefs,
+  Ref,
+} from 'vue';
 
 export type FormValues = Record<string, any>;
 
 export type FieldValidator<Value> = (
   value: Value,
 ) => string | void | Promise<string | void>;
+
+export type FormikTouched<Values> = {
+  [K in keyof Values]?: Values[K] extends any[]
+    ? Values[K][number] extends object
+      ? FormikTouched<Values[K][number]>[]
+      : boolean
+    : Values[K] extends object
+    ? FormikTouched<Values[K]>
+    : boolean;
+};
+
+export type FormErrors<Values> = {
+  [K in keyof Values]?: Values[K] extends any[]
+    ? Values[K][number] extends object
+      ? FormErrors<Values[K][number]>[] | string | string[]
+      : string | string[]
+    : Values[K] extends object
+    ? FormErrors<Values[K]>
+    : string;
+};
+
+export interface FormEventHandler {
+  handleBlur: {
+    (event: Event, name?: string): void;
+    <T = string | Event>(name: T): T extends string ? () => void : void;
+  };
+
+  handleChange: () => void;
+}
+
+export interface FieldRegisterOptions<Values> {
+  validate?: FieldValidator<Values>;
+}
+
+export interface UseFormRegisterReturn<Value> {
+  value: WritableComputedRef<Value>;
+  dirty: ComputedRef<boolean>;
+  error: ComputedRef<string>;
+  touched: ComputedRef<boolean>;
+  onBlur: () => void;
+  onChange: () => void;
+}
+
+export type UseFormRegister<Values extends FormValues> = <
+  Name extends Path<Values>,
+  Value = PathValue<Values, Name>,
+>(
+  name: Name,
+  options?: FieldRegisterOptions<Value>,
+) => UseFormRegisterReturn<Value>;
+
+export interface UseFormReturn<Values extends FormValues> {
+  values: DeepReadonly<UnwrapNestedRefs<Values>>;
+  touched: ComputedRef<FormikTouched<Values>>;
+  errors: ComputedRef<FormErrors<Values>>;
+  submitCount: ComputedRef<number>;
+  isSubmitting: Ref<boolean>;
+  dirty: ComputedRef<boolean>;
+  register: UseFormRegister<Values>;
+  handleBlur: FormEventHandler['handleBlur'];
+  handleChange: () => void;
+  handleSubmit: (event?: Event) => void;
+  handleReset: (event?: Event) => void;
+}
 
 export interface FieldProps {
   dirty: ComputedRef<boolean>;
