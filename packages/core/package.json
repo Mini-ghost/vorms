@@ -16,7 +16,7 @@
     "build": "esno scripts/build.ts",
     "build:rollup": "rollup -c",
     "clean": "rimraf dist",
-    "dev": "pnpm build -- -w",
+    "dev": "pnpm build:rollup -- -w",
     "publish:ci": "esno scripts/publish.ts"
   },
   "license": "MIT",
