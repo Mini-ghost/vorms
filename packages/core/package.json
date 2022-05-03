@@ -10,8 +10,11 @@
     ".": "./dist/index.mjs"
   },
   "scripts": {
-    "build": "rollup -c ./scripts/rollup/rollup.config.js",
-    "dev": "pnpm build -- -w"
+    "build": "esno scripts/build.ts",
+    "build:rollup": "rollup -c",
+    "clean": "rimraf dist",
+    "dev": "pnpm build -- -w",
+    "publish:ci": "esno scripts/publish.ts"
   },
   "license": "MIT",
   "author": "Alex Liu <dsa1314@gmail.com>",
@@ -32,14 +35,6 @@
   ],
   "peerDependencies": {
     "vue": "^3.0.0"
-  },
-  "devDependencies": {
-    "@rollup/plugin-commonjs": "^21.1.0",
-    "@rollup/plugin-node-resolve": "^13.2.1",
-    "@types/node": "^16.11.0",
-    "rollup": "^2.70.2",
-    "rollup-plugin-terser": "^7.0.2",
-    "rollup-plugin-typescript2": "^0.31.2"
   },
   "dependencies": {
     "deepmerge": "^4.2.2",
