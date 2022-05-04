@@ -196,9 +196,7 @@ export function useForm<Values extends FormValues = FormValues>(
     });
 
     return validateTiming.value === 'blur'
-      ? runAllValidateHandler(state.values).then((errors) => {
-          dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
-        })
+      ? runAllValidateHandler(state.values)
       : Promise.resolve();
   };
 
@@ -212,9 +210,7 @@ export function useForm<Values extends FormValues = FormValues>(
     });
 
     return validateTiming.value === 'input'
-      ? runAllValidateHandler(state.values).then((errors) => {
-          dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
-        })
+      ? runAllValidateHandler(state.values)
       : Promise.resolve();
   };
 
@@ -236,9 +232,7 @@ export function useForm<Values extends FormValues = FormValues>(
 
   const handleChange: FormEventHandler['handleChange'] = () => {
     if (validateTiming.value === 'change') {
-      runAllValidateHandler(state.values).then((errors) => {
-        dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
-      });
+      runAllValidateHandler(state.values);
     }
   };
 
@@ -329,6 +323,8 @@ export function useForm<Values extends FormValues = FormValues>(
         validateErrors,
       ]);
 
+      dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
+
       return errors;
     });
   };
@@ -341,7 +337,6 @@ export function useForm<Values extends FormValues = FormValues>(
     dispatch({ type: ACTION_TYPE.SUBMIT_ATTEMPT });
     runAllValidateHandler(state.values).then((errors) => {
       const isValid = keysOf(errors).length === 0;
-      dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
 
       if (isValid) {
         const maybePromise = onSubmit(deepClone(state.values), submitHelper);
@@ -416,9 +411,7 @@ export function useForm<Values extends FormValues = FormValues>(
 
   onMounted(() => {
     if (!validateOnMounted) return;
-    runAllValidateHandler(initalValues).then((errors) => {
-      dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
-    });
+    runAllValidateHandler(initalValues);
   });
 
   const context = {
