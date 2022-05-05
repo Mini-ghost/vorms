@@ -31,6 +31,7 @@ import type {
   FieldProps,
   UseFormRegister,
   UseFormReturn,
+  UseFormValidateField,
 } from '../types';
 
 interface FieldRegistry {
@@ -82,6 +83,7 @@ const enum ACTION_TYPE {
   SET_FIELD_VALUE,
   SET_TOUCHED,
   SET_ERRORS,
+  SET_FIELD_ERROR,
   SET_ISSUBMITTING,
   RESET_FORM,
 }
@@ -96,6 +98,10 @@ type FormMessage<Values extends FormValues> =
       payload: { path: string; touched?: boolean };
     }
   | { type: ACTION_TYPE.SET_ERRORS; payload: FormErrors<Values> }
+  | {
+      type: ACTION_TYPE.SET_FIELD_ERROR;
+      payload: { path: string; error: string };
+    }
   | { type: ACTION_TYPE.SET_ISSUBMITTING; payload: boolean }
   | { type: ACTION_TYPE.RESET_FORM; payload: FormResetState<Values> };
 
@@ -122,6 +128,9 @@ function reducer<Values extends FormValues>(
       return;
     case ACTION_TYPE.SET_ERRORS:
       state.errors.value = message.payload;
+      return;
+    case ACTION_TYPE.SET_FIELD_ERROR:
+      set(state.errors.value, message.payload.path, message.payload.error);
       return;
     case ACTION_TYPE.SET_ISSUBMITTING:
       state.isSubmitting.value = message.payload;
@@ -401,6 +410,17 @@ export function useForm<Values extends FormValues = FormValues>(
     };
   };
 
+  const validateField: UseFormValidateField<Values> = (name) => {
+    return runSingleFieldValidateHandler(name, get(state.values, name)).then(
+      (error) => {
+        dispatch({
+          type: ACTION_TYPE.SET_FIELD_ERROR,
+          payload: { path: name, error },
+        });
+      },
+    );
+  };
+
   provide(FormContextKey, {
     getFieldProps,
     getFieldValue,
@@ -427,6 +447,7 @@ export function useForm<Values extends FormValues = FormValues>(
     handleSubmit,
     handleReset,
     resetForm,
+    validateField,
   };
 
   return context;

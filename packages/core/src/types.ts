@@ -62,6 +62,12 @@ export type UseFormRegister<Values extends FormValues> = <
   options?: FieldRegisterOptions<Value>,
 ) => UseFormRegisterReturn<Value>;
 
+export type UseFormValidateField<Values extends FormValues> = <
+  Name extends Path<Values>,
+>(
+  name: Name,
+) => Promise<void>;
+
 export interface UseFormReturn<Values extends FormValues> {
   values: DeepReadonly<UnwrapNestedRefs<Values>>;
   touched: ComputedRef<FormikTouched<Values>>;
@@ -74,6 +80,7 @@ export interface UseFormReturn<Values extends FormValues> {
   handleChange: () => void;
   handleSubmit: (event?: Event) => void;
   handleReset: (event?: Event) => void;
+  validateField: UseFormValidateField<Values>;
 }
 
 export interface FieldProps {
