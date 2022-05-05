@@ -45,14 +45,9 @@ export interface FieldRegisterOptions<Values> {
   validate?: FieldValidator<Values>;
 }
 
-export interface UseFormRegisterReturn<Value> {
+export type UseFormRegisterReturn<Value> = FieldProps & {
   value: WritableComputedRef<Value>;
-  dirty: ComputedRef<boolean>;
-  error: ComputedRef<string>;
-  touched: ComputedRef<boolean>;
-  onBlur: () => void;
-  onChange: () => void;
-}
+};
 
 export type UseFormRegister<Values extends FormValues> = <
   Name extends Path<Values>,
@@ -87,8 +82,10 @@ export interface FieldProps {
   dirty: ComputedRef<boolean>;
   error: ComputedRef<string>;
   touched: ComputedRef<boolean>;
-  onBlur: () => void;
-  onChange: () => void;
+  events: {
+    onBlur: () => void;
+    onChange: () => void;
+  };
 }
 
 export type Primitive =

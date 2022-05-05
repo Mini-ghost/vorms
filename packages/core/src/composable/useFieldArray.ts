@@ -1,7 +1,7 @@
-import { ref, computed, ComputedRef, Ref, WritableComputedRef } from 'vue';
+import { ref, computed, Ref, WritableComputedRef } from 'vue';
 import { useFormContext } from './useFormContext';
 
-import type { FieldValidator } from '../types';
+import type { FieldValidator, FieldProps } from '../types';
 
 interface FieldEntry<Value> {
   key: number;
@@ -12,11 +12,8 @@ export interface UseFieldArrayOptions<Value> {
   validate?: FieldValidator<Value[]>;
 }
 
-interface UseFieldArrayReturn<Value> {
+type UseFieldArrayReturn<Value> = FieldProps & {
   fields: Ref<FieldEntry<Value>[]>;
-  dirty: ComputedRef<boolean>;
-  error: ComputedRef<string>;
-  touched: ComputedRef<boolean>;
 
   append: (value: Value) => void;
   prepend: (value: Value) => void;
@@ -24,10 +21,7 @@ interface UseFieldArrayReturn<Value> {
   remove: (index: number) => void;
   move: (from: number, to: number) => void;
   insert: (index: number, value: Value) => void;
-
-  onBlur: () => void;
-  onChange: () => void;
-}
+};
 
 const swapAt = (data: any[], indexA: number, indexB: number): void => {
   data[indexA] = [data[indexB], (data[indexB] = data[indexA])][0];

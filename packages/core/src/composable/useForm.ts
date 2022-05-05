@@ -273,8 +273,10 @@ export function useForm<Values extends FormValues = FormValues>(
       dirty,
       error,
       touched,
-      onBlur: handleBlur(name),
-      onChange: handleChange,
+      events: {
+        onBlur: handleBlur(name),
+        onChange: handleChange,
+      },
     };
   };
 
