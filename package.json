@@ -8,6 +8,7 @@
     "dev": "pnpm -r --parallel run dev",
     "lint": "eslint './packages/**/*.{js,ts}'",
     "lint:fix": "pnpm lint -- --fix",
+    "play": "cd playground && pnpm dev",
     "prepare": "husky install"
   },
   "lint-staged": {
