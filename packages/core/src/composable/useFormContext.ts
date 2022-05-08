@@ -8,6 +8,7 @@ import {
   FieldValidator,
   FieldArrayValidator,
   FieldProps,
+  FieldEvent,
   SetFieldArrayValue,
 } from '../types';
 
@@ -36,6 +37,12 @@ export interface FromContextValuse {
   getFieldValue: <Value>(name: string) => WritableComputedRef<Value>;
   getFieldProps: (name: string) => FieldProps;
   setFieldValue: (name: string, value: any) => void;
+
+  getFieldError: (name: string) => string | undefined;
+  getFieldTouched: (name: string) => boolean;
+  getFieldDirty: (name: string) => boolean;
+  getFieldEvents: (name: string) => FieldEvent;
+
   setFieldArrayValue: SetFieldArrayValue;
 }
 

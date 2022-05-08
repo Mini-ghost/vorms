@@ -1,12 +1,15 @@
-import { ref, computed, Ref, ComputedRef, WritableComputedRef } from 'vue';
+import { ref, computed, Ref } from 'vue';
 import { useFormContext } from './useFormContext';
 
-import type { FieldArrayValidator, FieldProps } from '../types';
+import type { FieldArrayValidator, FieldEvent } from '../types';
 
 interface FieldEntry<Value> {
   key: number;
-  value: WritableComputedRef<Value>;
-  meta: ComputedRef<FieldProps>;
+  value: Value;
+  error: string | undefined;
+  touched: boolean;
+  dirty: boolean;
+  events: FieldEvent;
 }
 
 export interface UseFieldArrayOptions<Value> {
@@ -56,8 +59,11 @@ export function useFieldArray<Value>(
 ): UseFieldArrayReturn<Value> {
   const {
     getFieldValue,
-    getFieldProps,
     setFieldValue,
+    getFieldError,
+    getFieldTouched,
+    getFieldDirty,
+    getFieldEvents,
     registerFieldArray,
     setFieldArrayValue,
   } = useFormContext();
@@ -72,23 +78,40 @@ export function useFieldArray<Value>(
 
   const createEntry = (value: Value) => {
     const key = seed++;
+    const getIndex = () => fields.value.findIndex((field) => field.key === key);
 
     return {
       key,
       value: computed<Value>({
         get() {
-          const index = fields.value.findIndex((field) => field.key === key);
+          const index = getIndex();
           return index === -1 ? value : values.value[index];
         },
         set(value) {
-          const index = fields.value.findIndex((field) => field.key === key);
+          const index = getIndex();
           setFieldValue(`${name}.${index}`, value);
         },
-      }),
-      meta: computed(() => {
-        const index = fields.value.findIndex((field) => field.key === key);
-        return getFieldProps(`${name}.${index}`);
-      }),
+      }) as any as Value, // will be auto unwrapped
+
+      error: computed(() => {
+        const index = getIndex();
+        return getFieldError(`${name}.${index}`);
+      }) as any as string | undefined, // will be auto unwrapped
+
+      touched: computed(() => {
+        const index = getIndex();
+        return getFieldTouched(`${name}.${index}`) ?? false;
+      }) as any as boolean,
+
+      dirty: computed(() => {
+        const index = getIndex();
+        return getFieldDirty(`${name}.${index}`);
+      }) as any as boolean,
+
+      events: computed(() => {
+        const index = getIndex();
+        return getFieldEvents(`${name}.${index}`);
+      }) as any as FieldEvent,
     };
   };
 

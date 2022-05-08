@@ -36,6 +36,14 @@ export type FormErrors<Values> = {
     : string;
 };
 
+export interface FormState<Values extends FormValues> {
+  values: UnwrapNestedRefs<Values>;
+  touched: Ref<FormikTouched<Values>>;
+  errors: Ref<FormErrors<Values>>;
+  submitCount: Ref<number>;
+  isSubmitting: Ref<boolean>;
+}
+
 export interface FormEventHandler {
   handleBlur: {
     (event: Event, name?: string): void;
@@ -102,14 +110,16 @@ export interface UseFormReturn<Values extends FormValues> {
   validateField: UseFormValidateField<Values>;
 }
 
+export interface FieldEvent {
+  onBlur: () => void;
+  onChange: () => void;
+}
+
 export interface FieldProps {
   dirty: ComputedRef<boolean>;
-  error: ComputedRef<string>;
+  error: ComputedRef<string | undefined>;
   touched: ComputedRef<boolean>;
-  events: {
-    onBlur: () => void;
-    onChange: () => void;
-  };
+  events: FieldEvent;
 }
 
 export type Primitive =

@@ -6,7 +6,6 @@ import {
   provide,
   readonly,
   Ref,
-  UnwrapNestedRefs,
 } from 'vue';
 import isEqual from 'fast-deep-equal/es6';
 import { klona as deepClone } from 'klona/full';
@@ -25,10 +24,11 @@ import isString from '../utils/isString';
 import type { Reducer } from './useFormStore';
 import type {
   FormValues,
-  FormikTouched,
+  FormState,
   FormErrors,
   FormEventHandler,
   FieldProps,
+  FieldEvent,
   UseFormRegister,
   UseFormReturn,
   UseFormValidateField,
@@ -47,14 +47,6 @@ interface FieldArrayRefistry {
   [field: string]: {
     reset: () => void;
   };
-}
-
-export interface FormState<Values extends FormValues> {
-  values: UnwrapNestedRefs<Values>;
-  touched: Ref<FormikTouched<Values>>;
-  errors: Ref<FormErrors<Values>>;
-  submitCount: Ref<number>;
-  isSubmitting: Ref<boolean>;
 }
 
 export interface FormSubmitHelper {
@@ -312,21 +304,36 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const getFieldProps = (name: string): FieldProps => {
-    const error = computed<string>(() => get(state.errors.value, name));
-    const touched = computed<boolean>(() => get(state.touched.value, name));
-    const dirty = computed(() => {
-      return !isEqual(get(initalValues, name), get(state.values, name));
-    });
+    const error = computed(() => getFieldError(name));
+    const touched = computed(() => getFieldTouched(name));
+    const dirty = computed(() => getFieldDirty(name));
+    const events = getFieldEvents(name);
 
     return {
       dirty,
       error,
       touched,
-      events: {
-        onBlur: handleBlur(name),
-        onChange: handleChange,
-      },
+      events,
     };
+  };
+
+  const getFieldEvents = (name: string): FieldEvent => {
+    return {
+      onBlur: handleBlur(name),
+      onChange: handleChange,
+    };
+  };
+
+  const getFieldError = (name: string): string | undefined => {
+    return get(state.errors.value, name);
+  };
+
+  const getFieldTouched = (name: string): boolean => {
+    return get(state.touched.value, name) ?? false;
+  };
+
+  const getFieldDirty = (name: string): boolean => {
+    return !isEqual(get(initalValues, name), get(state.values, name));
   };
 
   const submitHelper: FormSubmitHelper = {
@@ -479,6 +486,10 @@ export function useForm<Values extends FormValues = FormValues>(
     getFieldProps,
     getFieldValue,
     setFieldValue,
+    getFieldError,
+    getFieldTouched,
+    getFieldDirty,
+    getFieldEvents,
     registerField,
     registerFieldArray,
     setFieldArrayValue,
