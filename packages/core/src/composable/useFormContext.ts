@@ -4,7 +4,12 @@ import {
   InjectionKey,
   WritableComputedRef,
 } from 'vue';
-import { FieldValidator, FieldProps } from '../types';
+import {
+  FieldValidator,
+  FieldArrayValidator,
+  FieldProps,
+  SetFieldArrayValue,
+} from '../types';
 
 function injectMaybeSelf<T>(
   key: InjectionKey<T>,
@@ -22,12 +27,16 @@ export interface FromContextValuse {
 
   registerFieldArray: (
     name: string,
-    options: { validate?: FieldValidator<any>; reset: () => void },
+    options: {
+      validate?: FieldArrayValidator<any>;
+      reset: () => void;
+    },
   ) => void;
 
   getFieldValue: <Value>(name: string) => WritableComputedRef<Value>;
   getFieldProps: (name: string) => FieldProps;
   setFieldValue: (name: string, value: any) => void;
+  setFieldArrayValue: SetFieldArrayValue;
 }
 
 export const FormContextKey: InjectionKey<FromContextValuse> = Symbol(

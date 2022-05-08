@@ -12,6 +12,10 @@ export type FieldValidator<Value> = (
   value: Value,
 ) => string | void | Promise<string | void>;
 
+export type FieldArrayValidator<Value extends Array<any>> = (
+  value: Value,
+) => FormErrors<Value> | void | Promise<FormErrors<Value> | void>;
+
 export type FormikTouched<Values> = {
   [K in keyof Values]?: Values[K] extends any[]
     ? Values[K][number] extends object
@@ -48,6 +52,17 @@ export interface FieldRegisterOptions<Values> {
 export type UseFormRegisterReturn<Value> = FieldProps & {
   value: WritableComputedRef<Value>;
 };
+
+export type SetFieldArrayValue = <T extends (...args: any) => any>(
+  name: string,
+  value: any[],
+  method?: T,
+  args?: Partial<{
+    argA: Parameters<T>[1];
+    argB: Parameters<T>[2];
+  }>,
+  shouldSetValue?: boolean,
+) => void;
 
 export type UseFormRegister<Values extends FormValues> = <
   Name extends Path<Values>,

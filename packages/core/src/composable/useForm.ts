@@ -32,6 +32,7 @@ import type {
   UseFormRegister,
   UseFormReturn,
   UseFormValidateField,
+  SetFieldArrayValue,
   FormResetState,
   ResetForm,
 } from '../types';
@@ -217,6 +218,60 @@ export function useForm<Values extends FormValues = FormValues>(
     return validateTiming.value === 'input'
       ? runAllValidateHandler(state.values)
       : Promise.resolve();
+  };
+
+  const setFieldArrayValue: SetFieldArrayValue = (
+    name,
+    value,
+    method,
+    args,
+    shouldSetValue = true,
+  ) => {
+    if (method && args) {
+      if (
+        keysOf(state.errors.value).length &&
+        Array.isArray(get(state.errors.value, name))
+      ) {
+        const error = method(
+          get(state.errors.value, name),
+          args.argA,
+          args.argB,
+        );
+
+        if (shouldSetValue) {
+          dispatch({
+            type: ACTION_TYPE.SET_FIELD_ERROR,
+            payload: {
+              path: name,
+              error,
+            },
+          });
+        }
+      }
+
+      if (
+        keysOf(state.touched.value).length &&
+        Array.isArray(get(state.touched.value, name))
+      ) {
+        const touched = method(
+          get(state.touched.value, name),
+          args.argA,
+          args.argB,
+        );
+
+        if (shouldSetValue) {
+          dispatch({
+            type: ACTION_TYPE.SET_TOUCHED,
+            payload: {
+              path: name,
+              touched,
+            },
+          });
+        }
+      }
+    }
+
+    return setFieldValue(name, value);
   };
 
   const handleBlur: FormEventHandler['handleBlur'] = (
@@ -426,6 +481,7 @@ export function useForm<Values extends FormValues = FormValues>(
     setFieldValue,
     registerField,
     registerFieldArray,
+    setFieldArrayValue,
   });
 
   onMounted(() => {

@@ -1,18 +1,19 @@
-import { ref, computed, Ref, WritableComputedRef } from 'vue';
+import { ref, computed, Ref, ComputedRef, WritableComputedRef } from 'vue';
 import { useFormContext } from './useFormContext';
 
-import type { FieldValidator, FieldProps } from '../types';
+import type { FieldArrayValidator, FieldProps } from '../types';
 
 interface FieldEntry<Value> {
   key: number;
   value: WritableComputedRef<Value>;
+  meta: ComputedRef<FieldProps>;
 }
 
 export interface UseFieldArrayOptions<Value> {
-  validate?: FieldValidator<Value[]>;
+  validate?: FieldArrayValidator<Value[]>;
 }
 
-type UseFieldArrayReturn<Value> = FieldProps & {
+type UseFieldArrayReturn<Value> = {
   fields: Ref<FieldEntry<Value>[]>;
 
   append: (value: Value) => void;
@@ -21,6 +22,14 @@ type UseFieldArrayReturn<Value> = FieldProps & {
   remove: (index: number) => void;
   move: (from: number, to: number) => void;
   insert: (index: number, value: Value) => void;
+};
+
+const appendAt = (data: any[], value: any) => {
+  return [...data, value];
+};
+
+const prependAt = (data: any[], value: any) => {
+  return [value, ...data];
 };
 
 const swapAt = (data: any[], indexA: number, indexB: number): void => {
@@ -45,8 +54,13 @@ export function useFieldArray<Value>(
   name: string,
   options?: UseFieldArrayOptions<Value>,
 ): UseFieldArrayReturn<Value> {
-  const { getFieldValue, getFieldProps, setFieldValue, registerFieldArray } =
-    useFormContext();
+  const {
+    getFieldValue,
+    getFieldProps,
+    setFieldValue,
+    registerFieldArray,
+    setFieldArrayValue,
+  } = useFormContext();
 
   const fields: Ref<FieldEntry<Value>[]> = ref([]);
   const values = computed(() => getFieldValue<Value[]>(name).value);
@@ -71,16 +85,26 @@ export function useFieldArray<Value>(
           setFieldValue(`${name}.${index}`, value);
         },
       }),
+      meta: computed(() => {
+        const index = fields.value.findIndex((field) => field.key === key);
+        return getFieldProps(`${name}.${index}`);
+      }),
     };
   };
 
   const append = (value: Value) => {
-    setFieldValue(name, [...values.value, value]);
+    setFieldArrayValue(name, appendAt(values.value, value), appendAt, {
+      argA: undefined,
+    });
+
     fields.value.push(createEntry(value));
   };
 
   const prepend = (value: Value) => {
-    setFieldValue(name, [value, ...values.value]);
+    setFieldArrayValue(name, prependAt(values.value, value), prependAt, {
+      argA: undefined,
+    });
+
     fields.value.unshift(createEntry(value));
   };
 
@@ -88,7 +112,10 @@ export function useFieldArray<Value>(
     const cloneValues = removeAt(values.value, index);
     const cloneField = removeAt(fields.value, index);
 
-    setFieldValue(name, cloneValues);
+    setFieldArrayValue(name, cloneValues, removeAt, {
+      argA: index,
+    });
+
     fields.value = cloneField;
   };
 
@@ -99,7 +126,17 @@ export function useFieldArray<Value>(
     swapAt(cloneValues, indexA, indexB);
     swapAt(cloneField, indexA, indexB);
 
-    setFieldValue(name, cloneValues);
+    setFieldArrayValue(
+      name,
+      cloneValues,
+      swapAt,
+      {
+        argA: indexA,
+        argB: indexB,
+      },
+      false,
+    );
+
     fields.value = cloneField;
   };
 
@@ -110,7 +147,17 @@ export function useFieldArray<Value>(
     moveAt(cloneValues, from, to);
     moveAt(cloneField, from, to);
 
-    setFieldValue(name, cloneValues);
+    setFieldArrayValue(
+      name,
+      cloneValues,
+      moveAt,
+      {
+        argA: from,
+        argB: to,
+      },
+      false,
+    );
+
     fields.value = cloneField;
   };
 
@@ -118,7 +165,11 @@ export function useFieldArray<Value>(
     const cloneValues = insertAt(values.value, index, value);
     const cloneField = insertAt(fields.value, index, createEntry(value));
 
-    setFieldValue(name, cloneValues);
+    setFieldArrayValue(name, cloneValues, insertAt, {
+      argA: index,
+      argB: value,
+    });
+
     fields.value = cloneField;
   };
 
@@ -130,7 +181,6 @@ export function useFieldArray<Value>(
   reset();
 
   return {
-    ...getFieldProps(name),
     fields,
     append,
     prepend,
