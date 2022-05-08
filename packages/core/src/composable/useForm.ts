@@ -32,6 +32,8 @@ import type {
   UseFormRegister,
   UseFormReturn,
   UseFormValidateField,
+  FormResetState,
+  ResetForm,
 } from '../types';
 
 interface FieldRegistry {
@@ -52,12 +54,6 @@ export interface FormState<Values extends FormValues> {
   errors: Ref<FormErrors<Values>>;
   submitCount: Ref<number>;
   isSubmitting: Ref<boolean>;
-}
-
-export interface FormResetState<Values extends FormValues = FormValues> {
-  values: Values;
-  touched: FormikTouched<Values>;
-  errors: FormErrors<Values>;
 }
 
 export interface FormSubmitHelper {
@@ -374,7 +370,7 @@ export function useForm<Values extends FormValues = FormValues>(
     });
   };
 
-  const resetForm = (nextState?: Partial<FormResetState<Values>>) => {
+  const resetForm: ResetForm<Values> = (nextState) => {
     const values =
       nextState && nextState.values ? nextState.values : initalValues;
 

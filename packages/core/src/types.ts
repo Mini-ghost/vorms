@@ -63,6 +63,16 @@ export type UseFormValidateField<Values extends FormValues> = <
   name: Name,
 ) => Promise<void>;
 
+export interface FormResetState<Values extends FormValues = FormValues> {
+  values: Values;
+  touched: FormikTouched<Values>;
+  errors: FormErrors<Values>;
+}
+
+export type ResetForm<Values extends FormValues> = (
+  nextState?: Partial<FormResetState<Values>>,
+) => void;
+
 export interface UseFormReturn<Values extends FormValues> {
   values: DeepReadonly<UnwrapNestedRefs<Values>>;
   touched: ComputedRef<FormikTouched<Values>>;
@@ -73,6 +83,7 @@ export interface UseFormReturn<Values extends FormValues> {
   register: UseFormRegister<Values>;
   handleSubmit: (event?: Event) => void;
   handleReset: (event?: Event) => void;
+  resetForm: ResetForm<Values>;
   validateField: UseFormValidateField<Values>;
 }
 
