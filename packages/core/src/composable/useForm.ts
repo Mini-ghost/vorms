@@ -264,7 +264,7 @@ export function useForm<Values extends FormValues = FormValues>(
     const value = get(state.values, name);
 
     const error = computed<string>(() => get(state.errors.value, name));
-    const touched = computed<boolean>(() => get(state.touched, name));
+    const touched = computed<boolean>(() => get(state.touched.value, name));
     const dirty = computed(
       () => !isEqual(get(initalValues, name), value.value),
     );
