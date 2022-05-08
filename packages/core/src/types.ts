@@ -71,8 +71,6 @@ export interface UseFormReturn<Values extends FormValues> {
   isSubmitting: Ref<boolean>;
   dirty: ComputedRef<boolean>;
   register: UseFormRegister<Values>;
-  handleBlur: FormEventHandler['handleBlur'];
-  handleChange: () => void;
   handleSubmit: (event?: Event) => void;
   handleReset: (event?: Event) => void;
   validateField: UseFormValidateField<Values>;

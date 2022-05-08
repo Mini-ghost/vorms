@@ -447,8 +447,6 @@ export function useForm<Values extends FormValues = FormValues>(
     isSubmitting: state.isSubmitting,
     dirty,
     register,
-    handleBlur,
-    handleChange,
     handleSubmit,
     handleReset,
     resetForm,
