@@ -62,7 +62,7 @@ importers:
   playground:
     specifiers:
       '@vitejs/plugin-vue': ^2.3.1
-      '@vue-composition-form/core': latest
+      '@vue-composition-form/core': ../packages/core
       typescript: ^4.5.4
       vite: ^2.9.5
       vue: ^3.0.0
