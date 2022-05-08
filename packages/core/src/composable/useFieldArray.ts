@@ -2,6 +2,7 @@ import { ref, computed, Ref } from 'vue';
 import { useFormContext } from './useFormContext';
 
 import type { FieldArrayValidator, FieldEvent } from '../types';
+import isUndefined from '../utils/isUndefined';
 
 interface FieldEntry<Value> {
   key: number;
@@ -18,11 +19,10 @@ export interface UseFieldArrayOptions<Value> {
 
 type UseFieldArrayReturn<Value> = {
   fields: Ref<FieldEntry<Value>[]>;
-
   append: (value: Value) => void;
   prepend: (value: Value) => void;
   swap: (indexA: number, indexB: number) => void;
-  remove: (index: number) => void;
+  remove: (index?: number) => void;
   move: (from: number, to: number) => void;
   insert: (index: number, value: Value) => void;
 };
@@ -39,7 +39,9 @@ const swapAt = (data: any[], indexA: number, indexB: number): void => {
   data[indexA] = [data[indexB], (data[indexB] = data[indexA])][0];
 };
 
-const removeAt = <T>(data: T[], index: number): T[] => {
+const removeAt = <T>(data: T[], index?: number): T[] => {
+  if (isUndefined(index)) return [];
+
   const clone = [...data];
   clone.splice(index, 1);
   return clone;
@@ -131,7 +133,7 @@ export function useFieldArray<Value>(
     fields.value.unshift(createEntry(value));
   };
 
-  const remove = (index: number) => {
+  const remove = (index?: number) => {
     const cloneValues = removeAt(values.value, index);
     const cloneField = removeAt(fields.value, index);
 
