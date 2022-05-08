@@ -346,11 +346,14 @@ export function useForm<Values extends FormValues = FormValues>(
     }
 
     dispatch({ type: ACTION_TYPE.SUBMIT_ATTEMPT });
-    runAllValidateHandler(state.values).then((errors) => {
+
+    const values = deepClone(state.values);
+
+    runAllValidateHandler(values).then((errors) => {
       const isValid = keysOf(errors).length === 0;
 
       if (isValid) {
-        const maybePromise = onSubmit(deepClone(state.values), submitHelper);
+        const maybePromise = onSubmit(values, submitHelper);
         if (maybePromise == null) {
           return;
         }
