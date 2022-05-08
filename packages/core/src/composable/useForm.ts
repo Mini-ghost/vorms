@@ -257,13 +257,11 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const getFieldProps = (name: string): FieldProps => {
-    const value = get(state.values, name);
-
     const error = computed<string>(() => get(state.errors.value, name));
     const touched = computed<boolean>(() => get(state.touched.value, name));
-    const dirty = computed(
-      () => !isEqual(get(initalValues, name), value.value),
-    );
+    const dirty = computed(() => {
+      return !isEqual(get(initalValues, name), get(state.values, name));
+    });
 
     return {
       dirty,
