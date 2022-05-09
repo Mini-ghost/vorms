@@ -43,7 +43,7 @@ interface FieldRegistry {
   };
 }
 
-interface FieldArrayRefistry {
+interface FieldArrayRegistry {
   [field: string]: {
     reset: () => void;
   };
@@ -62,7 +62,7 @@ export interface UseFormOptions<Values extends FormValues> {
   validateOnMounted?: boolean;
   onSubmit: (values: Values, helper: FormSubmitHelper) => void | Promise<any>;
   onError?: (errors: FormErrors<Values>) => void;
-  validate?: (valuse: Values) => void | object | Promise<FormErrors<Values>>;
+  validate?: (values: Values) => void | object | Promise<FormErrors<Values>>;
 }
 
 const enum ACTION_TYPE {
@@ -161,7 +161,7 @@ export function useForm<Values extends FormValues = FormValues>(
 
   let initalValues = deepClone(options.initialValues);
   const fieldRegistry: FieldRegistry = {};
-  const fieldArrayRegistry: FieldArrayRefistry = {};
+  const fieldArrayRegistry: FieldArrayRegistry = {};
 
   const dirty = computed(() => !isEqual(state.values, initalValues));
   const validateTiming = computed(() =>
@@ -365,9 +365,9 @@ export function useForm<Values extends FormValues = FormValues>(
     );
   };
 
-  const runValidateHandler = (valuse: Values) => {
+  const runValidateHandler = (values: Values) => {
     return new Promise<FormErrors<Values>>((resolve) => {
-      const maybePromise = options.validate?.(valuse);
+      const maybePromise = options.validate?.(values);
       if (maybePromise == null) {
         resolve({});
       } else if (isPromise(maybePromise)) {

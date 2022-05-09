@@ -16,13 +16,13 @@ export type FieldArrayValidator<Value extends Array<any>> = (
   value: Value,
 ) => FormErrors<Value> | void | Promise<FormErrors<Value> | void>;
 
-export type FormikTouched<Values> = {
+export type FormTouched<Values> = {
   [K in keyof Values]?: Values[K] extends any[]
     ? Values[K][number] extends object
-      ? FormikTouched<Values[K][number]>[]
+      ? FormTouched<Values[K][number]>[]
       : boolean
     : Values[K] extends object
-    ? FormikTouched<Values[K]>
+    ? FormTouched<Values[K]>
     : boolean;
 };
 
@@ -38,7 +38,7 @@ export type FormErrors<Values> = {
 
 export interface FormState<Values extends FormValues> {
   values: UnwrapNestedRefs<Values>;
-  touched: Ref<FormikTouched<Values>>;
+  touched: Ref<FormTouched<Values>>;
   errors: Ref<FormErrors<Values>>;
   submitCount: Ref<number>;
   isSubmitting: Ref<boolean>;
@@ -88,7 +88,7 @@ export type UseFormValidateField<Values extends FormValues> = <
 
 export interface FormResetState<Values extends FormValues = FormValues> {
   values: Values;
-  touched: FormikTouched<Values>;
+  touched: FormTouched<Values>;
   errors: FormErrors<Values>;
 }
 
@@ -98,7 +98,7 @@ export type ResetForm<Values extends FormValues> = (
 
 export interface UseFormReturn<Values extends FormValues> {
   values: DeepReadonly<UnwrapNestedRefs<Values>>;
-  touched: ComputedRef<FormikTouched<Values>>;
+  touched: ComputedRef<FormTouched<Values>>;
   errors: ComputedRef<FormErrors<Values>>;
   submitCount: ComputedRef<number>;
   isSubmitting: Ref<boolean>;

@@ -20,7 +20,7 @@ function injectMaybeSelf<T>(
   return vm?.provides[key as any] || inject(key, def);
 }
 
-export interface FromContextValuse {
+export interface FormContextValuse {
   registerField: (
     name: string,
     options: { validate?: FieldValidator<any> },
@@ -46,11 +46,11 @@ export interface FromContextValuse {
   setFieldArrayValue: SetFieldArrayValue;
 }
 
-export const FormContextKey: InjectionKey<FromContextValuse> = Symbol(
+export const FormContextKey: InjectionKey<FormContextValuse> = Symbol(
   'vue-composition-form',
 );
 
 export function useFormContext() {
-  const context = injectMaybeSelf(FormContextKey) as FromContextValuse;
+  const context = injectMaybeSelf(FormContextKey) as FormContextValuse;
   return context;
 }
