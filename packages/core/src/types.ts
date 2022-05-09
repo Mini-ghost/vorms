@@ -118,8 +118,8 @@ export interface FieldEvent {
 export interface FieldProps {
   dirty: ComputedRef<boolean>;
   error: ComputedRef<string | undefined>;
-  touched: ComputedRef<boolean>;
   events: FieldEvent;
+  touched: ComputedRef<FormTouched<any>>;
 }
 
 export type Primitive =

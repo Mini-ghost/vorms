@@ -35,6 +35,7 @@ import type {
   SetFieldArrayValue,
   FormResetState,
   ResetForm,
+  FormTouched,
 } from '../types';
 
 interface FieldRegistry {
@@ -328,8 +329,8 @@ export function useForm<Values extends FormValues = FormValues>(
     return get(state.errors.value, name);
   };
 
-  const getFieldTouched = (name: string): boolean => {
-    return get(state.touched.value, name) ?? false;
+  const getFieldTouched = (name: string): FormTouched<any> => {
+    return get(state.touched.value, name);
   };
 
   const getFieldDirty = (name: string): boolean => {

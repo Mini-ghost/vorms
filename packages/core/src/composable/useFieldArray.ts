@@ -1,14 +1,14 @@
 import { ref, computed, Ref } from 'vue';
 import { useFormContext } from './useFormContext';
 
-import type { FieldArrayValidator, FieldEvent } from '../types';
+import type { FormTouched, FieldArrayValidator, FieldEvent } from '../types';
 import isUndefined from '../utils/isUndefined';
 
 interface FieldEntry<Value> {
   key: number;
   value: Value;
   error: string | undefined;
-  touched: boolean;
+  touched: FormTouched<Value> | undefined;
   dirty: boolean;
   events: FieldEvent;
 }
@@ -103,7 +103,7 @@ export function useFieldArray<Value>(
       touched: computed(() => {
         const index = getIndex();
         return getFieldTouched(`${name}.${index}`) ?? false;
-      }) as any as boolean,
+      }) as any as FormTouched<Value> | undefined,
 
       dirty: computed(() => {
         const index = getIndex();

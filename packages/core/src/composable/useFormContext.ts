@@ -10,6 +10,7 @@ import {
   FieldProps,
   FieldEvent,
   SetFieldArrayValue,
+  FormTouched,
 } from '../types';
 
 function injectMaybeSelf<T>(
@@ -39,7 +40,7 @@ export interface FormContextValuse {
   setFieldValue: (name: string, value: any) => void;
 
   getFieldError: (name: string) => string | undefined;
-  getFieldTouched: (name: string) => boolean;
+  getFieldTouched: (name: string) => FormTouched<any>;
   getFieldDirty: (name: string) => boolean;
   getFieldEvents: (name: string) => FieldEvent;
 
