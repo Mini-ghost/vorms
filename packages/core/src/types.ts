@@ -57,7 +57,7 @@ export interface FieldRegisterOptions<Values> {
   validate?: FieldValidator<Values>;
 }
 
-export type UseFormRegisterReturn<Value> = FieldProps & {
+export type UseFormRegisterReturn<Value> = FieldMeta & {
   value: WritableComputedRef<Value>;
 };
 
@@ -115,7 +115,7 @@ export interface FieldAttrs {
   onChange: () => void;
 }
 
-export interface FieldProps {
+export interface FieldMeta {
   dirty: ComputedRef<boolean>;
   error: ComputedRef<string | undefined>;
   events: FieldAttrs;

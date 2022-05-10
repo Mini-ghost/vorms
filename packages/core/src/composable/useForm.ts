@@ -27,7 +27,7 @@ import type {
   FormState,
   FormErrors,
   FormEventHandler,
-  FieldProps,
+  FieldMeta,
   FieldAttrs,
   UseFormRegister,
   UseFormReturn,
@@ -304,7 +304,7 @@ export function useForm<Values extends FormValues = FormValues>(
     });
   };
 
-  const getFieldProps = (name: string): FieldProps => {
+  const getFieldMeta = (name: string): FieldMeta => {
     const error = computed(() => getFieldError(name));
     const touched = computed(() => getFieldTouched(name));
     const dirty = computed(() => getFieldDirty(name));
@@ -468,7 +468,7 @@ export function useForm<Values extends FormValues = FormValues>(
 
     return {
       value: getFieldValue(name),
-      ...getFieldProps(name),
+      ...getFieldMeta(name),
     };
   };
 
@@ -484,7 +484,7 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   provide(FormContextKey, {
-    getFieldProps,
+    getFieldMeta,
     getFieldValue,
     setFieldValue,
     getFieldError,

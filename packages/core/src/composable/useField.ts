@@ -9,11 +9,11 @@ export function useField<Value>(
   name: string,
   options: UseFieldOptions<Value> = {},
 ): UseFormRegisterReturn<Value> {
-  const { registerField, getFieldProps, getFieldValue } = useFormContext();
+  const { registerField, getFieldMeta, getFieldValue } = useFormContext();
   registerField(name, options);
 
   return {
     value: getFieldValue<Value>(name),
-    ...getFieldProps(name),
+    ...getFieldMeta(name),
   };
 }

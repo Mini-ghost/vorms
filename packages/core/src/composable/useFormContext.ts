@@ -7,7 +7,7 @@ import {
 import {
   FieldValidator,
   FieldArrayValidator,
-  FieldProps,
+  FieldMeta,
   FieldAttrs,
   SetFieldArrayValue,
   FormTouched,
@@ -36,7 +36,7 @@ export interface FormContextValuse {
   ) => void;
 
   getFieldValue: <Value>(name: string) => WritableComputedRef<Value>;
-  getFieldProps: (name: string) => FieldProps;
+  getFieldMeta: (name: string) => FieldMeta;
   setFieldValue: (name: string, value: any) => void;
 
   getFieldError: (name: string) => string | undefined;
