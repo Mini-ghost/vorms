@@ -1,16 +1,23 @@
 import { ref, computed, Ref } from 'vue';
 import { useFormContext } from './useFormContext';
 
-import type { FormTouched, FieldArrayValidator, FieldAttrs } from '../types';
+import type {
+  FormErrors,
+  FormTouched,
+  FieldArrayValidator,
+  FieldAttrs,
+} from '../types';
 import isUndefined from '../utils/isUndefined';
+import omit from '../utils/omit';
 
 interface FieldEntry<Value> {
   key: number;
   value: Value;
-  error: string | undefined;
+  name: string;
+  error: FormErrors<Value>;
   touched: FormTouched<Value> | undefined;
   dirty: boolean;
-  events: FieldAttrs;
+  attrs: Omit<FieldAttrs, 'name'>;
 }
 
 export interface UseFieldArrayOptions<Value> {
@@ -80,41 +87,42 @@ export function useFieldArray<Value>(
 
   const createEntry = (value: Value) => {
     const key = seed++;
-    const getIndex = () => fields.value.findIndex((field) => field.key === key);
+
+    const index = computed(() =>
+      fields.value.findIndex((field) => field.key === key),
+    );
 
     return {
       key,
       value: computed<Value>({
         get() {
-          const index = getIndex();
-          return index === -1 ? value : values.value[index];
+          return index.value === -1 ? value : values.value[index.value];
         },
         set(value) {
-          const index = getIndex();
-          setFieldValue(`${name}.${index}`, value);
+          setFieldValue(`${name}.${index.value}`, value);
         },
-      }) as any as Value, // will be auto unwrapped
+      }),
+
+      name: computed(() => {
+        return `${name}.${index.value}`;
+      }),
 
       error: computed(() => {
-        const index = getIndex();
-        return getFieldError(`${name}.${index}`);
-      }) as any as string | undefined, // will be auto unwrapped
+        return getFieldError(`${name}.${index.value}`);
+      }),
 
       touched: computed(() => {
-        const index = getIndex();
-        return getFieldTouched(`${name}.${index}`) ?? false;
-      }) as any as FormTouched<Value> | undefined,
+        return getFieldTouched(`${name}.${index.value}`);
+      }),
 
       dirty: computed(() => {
-        const index = getIndex();
-        return getFieldDirty(`${name}.${index}`);
-      }) as any as boolean,
+        return getFieldDirty(`${name}.${index.value}`);
+      }),
 
-      events: computed(() => {
-        const index = getIndex();
-        return getFieldAttrs(`${name}.${index}`);
-      }) as any as FieldAttrs,
-    };
+      attrs: computed(() => {
+        return omit(getFieldAttrs(`${name}.${index.value}`), 'name');
+      }),
+    } as any as FieldEntry<Value>; // `computed` will be auto unwrapped
   };
 
   const append = (value: Value) => {

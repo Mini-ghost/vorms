@@ -59,6 +59,7 @@ export interface FieldRegisterOptions<Values> {
 
 export type UseFormRegisterReturn<Value> = FieldMeta & {
   value: WritableComputedRef<Value>;
+  attrs: FieldAttrs;
 };
 
 export type SetFieldArrayValue = <T extends (...args: any) => any>(
@@ -111,16 +112,16 @@ export interface UseFormReturn<Values extends FormValues> {
 }
 
 export interface FieldAttrs {
-  onBlur: () => void;
+  name: string;
+  onBlur: (event: Event) => void;
   onChange: () => void;
 }
 
-export interface FieldMeta {
+export type FieldMeta = {
   dirty: ComputedRef<boolean>;
   error: ComputedRef<string | undefined>;
-  events: FieldAttrs;
-  touched: ComputedRef<FormTouched<any>>;
-}
+  touched: ComputedRef<boolean | undefined>;
+};
 
 export type Primitive =
   | null

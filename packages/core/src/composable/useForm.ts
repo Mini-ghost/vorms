@@ -293,8 +293,8 @@ export function useForm<Values extends FormValues = FormValues>(
     dispatch({ type: ACTION_TYPE.SET_ISSUBMITTING, payload: isSubmitting });
   };
 
-  const getFieldValue = <Value>(name: string) => {
-    return computed<Value>({
+  const getFieldValue = (name: string) => {
+    return computed<any>({
       get() {
         return get(state.values, name);
       },
@@ -305,27 +305,26 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const getFieldMeta = (name: string): FieldMeta => {
-    const error = computed(() => getFieldError(name));
-    const touched = computed(() => getFieldTouched(name));
+    const error = computed(() => getFieldError(name) as any as string);
+    const touched = computed(() => getFieldTouched(name) as any as boolean);
     const dirty = computed(() => getFieldDirty(name));
-    const events = getFieldAttrs(name);
 
     return {
       dirty,
       error,
       touched,
-      events,
     };
   };
 
   const getFieldAttrs = (name: string): FieldAttrs => {
     return {
-      onBlur: handleBlur(name),
+      name,
+      onBlur: handleBlur,
       onChange: handleChange,
     };
   };
 
-  const getFieldError = (name: string): string | undefined => {
+  const getFieldError = (name: string): FormErrors<any> => {
     return get(state.errors.value, name);
   };
 
@@ -370,7 +369,7 @@ export function useForm<Values extends FormValues = FormValues>(
     return new Promise<FormErrors<Values>>((resolve) => {
       const maybePromise = options.validate?.(values);
       if (maybePromise == null) {
-        resolve({});
+        resolve({} as any);
       } else if (isPromise(maybePromise)) {
         maybePromise.then((error) => {
           resolve(error);
@@ -468,6 +467,7 @@ export function useForm<Values extends FormValues = FormValues>(
 
     return {
       value: getFieldValue(name),
+      attrs: getFieldAttrs(name),
       ...getFieldMeta(name),
     };
   };
