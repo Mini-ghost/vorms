@@ -8,7 +8,7 @@ import {
   FieldValidator,
   FieldArrayValidator,
   FieldProps,
-  FieldEvent,
+  FieldAttrs,
   SetFieldArrayValue,
   FormTouched,
 } from '../types';
@@ -42,7 +42,7 @@ export interface FormContextValuse {
   getFieldError: (name: string) => string | undefined;
   getFieldTouched: (name: string) => FormTouched<any>;
   getFieldDirty: (name: string) => boolean;
-  getFieldEvents: (name: string) => FieldEvent;
+  getFieldAttrs: (name: string) => FieldAttrs;
 
   setFieldArrayValue: SetFieldArrayValue;
 }

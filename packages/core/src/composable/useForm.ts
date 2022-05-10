@@ -28,7 +28,7 @@ import type {
   FormErrors,
   FormEventHandler,
   FieldProps,
-  FieldEvent,
+  FieldAttrs,
   UseFormRegister,
   UseFormReturn,
   UseFormValidateField,
@@ -308,7 +308,7 @@ export function useForm<Values extends FormValues = FormValues>(
     const error = computed(() => getFieldError(name));
     const touched = computed(() => getFieldTouched(name));
     const dirty = computed(() => getFieldDirty(name));
-    const events = getFieldEvents(name);
+    const events = getFieldAttrs(name);
 
     return {
       dirty,
@@ -318,7 +318,7 @@ export function useForm<Values extends FormValues = FormValues>(
     };
   };
 
-  const getFieldEvents = (name: string): FieldEvent => {
+  const getFieldAttrs = (name: string): FieldAttrs => {
     return {
       onBlur: handleBlur(name),
       onChange: handleChange,
@@ -490,7 +490,7 @@ export function useForm<Values extends FormValues = FormValues>(
     getFieldError,
     getFieldTouched,
     getFieldDirty,
-    getFieldEvents,
+    getFieldAttrs,
     registerField,
     registerFieldArray,
     setFieldArrayValue,

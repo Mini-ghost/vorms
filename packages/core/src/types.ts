@@ -110,7 +110,7 @@ export interface UseFormReturn<Values extends FormValues> {
   validateField: UseFormValidateField<Values>;
 }
 
-export interface FieldEvent {
+export interface FieldAttrs {
   onBlur: () => void;
   onChange: () => void;
 }
@@ -118,7 +118,7 @@ export interface FieldEvent {
 export interface FieldProps {
   dirty: ComputedRef<boolean>;
   error: ComputedRef<string | undefined>;
-  events: FieldEvent;
+  events: FieldAttrs;
   touched: ComputedRef<FormTouched<any>>;
 }
 
