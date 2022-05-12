@@ -6,6 +6,7 @@ import type {
   FormTouched,
   FieldArrayValidator,
   FieldAttrs,
+  Primitive,
 } from '../types';
 import isUndefined from '../utils/isUndefined';
 import omit from '../utils/omit';
@@ -15,7 +16,7 @@ interface FieldEntry<Value> {
   value: Value;
   name: string;
   error: FormErrors<Value>;
-  touched: FormTouched<Value> | undefined;
+  touched: Value extends Primitive ? boolean : FormTouched<Value> | undefined;
   dirty: boolean;
   attrs: Omit<FieldAttrs, 'name'>;
 }
