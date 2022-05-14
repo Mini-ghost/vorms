@@ -385,10 +385,12 @@ export function useForm<Values extends FormValues = FormValues>(
       runFieldValidateHandler(values),
       options.validate ? runValidateHandler(values) : {},
     ]).then(([fieldErrors, validateErrors]) => {
-      const errors = deepmerge.all<FormErrors<Values>>([
-        fieldErrors,
-        validateErrors,
-      ]);
+      const errors = deepmerge.all<FormErrors<Values>>(
+        [fieldErrors, validateErrors],
+        {
+          arrayMerge,
+        },
+      );
 
       dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
 
@@ -516,4 +518,23 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   return context;
+}
+
+/**
+ * deepmerge array merging algorithm
+ * https://github.com/TehShrike/deepmerge#arraymerge-example-combine-arrays
+ */
+function arrayMerge<T extends any[]>(target: T, source: T, options: any) {
+  const destination = [...target];
+
+  source.forEach((item, index) => {
+    if (typeof destination[index] === 'undefined') {
+      destination[index] = options.cloneUnlessOtherwiseSpecified(item, options);
+    } else if (options.isMergeableObject(item)) {
+      destination[index] = deepmerge(target[index], item, options);
+    } else if (target.indexOf(item) === -1) {
+      destination.push(item);
+    }
+  });
+  return destination;
 }
