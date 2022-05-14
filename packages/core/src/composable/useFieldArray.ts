@@ -1,4 +1,5 @@
 import { ref, computed, Ref } from 'vue';
+
 import { useFormContext } from './useFormContext';
 
 import type {
@@ -33,6 +34,8 @@ type UseFieldArrayReturn<Value> = {
   remove: (index?: number) => void;
   move: (from: number, to: number) => void;
   insert: (index: number, value: Value) => void;
+  update: (index: number, value: Value) => void;
+  replace: (values: Value[]) => void;
 };
 
 const appendAt = (data: any[], value: any) => {
@@ -61,6 +64,13 @@ const moveAt = (data: any[], from: number, to: number) => {
 
 const insertAt = <T>(data: T[], index: number, value: T): T[] => {
   return [...data.slice(0, index), value, ...data.slice(index)];
+};
+
+const updateAt = <T>(data: T[], index: number, value: T): T[] => {
+  const clone = [...data];
+
+  clone[index] = value;
+  return clone;
 };
 
 export function useFieldArray<Value>(
@@ -207,6 +217,25 @@ export function useFieldArray<Value>(
     fields.value = cloneField;
   };
 
+  const update = (index: number, value: Value) => {
+    const cloneValue = updateAt(values.value, index, value);
+
+    setFieldArrayValue(name, cloneValue, updateAt, {
+      argA: index,
+      argB: undefined,
+    });
+
+    fields.value[index].value = value;
+  };
+
+  const replace = (values: Value[]) => {
+    const cloneValues = [...values];
+
+    setFieldArrayValue(name, cloneValues, <T>(data: T): T => data, {});
+
+    fields.value = cloneValues.map(createEntry);
+  };
+
   registerFieldArray(name, {
     ...options,
     reset,
@@ -222,5 +251,7 @@ export function useFieldArray<Value>(
     remove,
     move,
     insert,
+    update,
+    replace,
   };
 }
