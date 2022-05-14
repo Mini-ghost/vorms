@@ -111,7 +111,7 @@ function reducer<Values extends FormValues>(
       state.isSubmitting.value = false;
       return;
     case ACTION_TYPE.SET_FIELD_VALUE:
-      set(state.values, message.payload.path, message.payload.value);
+      set(state.values, message.payload.path, deepClone(message.payload.value));
       return;
     case ACTION_TYPE.SET_TOUCHED:
       set(state.touched.value, message.payload.path, message.payload.touched);
