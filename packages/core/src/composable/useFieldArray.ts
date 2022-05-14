@@ -201,7 +201,7 @@ export function useFieldArray<Value>(
 
     setFieldArrayValue(name, cloneValues, insertAt, {
       argA: index,
-      argB: value,
+      argB: undefined,
     });
 
     fields.value = cloneField;
