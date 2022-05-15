@@ -110,6 +110,7 @@ export function useFieldArray<Value>(
           return index.value === -1 ? value : values.value[index.value];
         },
         set(value) {
+          if (index.value === -1) return;
           setFieldValue(`${name}.${index.value}`, value);
         },
       }),
@@ -164,6 +165,8 @@ export function useFieldArray<Value>(
   };
 
   const swap = (indexA: number, indexB: number) => {
+    if (!(indexA in values.value) || !(indexB in values.value)) return;
+
     const cloneValues = [...values.value];
     const cloneField = [...fields.value];
 
@@ -185,6 +188,8 @@ export function useFieldArray<Value>(
   };
 
   const move = (from: number, to: number) => {
+    if (!(from in values.value)) return;
+
     const cloneValues = [...values.value];
     const cloneField = [...fields.value];
 
@@ -218,6 +223,8 @@ export function useFieldArray<Value>(
   };
 
   const update = (index: number, value: Value) => {
+    if (!(index in values.value)) return;
+
     const cloneValue = updateAt(values.value, index, value);
 
     setFieldArrayValue(name, cloneValue, updateAt, {
