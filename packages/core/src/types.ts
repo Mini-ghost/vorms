@@ -82,7 +82,7 @@ export type UseFormRegister<Values extends FormValues> = <
   options?: FieldRegisterOptions<Value>,
 ) => UseFormRegisterReturn<Value>;
 
-export type UseFormValidateField<Values extends FormValues> = <
+export type ValidateField<Values extends FormValues> = <
   Name extends Path<Values>,
 >(
   name: Name,
@@ -110,7 +110,7 @@ export interface UseFormReturn<Values extends FormValues> {
   handleSubmit: (event?: Event) => void;
   handleReset: (event?: Event) => void;
   resetForm: ResetForm<Values>;
-  validateField: UseFormValidateField<Values>;
+  validateField: ValidateField<Values>;
 }
 
 export interface FieldAttrs {

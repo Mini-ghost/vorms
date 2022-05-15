@@ -31,7 +31,7 @@ import type {
   FieldAttrs,
   UseFormRegister,
   UseFormReturn,
-  UseFormValidateField,
+  ValidateField,
   SetFieldArrayValue,
   FormResetState,
   ResetForm,
@@ -485,7 +485,7 @@ export function useForm<Values extends FormValues = FormValues>(
     };
   };
 
-  const validateField: UseFormValidateField<Values> = (name) => {
+  const validateField: ValidateField<Values> = (name) => {
     dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: true });
     return runSingleFieldValidateHandler(name, get(state.values, name))
       .then((error) => {
