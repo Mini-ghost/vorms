@@ -6,9 +6,6 @@
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.mjs",
   "types": "dist/index.d.ts",
-  "exports": {
-    ".": "./dist/index.mjs"
-  },
   "files": [
     "dist"
   ],
