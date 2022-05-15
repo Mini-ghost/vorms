@@ -42,6 +42,7 @@ export interface FormState<Values extends FormValues> {
   errors: Ref<FormErrors<Values>>;
   submitCount: Ref<number>;
   isSubmitting: Ref<boolean>;
+  isValidating: Ref<boolean>;
 }
 
 export interface FormEventHandler {
@@ -103,6 +104,7 @@ export interface UseFormReturn<Values extends FormValues> {
   errors: ComputedRef<FormErrors<Values>>;
   submitCount: ComputedRef<number>;
   isSubmitting: Ref<boolean>;
+  isValidating: ComputedRef<boolean>;
   dirty: ComputedRef<boolean>;
   register: UseFormRegister<Values>;
   handleSubmit: (event?: Event) => void;

@@ -75,6 +75,7 @@ const enum ACTION_TYPE {
   SET_ERRORS,
   SET_FIELD_ERROR,
   SET_ISSUBMITTING,
+  SET_ISVALIDATING,
   RESET_FORM,
 }
 
@@ -93,6 +94,7 @@ type FormMessage<Values extends FormValues> =
       payload: { path: string; error: string };
     }
   | { type: ACTION_TYPE.SET_ISSUBMITTING; payload: boolean }
+  | { type: ACTION_TYPE.SET_ISVALIDATING; payload: boolean }
   | { type: ACTION_TYPE.RESET_FORM; payload: FormResetState<Values> };
 
 function reducer<Values extends FormValues>(
@@ -124,6 +126,9 @@ function reducer<Values extends FormValues>(
       return;
     case ACTION_TYPE.SET_ISSUBMITTING:
       state.isSubmitting.value = message.payload;
+      return;
+    case ACTION_TYPE.SET_ISVALIDATING:
+      state.isValidating.value = message.payload;
       return;
     case ACTION_TYPE.RESET_FORM:
       keysOf(state.values).forEach((key) => {
@@ -158,6 +163,7 @@ export function useForm<Values extends FormValues = FormValues>(
     touched: ref({}),
     submitCount: ref(0),
     isSubmitting: ref(false),
+    isValidating: ref(false),
   });
 
   let initalValues = deepClone(options.initialValues);
@@ -381,21 +387,26 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const runAllValidateHandler = (values: Values) => {
+    dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: true });
     return Promise.all([
       runFieldValidateHandler(values),
       options.validate ? runValidateHandler(values) : {},
-    ]).then(([fieldErrors, validateErrors]) => {
-      const errors = deepmerge.all<FormErrors<Values>>(
-        [fieldErrors, validateErrors],
-        {
-          arrayMerge,
-        },
-      );
+    ])
+      .then(([fieldErrors, validateErrors]) => {
+        const errors = deepmerge.all<FormErrors<Values>>(
+          [fieldErrors, validateErrors],
+          {
+            arrayMerge,
+          },
+        );
 
-      dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
+        dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
 
-      return errors;
-    });
+        return errors;
+      })
+      .finally(() => {
+        dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: false });
+      });
   };
 
   const handleSubmit = (event?: Event) => {
@@ -475,14 +486,17 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const validateField: UseFormValidateField<Values> = (name) => {
-    return runSingleFieldValidateHandler(name, get(state.values, name)).then(
-      (error) => {
+    dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: true });
+    return runSingleFieldValidateHandler(name, get(state.values, name))
+      .then((error) => {
         dispatch({
           type: ACTION_TYPE.SET_FIELD_ERROR,
           payload: { path: name, error },
         });
-      },
-    );
+      })
+      .finally(() => {
+        dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: false });
+      });
   };
 
   provide(FormContextKey, {
@@ -509,6 +523,7 @@ export function useForm<Values extends FormValues = FormValues>(
     errors: computed(() => state.errors.value),
     submitCount: computed(() => state.submitCount.value),
     isSubmitting: state.isSubmitting,
+    isValidating: computed(() => state.isValidating.value),
     dirty,
     register,
     handleSubmit,
