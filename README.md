@@ -1,32 +1,222 @@
-### Quickstart
+## Install
 
-**useForm**
+```bash
+npm install @vue-composition-form/core@beta
+```
+
+## API
+
+### useForm
+
+`useForm()` is a custom Vue composition api that will return all Vue Composition Form state and helpers directly.
+
+**Options**
+
+| Name              | Type                                                                 | Description                                                                                                                |
+| ----------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| initialValues     | `Values`                                                             | This is the form initial value, is required.                                                                               |
+| validate          | `(valuse: Values) => void \| object \| Promise<FormErrors<Values>>`  | This function allows you to write your logic to validate your form, this is optional.                                      |
+| validateMode      | `ValidateMode` = 'submit'                                            | This option allows you to configure the validation strategy **before** first submit.                                       |
+| reValidateMode    | `ValidateMode` = 'change'                                            | This option allows you to configure the validation strategy **after** first submit.                                        |
+| validateOnMounted | `boolean` = `false`                                                  | This option allows you to configure the validation run when the component is mounted.                                      |
+| onSubmit          | `(values: Values, helper: FormSubmitHelper) => void \| Promise<any>` | This is your form submission handler. It is passed your forms `values`. If has validation error, this will not be invoked. |
+
+```ts
+type Values = Record<string, any>
+type ValidateMode = 'blur' | 'input' | 'change' | 'submit'
+```
+
+**Return**
+
+| Name          | Type                                                                              | Description                                                                                                                                |
+| ------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| values        | `DeepReadonly<Values>`                                                            | Current form values.                                                                                                                       |
+| errors        | `ComputedRef<FormErrors<Values>>`                                                 | Map of filed name to the field has been touched                                                                                            |
+| touched       | `ComputedRef<FormTouched<Values>>`                                                | Map of filed name to specific error for that field                                                                                         |
+| dirty         | `ComputedRef<boolean>`                                                            | Return `true` if current values are not deeply equal `initialValues`.                                                                      |
+| submitCount   | `ComputedRef<number>`                                                             | The number of times user attempted to submit.                                                                                              |
+| isSubmitting  | `Ref<boolean>`                                                                    | Return `true` when form is submitting, If `onSubmit()` is a synchronous function, then you need to call setSubmitting(false) on your own.  |
+| isValidating  | `ComputedRef<boolean>`                                                            | Return `true` when running validation.                                                                                                     |
+| register      | `(name: string, options?: FieldRegisterOptions<Values>) => UseFormRegisterReturn` | This method allows you to get specific field values, meta (state) and attributes, you can also add validation for that field.              |
+| handleSubmit  | `(event?: Event) => void`                                                         | Submit handler.                                                                                                                            |
+| handleReset   | `(event?: Event) => void`                                                         | Reset handler.                                                                                                                             |
+| validateForm  | `(values?: Values) => Promise<FormErrors<Values>>`                                | Validate form values.                                                                                                                      |
+| validateField | `(name: string) => Promise<void>`                                                 | Validate form specific field, if this field validation is register.                                                                        |
+
+
+```ts
+interface FieldRegisterOptions<Values> {
+  validate?: FieldValidator<Values>;
+}
+
+type FieldValidator<Value> = (
+  value: Value,
+) => string | void | Promise<string | void>
+
+type UseFormRegisterReturn<Value> =  {
+  value: WritableComputedRef<Value>;
+  dirty: ComputedRef<boolean>;
+  error: ComputedRef<string>;
+  touched: ComputedRef<boolean>;
+  attrs: {
+    name: string
+    onBlur: () => void;
+    onChange: () => void;
+  };
+}
+
+```
+
+**Example**
 
 ```vue
 <script setup lang="ts">
 import { useForm } from '@vue-composition-form/core'
 
 interface InitialValues {
-  firstName: string,
-  lastName: string
+  drink: string,
+  sugar: number
+  ice: string
+  bag: boolean
 }
 
-const { register, handleSubmit } = useForm<InitialValues>({
+const { errors, dirty, register, handleSubmit, handleReset } = useForm<InitialValues>({
   initialValues: {
-    firstName: '',
-    lastName: ''
+    drink: '',
+    sugar: 30,
+    ice: 'light',
+    bag: false
   },
-  onSubmit(data) {
+  validate (values) {
+    const errors: Record<string, any> = {}
+
+    if (!values.drink) {
+      errors.drink = 'This is required!!'
+    }
+
+    return errors
+  },
+
+  validateMode: 'submit',
+  reValidateMode: 'change',
+  validateOnMounted: false,
+
+  onSubmit(data, { setSubmitting }) {
     console.log(data)
+
+    // If `onSubmit()` function is synchronous, you need to call `setSubmitting(false)` yourself.
+    setSubmitting(false)
   }
 })
 
-const { value: firstName } = register('firstName')
-const { value: lastName } = register('lastName', {
+// Basic usage
+// The `attrs` need to be bind on <input> to support `validateMode` and `reValidateMode`
+const { value: drink, attrs: drinkFieldAttrs } = register('drink')
+
+// Add validation for field
+const { value: sugar, attrs: sugarFieldAttrs } = register('sugar', {
   validate(value) {
     let error: string | undefined
+
+    if(value > 100) {
+      error = 'This max number is 100'
+    }
+
+    return error
+  }
+})
+
+const { value: ice, events: iceFieldEvents } = register('ice')
+const { value: bag, events: bagFieldEvents } = register('bag')
+
+</script>
+
+<template>
+  <form @submit="handleSubmit" @reset="handleReset">
+    <div>
+      Is current values not equal `initialValues`: {{ dirty }}
+    </div>
+
+    <div>
+      <label>Drink</label>
+      <input v-model="drink" type="text" v-bind="drinkFieldAttrs">
+      <div v-if="errors.drink">
+        {{ errors.drink }}
+      </div>
+    </div>
+    
+    <div>
+      <label>Sugar level</label>
+      <input v-model="sugar" type="number" v-bind="sugarFieldAttrs">
+      <div v-if="errors.sugar">
+        {{ errors.sugar }}
+      </div>
+    </div>
+
+    <div>
+      <label>Ice level</label>
+      <input v-model="ice" type="text" v-bind="iceFieldEvents">
+      <div v-if="errors.ice">
+        {{ errors.ice }}
+      </div>
+    </div>
+
+    <div>
+      <label>Need a bag</label>
+      <input v-model="bag" type="checkbox" v-bind="bagFieldEvents">
+      <div v-if="errors.bag">
+        {{ errors.bag }}
+      </div>
+    </div>
+
+    <button type="reset">
+      Reset
+    </button>
+    <button type="submit">
+      submit
+    </button>
+  </form>
+</template>
+```
+
+## useField
+
+`useForm()` is a custom Vue composition api that will return specific field value, meta (state) and attributes, you can also add validation for that field.
+
+`useField()` API is equal to `register()` that return by `useForm()`.
+
+**Options**
+
+| Name             | Type                                                          | Description                                                                            |
+| ---------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| name             | `string`                                                      | Name of the field.                                                                     |
+| options.validate | `(valus: Value) => void \| string \| Promise<string \| void>` | This function allows you to write your logic to validate your field, this is optional. |
+
+
+**Return**
+
+| Name           | Type                                | Description                                                          |
+| -------------- | ----------------------------------- | -------------------------------------------------------------------- |
+| value          | `WritableComputedRef<Value>`        | Current field value.                                                 |
+| errors         | `ComputedRef<string \| undefined>`  | Field error message.                                                 |
+| touched        | `ComputedRef<boolean \| undefined>` | Return `true` after input first blur.                                |
+| dirty          | `ComputedRef<boolean>`              | Return `true` if current field value are not equal initial value.    |
+| attrs.name     | `string`                            | Input's name that we pass by.                                        |
+| attrs.onBlur   | `(event: Event) => void`            | onBlur prop to subscribe the input blur event.                       |
+| attrs.onChange | `() => void`                        | onChange prop to subscribe the input change event.                   |
+
+**Example**
+
+```vue
+<script setup lang="ts">
+import { useField } from '@vue-composition-form/core'
+
+const { value, attrs } = useField<string>('ice', {
+  validate(value) {
+    let error: string | undefined
+
     if(!value.length) {
-      error = 'lastName is required'
+      error = 'This is required!!'
     }
 
     return error
@@ -35,38 +225,55 @@ const { value: lastName } = register('lastName', {
 </script>
 
 <template>
-  <form @submit="handleSubmit">
-    <input v-model="firstName" type="text">
-    <input v-model="lastName" type="text">
-    <button type="submit">
-      submit
-    </button>
-  </form>
+  <div>
+    <input v-model="value" type="text" v-bind="attrs" >
+  </div>
 </template>
 ```
 
-**useField**
+## useFieldArray
 
-`useField` API is equal to `register` that return by `useForm`.
+`useFieldArray()` is a custom Vue composition api that will return specific fields values, meta (state), attributes and provides common operation helpers, you can also add validation for those fields.
 
-```vue
-<script setup lang="ts">
-import { useField } from '@vue-composition-form/core'
+**Options**
 
-const { value: lastName } = useField<string>('lastName', {
-  validate(value) {
-    let error: string | undefined
-    if(!value.length) {
-      error = 'lastName is required'
-    }
+| Name             | Type                                                         | Description                                                                            |
+| ---------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
+| name             | `string`                                                     | Name of the field array.                                                               |
+| options.validate | `(valus: Value) => void \| FormErrors<Values> \| Promise<string | void>` | This function allows you to write your logic to validate your field, this is optional. |
 
-    return error
-  }
-})
-</script>
+
+**Return**
+
+| Name    | Type                                       | Description                                                                  |
+| ------- | ------------------------------------------ | ---------------------------------------------------------------------------- |
+| fields  | `Ref<FieldEntry<Value>[]>`                 | This array contains every entry of field's key, value, meta and attrs.       |
+| append  | `(value: Value) => void`                   | Append an item to the field array.                                           |
+| prepend | `(value: Value) => void`                   | Prepend an item to the field array.                                          |
+| swap    | `(indexA: number, indexB: number) => void` | Swap items position.                                                         |
+| remove  | `(index?: number) => void`                 | Remove item at the specified position, or remove all when no index provided. |
+| move    | `(from: number, to: number) => void`       | Move item to another position.                                               |
+| insert  | `(index: number, value: Value) => void`    | Insert item at the specified position.                                       |
+| update  | `(index: number, value: Value) => void`    | Update int at the specified position                                         |
+| replace | `(values: Value[]) => void`                | Replace the entire field array values.                                       |
+
+
+```ts
+interface FieldEntry {
+  key: number;
+  value: Value;
+  name: string;
+  error: FormErrors<Value>;
+  touched: Value extends Primitive ? boolean : FormTouched<Value> | undefined;
+  dirty: boolean;
+  attrs: {
+    onBlur: (event: Event) => void;
+    onChange: () => void;
+  };
+}
 ```
 
-**useFieldArray**
+**Return**
 
 ```vue
 <script setup lang="ts">
@@ -81,7 +288,7 @@ const { handleSubmit } = useForm({
   }
 })
 
-const { fields, append } = useFieldArray<string[]>('foods')
+const { fields, append } = useFieldArray<string>('foods')
 
 const onAppend = () => {
   append('Taiwanese Fried Chicken')
@@ -102,7 +309,6 @@ const onAppend = () => {
   </form>
 </template>
 ```
+## Credits
 
-### Credits
-
-API inspired by [Formik](https://github.com/jaredpalmer/formik), [react-hook-form](https://github.com/react-hook-form/react-hook-form), [VeeValidate](https://github.com/logaretm/vee-validate)
+API inspired by [Formik](https://github.com/jaredpalmer/formik), [React Hook Form](https://github.com/react-hook-form/react-hook-form), [VeeValidate](https://github.com/logaretm/vee-validate)
