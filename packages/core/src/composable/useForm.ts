@@ -1,12 +1,4 @@
-import {
-  computed,
-  reactive,
-  ref,
-  onMounted,
-  provide,
-  readonly,
-  Ref,
-} from 'vue';
+import { computed, reactive, ref, onMounted, provide, readonly } from 'vue';
 import isEqual from 'fast-deep-equal/es6';
 import { klona as deepClone } from 'klona/full';
 import deepmerge from 'deepmerge';
@@ -159,7 +151,7 @@ export function useForm<Values extends FormValues = FormValues>(
     Reducer<FormState<Values>, FormMessage<Values>>
   >(reducer, {
     values: reactive(deepClone(options.initialValues)),
-    errors: ref({}) as Ref<FormErrors<Values>>,
+    errors: ref({}),
     touched: ref({}),
     submitCount: ref(0),
     isSubmitting: ref(false),
