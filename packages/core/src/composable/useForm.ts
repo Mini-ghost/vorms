@@ -386,7 +386,7 @@ export function useForm<Values extends FormValues = FormValues>(
     });
   };
 
-  const runAllValidateHandler = (values: Values) => {
+  const runAllValidateHandler = (values: Values = state.values) => {
     dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: true });
     return Promise.all([
       runFieldValidateHandler(values),
@@ -416,13 +416,11 @@ export function useForm<Values extends FormValues = FormValues>(
 
     dispatch({ type: ACTION_TYPE.SUBMIT_ATTEMPT });
 
-    const values = deepClone(state.values);
-
-    runAllValidateHandler(values).then((errors) => {
+    runAllValidateHandler().then((errors) => {
       const isValid = keysOf(errors).length === 0;
 
       if (isValid) {
-        const maybePromise = onSubmit(values, submitHelper);
+        const maybePromise = onSubmit(deepClone(state.values), submitHelper);
         if (maybePromise == null) {
           return;
         }
@@ -529,6 +527,7 @@ export function useForm<Values extends FormValues = FormValues>(
     handleSubmit,
     handleReset,
     resetForm,
+    validateForm: runAllValidateHandler,
     validateField,
   };
 
