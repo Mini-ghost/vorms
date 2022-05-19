@@ -43,6 +43,7 @@ type ValidateMode = 'blur' | 'input' | 'change' | 'submit'
 | validateForm  | `(values?: Values) => Promise<FormErrors<Values>>`                                | Validate form values.                                                                                                                      |
 | validateField | `(name: string) => Promise<void>`                                                 | Validate form specific field, if this field validation is register.                                                                        |
 
+<br>
 
 ```ts
 interface FieldRegisterOptions<Values> {
@@ -126,8 +127,8 @@ const { value: sugar, attrs: sugarFieldAttrs } = register('sugar', {
   }
 })
 
-const { value: ice, events: iceFieldEvents } = register('ice')
-const { value: bag, events: bagFieldEvents } = register('bag')
+const { value: ice, attrs: iceFieldAttrs } = register('ice')
+const { value: bag, attrs: bagFieldAttrs } = register('bag')
 
 </script>
 
@@ -155,7 +156,7 @@ const { value: bag, events: bagFieldEvents } = register('bag')
 
     <div>
       <label>Ice level</label>
-      <input v-model="ice" type="text" v-bind="iceFieldEvents">
+      <input v-model="ice" type="text" v-bind="iceFieldAttrs">
       <div v-if="errors.ice">
         {{ errors.ice }}
       </div>
@@ -163,7 +164,7 @@ const { value: bag, events: bagFieldEvents } = register('bag')
 
     <div>
       <label>Need a bag</label>
-      <input v-model="bag" type="checkbox" v-bind="bagFieldEvents">
+      <input v-model="bag" type="checkbox" v-bind="bagFieldAttrs">
       <div v-if="errors.bag">
         {{ errors.bag }}
       </div>
@@ -257,6 +258,7 @@ const { value, attrs } = useField<string>('ice', {
 | update  | `(index: number, value: Value) => void`    | Update int at the specified position                                         |
 | replace | `(values: Value[]) => void`                | Replace the entire field array values.                                       |
 
+<br>
 
 ```ts
 interface FieldEntry {
@@ -309,6 +311,12 @@ const onAppend = () => {
   </form>
 </template>
 ```
+
+## Example
+
+- [Login](https://stackblitz.com/edit/vue-composition-form-login?file=src%2FApp.vue)
+- [Field Array](https://stackblitz.com/edit/vue-composition-form-field-array?file=src%2FApp.vue)
+
 ## Credits
 
 API inspired by [Formik](https://github.com/jaredpalmer/formik), [React Hook Form](https://github.com/react-hook-form/react-hook-form), [VeeValidate](https://github.com/logaretm/vee-validate)
