@@ -1,4 +1,4 @@
-import { useFormContext } from './useFormContext';
+import { useFormInternalContext } from './useFormInternalContext';
 import type { FieldValidator, UseFormRegisterReturn } from '../types';
 
 type UseFieldOptions<Value> = {
@@ -10,7 +10,7 @@ export function useField<Value>(
   options: UseFieldOptions<Value> = {},
 ): UseFormRegisterReturn<Value> {
   const { registerField, getFieldValue, getFieldAttrs, getFieldMeta } =
-    useFormContext();
+    useFormInternalContext();
 
   registerField(name, options);
 

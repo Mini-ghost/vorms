@@ -1,6 +1,6 @@
 import { ref, computed, Ref } from 'vue';
 
-import { useFormContext } from './useFormContext';
+import { useFormInternalContext } from './useFormInternalContext';
 
 import type {
   FormErrors,
@@ -86,7 +86,7 @@ export function useFieldArray<Value>(
     getFieldAttrs,
     registerFieldArray,
     setFieldArrayValue,
-  } = useFormContext();
+  } = useFormInternalContext();
 
   const fields: Ref<FieldEntry<Value>[]> = ref([]);
   const values = computed(() => getFieldValue<Value[]>(name).value);
