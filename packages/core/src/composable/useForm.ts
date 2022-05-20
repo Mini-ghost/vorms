@@ -3,7 +3,9 @@ import isEqual from 'fast-deep-equal/es6';
 import { klona as deepClone } from 'klona/full';
 import deepmerge from 'deepmerge';
 
+import { FormContextKey } from './useFormContext';
 import { FormInternalContextKey } from './useFormInternalContext';
+
 import isPromise from '../utils/isPromise';
 import keysOf from '../utils/keysOf';
 import isFunction from '../utils/isFunction';
@@ -489,24 +491,6 @@ export function useForm<Values extends FormValues = FormValues>(
       });
   };
 
-  provide(FormInternalContextKey, {
-    getFieldMeta,
-    getFieldValue,
-    setFieldValue,
-    getFieldError,
-    getFieldTouched,
-    getFieldDirty,
-    getFieldAttrs,
-    registerField,
-    registerFieldArray,
-    setFieldArrayValue,
-  });
-
-  onMounted(() => {
-    if (!validateOnMounted) return;
-    runAllValidateHandler(initalValues);
-  });
-
   const context = {
     values: readonly(state.values),
     touched: computed(() => state.touched.value),
@@ -522,6 +506,26 @@ export function useForm<Values extends FormValues = FormValues>(
     validateForm: runAllValidateHandler,
     validateField,
   };
+
+  provide(FormInternalContextKey, {
+    getFieldMeta,
+    getFieldValue,
+    setFieldValue,
+    getFieldError,
+    getFieldTouched,
+    getFieldDirty,
+    getFieldAttrs,
+    registerField,
+    registerFieldArray,
+    setFieldArrayValue,
+  });
+
+  provide<UseFormReturn<Values>>(FormContextKey, context);
+
+  onMounted(() => {
+    if (!validateOnMounted) return;
+    runAllValidateHandler(initalValues);
+  });
 
   return context;
 }
