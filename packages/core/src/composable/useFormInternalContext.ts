@@ -49,7 +49,7 @@ export interface FormInternalContextValuse {
 }
 
 export const FormInternalContextKey: InjectionKey<FormInternalContextValuse> =
-  Symbol('vue composition form internal context key');
+  Symbol(__DEV__ ? 'vue composition form internal context' : 'fix');
 
 export function useFormInternalContext() {
   const context = injectMaybeSelf(

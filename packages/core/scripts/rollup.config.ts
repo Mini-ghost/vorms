@@ -2,6 +2,7 @@ import path from 'path';
 import { readJSONSync } from 'fs-extra';
 import commonjs from '@rollup/plugin-commonjs';
 import resolve from '@rollup/plugin-node-resolve';
+import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
 
@@ -34,6 +35,14 @@ for (const format of formats) {
     output,
     external: ['vue'],
     plugins: [
+      replace({
+        values: {
+          __DEV__:
+            format === 'esm'
+              ? `(process.env.NODE_ENV !== 'production')`
+              : 'false',
+        },
+      }),
       typescript({
         clean: true,
       }),
