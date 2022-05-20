@@ -23,9 +23,6 @@
   },
   "license": "MIT",
   "author": "Alex Liu <dsa1314@gmail.com>",
-  "dependencies": {
-    "typescript": "^4.6.3"
-  },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^21.1.0",
     "@rollup/plugin-node-resolve": "^13.2.1",
@@ -47,6 +44,7 @@
     "rollup": "^2.70.2",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.31.2",
+    "typescript": "^4.6.3",
     "vue": "^3.0.0"
   }
 }

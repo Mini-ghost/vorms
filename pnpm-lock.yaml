@@ -26,8 +26,6 @@ importers:
       rollup-plugin-typescript2: ^0.31.2
       typescript: ^4.6.3
       vue: ^3.0.0
-    dependencies:
-      typescript: 4.6.3
     devDependencies:
       '@rollup/plugin-commonjs': 21.1.0_rollup@2.70.2
       '@rollup/plugin-node-resolve': 13.2.1_rollup@2.70.2
@@ -49,6 +47,7 @@ importers:
       rollup: 2.70.2
       rollup-plugin-terser: 7.0.2_rollup@2.70.2
       rollup-plugin-typescript2: 0.31.2_2f4b21953013a0363c5d1a6268860c00
+      typescript: 4.6.3
       vue: 3.2.33
 
   packages/core:
@@ -2172,6 +2171,7 @@ packages:
     resolution: {integrity: sha512-yNIatDa5iaofVozS/uQJEl3JRWLKKGJKh6Yaiv0GLGSuhpFJe7P3SbHZ8/yjAHRQwKRoA6YZqlfjXWmVzoVSMw==}
     engines: {node: '>=4.2.0'}
     hasBin: true
+    dev: true
 
   /universalify/2.0.0:
     resolution: {integrity: sha512-hAZsKq7Yy11Zu1DE0OzWjw7nnLZmJZYTDZZyEFHZdUhV8FkH5MCfoU1XMaxXovpyW5nq5scPqq0ZDP9Zyl04oQ==}
