@@ -316,6 +316,8 @@ const onAppend = () => {
 
 - [Login](https://stackblitz.com/edit/vue-composition-form-login?file=src%2FApp.vue)
 - [Field Array](https://stackblitz.com/edit/vue-composition-form-field-array?file=src%2FApp.vue)
+- [Cross Field Validate](https://stackblitz.com/edit/vue-composition-form-corss-field-validate?file=src%2FApp.vue)
+- [Wizard Form](https://stackblitz.com/edit/vue-composition-form-wizard-form?file=src%2FApp.vue)
 
 ## Credits
 
