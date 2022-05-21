@@ -20,6 +20,9 @@ npm install @vue-composition-form/core@beta
 | reValidateMode    | `ValidateMode` = 'change'                                            | This option allows you to configure the validation strategy **after** first submit.                                        |
 | validateOnMounted | `boolean` = `false`                                                  | This option allows you to configure the validation run when the component is mounted.                                      |
 | onSubmit          | `(values: Values, helper: FormSubmitHelper) => void \| Promise<any>` | This is your form submission handler. It is passed your forms `values`. If has validation error, this will not be invoked. |
+| onError           | `(errors: FormErrors<Values>) => void`                               | This is error callback, this be called when you submit form but validation error. This is optional.
+
+<br>
 
 ```ts
 type Values = Record<string, any>
@@ -174,13 +177,13 @@ const { value: bag, attrs: bagFieldAttrs } = register('bag')
       Reset
     </button>
     <button type="submit">
-      submit
+      Submit
     </button>
   </form>
 </template>
 ```
 
-## useField
+##＃ useField
 
 `useForm()` is a custom Vue composition api that will return specific field value, meta (state) and attributes, you can also add validation for that field.
 
@@ -232,7 +235,7 @@ const { value, attrs } = useField<string>('ice', {
 </template>
 ```
 
-## useFieldArray
+### useFieldArray
 
 `useFieldArray()` is a custom Vue composition api that will return specific fields values, meta (state), attributes and provides common operation helpers, you can also add validation for those fields.
 
@@ -312,7 +315,72 @@ const onAppend = () => {
 </template>
 ```
 
-## Example
+### useFormContext
+
+`useFormContext()` is a custom Vue composition api that allow you access the form context. This is useful with deeply nested component structures
+
+**Example**
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@vue-composition-form/core'
+import NestedTextField from './components/NestedTextField.vue'
+
+const { handleSubmit } = useForm({
+  initialValues: {
+    drink: '',
+  }
+})
+</script>
+
+<template>
+  <form @submit="handleSubmit">
+    <NestedTextField />
+    <button type="submit">
+      Submit
+    <button>
+  </form>
+</template>
+```
+
+```vue
+<script setup lang="ts">
+import { ref } from 'vue'
+import { useField, useFormContext } from '@vue-composition-form/core'
+
+const { validateField } = useFormContext()
+
+// You can also use `register` return from `useFormContext()`
+const { value, attrs, error } = useField('drink', {
+  validate(value) {
+    // Check stock
+  }
+})
+
+const isValidating = ref(false)
+
+const onCheckStock = async () => {
+  isValidating.value = true
+  await validateField('drink')
+  isValidating.value = false
+}
+</script>
+
+<template>
+  <div>
+    <label>Drink</label>
+    <input v-model="value" type="text" :readonly="isValidating" v-bind="attrs">
+    <button type="button" @click="onCheckStock" :disabled="isValidating">
+      Check stock
+    </button>
+    <div v-if="error">
+      {{ error }}
+    </div>
+  </div>
+</template>
+```
+
+## Examples
 
 - [Login](https://stackblitz.com/edit/vue-composition-form-login?file=src%2FApp.vue)
 - [Field Array](https://stackblitz.com/edit/vue-composition-form-field-array?file=src%2FApp.vue)
