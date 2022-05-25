@@ -241,10 +241,10 @@ const { value, attrs } = useField<string>('ice', {
 
 **Options**
 
-| Name             | Type                                                         | Description                                                                            |
-| ---------------- | ------------------------------------------------------------ | -------------------------------------------------------------------------------------- |
-| name             | `string`                                                     | Name of the field array.                                                               |
-| options.validate | `(valus: Value) => void \| FormErrors<Values> \| Promise<string | void>` | This function allows you to write your logic to validate your field, this is optional. |
+| Name             | Type                                                                                  | Description                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| name             | `string`                                                                              | Name of the field array.                                                               |
+| options.validate | `(valus: Value) => void \| FormErrors<Values> \| Promise<FormErrors<Values> \| void>` | This function allows you to write your logic to validate your field, this is optional. |
 
 
 **Return**
