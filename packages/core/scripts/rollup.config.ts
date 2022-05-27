@@ -36,6 +36,7 @@ for (const format of formats) {
     external: ['vue'],
     plugins: [
       replace({
+        preventAssignment: true,
         values: {
           __DEV__:
             format === 'esm'
