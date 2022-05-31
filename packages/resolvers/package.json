@@ -1,0 +1,41 @@
+{
+  "name": "@vue-composition-form/resolvers",
+  "version": "0.0.0",
+  "description": "Vue Composition Form validation resolvers",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.esm.mjs",
+      "require": "./dist/index.cje.js",
+      "umd": "./dist/index.umd.js"
+    }
+  },
+  "scripts": {
+    "clean": "rimraf dist && rimraf **/dist ",
+    "build": "esno scripts/build.ts",
+    "build:rollup": "rollup -c",
+    "dev": "pnpm build:rollup -- -w"
+  },
+  "license": "MIT",
+  "author": "Alex Liu <dsa1314@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mini-ghost/vue-composition-form.git",
+    "directory": "packages/resolvers"
+  },
+  "bugs": {
+    "url": "https://github.com/mini-ghost/vue-composition-form/issues"
+  },
+  "homepage": "https://github.com/mini-ghost/vue-composition-form#readme",
+  "keywords": [
+    "scheme",
+    "validation",
+    "scheme-validation",
+    "vue-composition-form"
+  ],
+  "devDependencies": {
+    "@vue-composition-form/core": "workspace:*"
+  }
+}

@@ -63,6 +63,12 @@ importers:
       deepmerge: 4.2.2
       klona: 2.0.5
 
+  packages/resolvers:
+    specifiers:
+      '@vue-composition-form/core': workspace:*
+    devDependencies:
+      '@vue-composition-form/core': link:../core
+
   playground:
     specifiers:
       '@vitejs/plugin-vue': ^2.3.1
