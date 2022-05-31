@@ -18,6 +18,11 @@ const nodules = [
     name: 'Yup',
     source: 'yup/src/index.ts',
   },
+  {
+    path: 'zod',
+    name: 'Zod',
+    source: 'zod/src/index.ts',
+  },
 ];
 
 const formats = ['esm', 'cjs', 'umd'] as const;

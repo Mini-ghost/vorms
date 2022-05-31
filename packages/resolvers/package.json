@@ -15,11 +15,17 @@
       "import": "./yup/dist/index.esm.mjs",
       "require": "./yup/dist/index.cje.js",
       "umd": "./yup/dist/index.umd.js"
+    },
+    "./zod": {
+      "import": "./zod/dist/index.esm.mjs",
+      "require": "./zod/dist/index.cje.js",
+      "umd": "./zod/dist/index.umd.js"
     }
   },
   "files": [
     "dist",
-    "yup/dist"
+    "yup/dist",
+    "zod/dist"
   ],
   "scripts": {
     "clean": "rimraf dist && rimraf **/dist ",
@@ -43,10 +49,12 @@
     "validation",
     "scheme-validation",
     "vue-composition-form",
-    "yup"
+    "yup",
+    "zod"
   ],
   "devDependencies": {
     "@vue-composition-form/core": "workspace:*",
-    "yup": "^0.32.11"
+    "yup": "^0.32.11",
+    "zod": "^3.17.3"
   }
 }

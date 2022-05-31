@@ -67,9 +67,11 @@ importers:
     specifiers:
       '@vue-composition-form/core': workspace:*
       yup: ^0.32.11
+      zod: ^3.17.3
     devDependencies:
       '@vue-composition-form/core': link:../core
       yup: 0.32.11
+      zod: 3.17.3
 
   playground:
     specifiers:
@@ -2578,4 +2580,8 @@ packages:
       nanoclone: 0.2.1
       property-expr: 2.0.5
       toposort: 2.0.2
+    dev: true
+
+  /zod/3.17.3:
+    resolution: {integrity: sha512-4oKP5zvG6GGbMlqBkI5FESOAweldEhSOZ6LI6cG+JzUT7ofj1ZOC0PJudpQOpT1iqOFpYYtX5Pw0+o403y4bcg==}
     dev: true
