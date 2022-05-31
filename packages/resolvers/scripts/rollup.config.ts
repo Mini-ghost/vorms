@@ -13,6 +13,11 @@ const nodules = [
     name: '',
     source: 'src/index.ts',
   },
+  {
+    path: 'yup',
+    name: 'Yup',
+    source: 'yup/src/index.ts',
+  },
 ];
 
 const formats = ['esm', 'cjs', 'umd'] as const;

@@ -10,8 +10,17 @@
       "import": "./dist/index.esm.mjs",
       "require": "./dist/index.cje.js",
       "umd": "./dist/index.umd.js"
+    },
+    "./yup": {
+      "import": "./yup/dist/index.esm.mjs",
+      "require": "./yup/dist/index.cje.js",
+      "umd": "./yup/dist/index.umd.js"
     }
   },
+  "files": [
+    "dist",
+    "yup/dist"
+  ],
   "scripts": {
     "clean": "rimraf dist && rimraf **/dist ",
     "build": "esno scripts/build.ts",
@@ -33,9 +42,11 @@
     "scheme",
     "validation",
     "scheme-validation",
-    "vue-composition-form"
+    "vue-composition-form",
+    "yup"
   ],
   "devDependencies": {
-    "@vue-composition-form/core": "workspace:*"
+    "@vue-composition-form/core": "workspace:*",
+    "yup": "^0.32.11"
   }
 }
