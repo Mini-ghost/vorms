@@ -5,6 +5,7 @@ import resolve from '@rollup/plugin-node-resolve';
 import replace from '@rollup/plugin-replace';
 import { terser } from 'rollup-plugin-terser';
 import typescript from 'rollup-plugin-typescript2';
+import dts from 'rollup-plugin-dts';
 
 import type { RollupOptions, OutputOptions } from 'rollup';
 
@@ -46,6 +47,7 @@ for (const format of formats) {
       }),
       typescript({
         clean: true,
+        useTsconfigDeclarationDir: true,
       }),
       resolve(),
       commonjs(),
@@ -59,5 +61,14 @@ for (const format of formats) {
     ],
   });
 }
+
+configs.push({
+  input: source,
+  output: {
+    file: `dist/index.d.ts`,
+    format: 'es',
+  },
+  plugins: [dts()],
+});
 
 export default configs;
