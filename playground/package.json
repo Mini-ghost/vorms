@@ -7,8 +7,11 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vue-composition-form/core": "../packages/core",
-    "vue": "^3.0.0"
+    "@vue-composition-form/core": "workspace:*",
+    "@vue-composition-form/resolvers": "workspace:*",
+    "vue": "^3.0.0",
+    "yup": "^0.32.11",
+    "zod": "^3.17.3"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.3.1",
