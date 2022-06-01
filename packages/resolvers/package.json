@@ -28,7 +28,7 @@
     "zod/dist"
   ],
   "scripts": {
-    "clean": "rimraf dist && rimraf **/dist ",
+    "clean": "rimraf dist && rimraf yup/dist && rimraf zod/dist",
     "build": "esno scripts/build.ts",
     "build:rollup": "rollup -c",
     "dev": "pnpm build:rollup -- -w"
