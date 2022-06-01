@@ -25,7 +25,7 @@ export const yupResolver: Resolver = (schema) => async (values) => {
       abortEarly: false,
     });
 
-    return;
+    return {};
   } catch (errors: any) {
     if (!errors.inner) {
       throw errors;
