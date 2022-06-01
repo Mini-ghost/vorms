@@ -160,11 +160,11 @@ export function useForm<Values extends FormValues = FormValues>(
     isValidating: ref(false),
   });
 
-  let initalValues = deepClone(options.initialValues);
+  let initialValues = deepClone(options.initialValues);
   const fieldRegistry: FieldRegistry = {};
   const fieldArrayRegistry: FieldArrayRegistry = {};
 
-  const dirty = computed(() => !isEqual(state.values, initalValues));
+  const dirty = computed(() => !isEqual(state.values, initialValues));
   const validateTiming = computed(() =>
     state.submitCount.value === 0 ? validateMode : reValidateMode,
   );
@@ -333,7 +333,7 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const getFieldDirty = (name: string): boolean => {
-    return !isEqual(get(initalValues, name), get(state.values, name));
+    return !isEqual(get(initialValues, name), get(state.values, name));
   };
 
   const submitHelper: FormSubmitHelper = {
@@ -437,12 +437,12 @@ export function useForm<Values extends FormValues = FormValues>(
 
   const resetForm: ResetForm<Values> = (nextState) => {
     const values =
-      nextState && nextState.values ? nextState.values : initalValues;
+      nextState && nextState.values ? nextState.values : initialValues;
 
     const touched = nextState && nextState.touched ? nextState.touched : {};
     const errors = nextState && nextState.errors ? nextState.errors : {};
 
-    initalValues = deepClone(values);
+    initialValues = deepClone(values);
 
     dispatch({
       type: ACTION_TYPE.RESET_FORM,
@@ -524,7 +524,7 @@ export function useForm<Values extends FormValues = FormValues>(
 
   onMounted(() => {
     if (!validateOnMounted) return;
-    runAllValidateHandler(initalValues);
+    runAllValidateHandler(initialValues);
   });
 
   return context;
