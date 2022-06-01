@@ -386,6 +386,8 @@ const onCheckStock = async () => {
 - [Field Array](https://stackblitz.com/edit/vue-composition-form-field-array?file=src%2FApp.vue)
 - [Cross Field Validate](https://stackblitz.com/edit/vue-composition-form-corss-field-validate?file=src%2FApp.vue)
 - [Wizard Form](https://stackblitz.com/edit/vue-composition-form-wizard-form?file=src%2FApp.vue)
+- [Validate With Yup](https://stackblitz.com/edit/vue-composition-form-validate-with-yup?file=src%2FApp.vue)
+- [Validate With Zod](https://stackblitz.com/edit/vue-composition-form-validate-with-zod?file=src%2FApp.vue)
 
 ## Credits
 

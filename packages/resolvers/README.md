@@ -1,1 +1,134 @@
-# @vue-composition-form/resolvers
+## Install
+
+```bash
+npm install @vue-composition-form/resolvers@beta
+```
+
+## Quickstart
+
+### [Yup](https://github.com/jquense/yup)
+
+Dead simple Object schema validation
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@vue-composition-form/core';
+import { yupResolver } from '@vue-composition-form/resolvers/yup';
+import * as yup from 'yup'
+
+const { register, errors, handleSubmit } = useForm({
+  initialValues: {
+    account: '',
+    password: '',
+  },
+  validate: yupResolver(yup.object({
+    account: yup.string().required(),
+    password: yup.string().required()
+  })),
+  onSubmit(values) {
+    alert(JSON.stringify(values, null, 2));
+  },
+});
+
+const { value: account, attrs: accountAttrs } = register('account');
+const { value: password, attrs: passwordAttrs } = register('password');
+</script>
+
+<template>
+  <form @submit="handleSubmit">
+    <div>
+      <input
+        v-model="account"
+        type="text"
+        placeholder="Account"
+        v-bind="accountAttrs"
+      />
+      <div v-show="'account' in errors">
+        {{ errors.account }}
+      </div>
+    </div>
+    <div>
+      <input
+        v-model="password"
+        type="password"
+        placeholder="Password"
+        v-bind="passwordAttrs"
+      />
+      <div v-show="'password' in errors">
+        {{ errors.password }}
+      </div>
+    </div>
+    <div>
+      <input type="submit" />
+    </div>
+  </form>
+</template>
+```
+
+### [Zod](https://github.com/vriad/zod)
+
+TypeScript-first schema validation with static type inference
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@vue-composition-form/core';
+import { zodResolver } from '@vue-composition-form/resolvers/zod';
+import z from 'zod'
+
+const { register, errors, handleSubmit } = useForm({
+  initialValues: {
+    account: '',
+    password: '',
+  },
+  validate: yupResolver(z.object({
+    account: z.string().min(1),
+    password: z.string().min(1)
+  })),
+  onSubmit(values) {
+    alert(JSON.stringify(values, null, 2));
+  },
+});
+
+const { value: account, attrs: accountAttrs } = register('account');
+const { value: password, attrs: passwordAttrs } = register('password');
+</script>
+
+<template>
+  <form @submit="handleSubmit">
+    <div>
+      <input
+        v-model="account"
+        type="text"
+        placeholder="Account"
+        v-bind="accountAttrs"
+      />
+      <div v-show="'account' in errors">
+        {{ errors.account }}
+      </div>
+    </div>
+    <div>
+      <input
+        v-model="password"
+        type="password"
+        placeholder="Password"
+        v-bind="passwordAttrs"
+      />
+      <div v-show="'password' in errors">
+        {{ errors.password }}
+      </div>
+    </div>
+    <div>
+      <input type="submit" />
+    </div>
+  </form>
+</template>
+```
+
+## Examples
+
+- [Validate With Yup](https://stackblitz.com/edit/vue-composition-form-validate-with-yup?file=src%2FApp.vue)
+- [Validate With Zod](https://stackblitz.com/edit/vue-composition-form-validate-with-zod?file=src%2FApp.vue)
+
+## Credits
+
+API inspired by [React Hook Form - Resolvers](https://github.com/react-hook-form/resolvers)
