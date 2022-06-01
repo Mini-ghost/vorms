@@ -1,6 +1,6 @@
 {
   "name": "@vue-composition-form/resolvers",
-  "version": "0.0.1-beta.1",
+  "version": "0.0.1-beta.2",
   "description": "Vue Composition Form validation resolvers",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.mjs",
