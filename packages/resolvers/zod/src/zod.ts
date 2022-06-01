@@ -9,7 +9,7 @@ const parseErrorSchema = (zodErrors: z.ZodIssue[]) => {
     const { path: _parse, message, ...rest } = zodErrors[0];
     const path = _parse.join('.');
 
-    if (errors[path]) {
+    if (!errors[path]) {
       errors[path] = message;
     }
 
