@@ -369,10 +369,10 @@ export function useForm<Values extends FormValues = FormValues>(
     return new Promise<FormErrors<Values>>((resolve) => {
       const maybePromise = options.validate?.(values);
       if (maybePromise == null) {
-        resolve({} as any);
+        resolve({});
       } else if (isPromise(maybePromise)) {
         maybePromise.then((error) => {
-          resolve(error);
+          resolve(error || {});
         });
       } else {
         resolve(maybePromise);
