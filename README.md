@@ -46,8 +46,8 @@ type ValidateMode = 'blur' | 'input' | 'change' | 'submit'
 | Name          | Type                                                                              | Description                                                                                                                                |
 | ------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
 | values        | `DeepReadonly<Values>`                                                            | Current form values.                                                                                                                       |
-| errors        | `ComputedRef<FormErrors<Values>>`                                                 | Map of filed name to the field has been touched                                                                                            |
-| touched       | `ComputedRef<FormTouched<Values>>`                                                | Map of filed name to specific error for that field                                                                                         |
+| errors        | `ComputedRef<FormErrors<Values>>`                                                 | Map of field name to the field has been touched                                                                                            |
+| touched       | `ComputedRef<FormTouched<Values>>`                                                | Map of field name to specific error for that field                                                                                         |
 | dirty         | `ComputedRef<boolean>`                                                            | Return `true` if current values are not deeply equal `initialValues`.                                                                      |
 | submitCount   | `ComputedRef<number>`                                                             | The number of times user attempted to submit.                                                                                              |
 | isSubmitting  | `Ref<boolean>`                                                                    | Return `true` when form is submitting, If `onSubmit()` is a synchronous function, then you need to call setSubmitting(false) on your own.  |
@@ -195,7 +195,7 @@ const { value: bag, attrs: bagFieldAttrs } = register('bag')
 </template>
 ```
 
-##＃ useField
+### useField
 
 `useForm()` is a custom Vue composition api that will return specific field value, meta (state) and attributes, you can also add validation for that field.
 
@@ -314,8 +314,8 @@ const onAppend = () => {
 
 <template>
   <form @submit="handleSubmit">
-    <div :key="filed.key" v-for="filed in fields">
-      <input v-model="filed.value">
+    <div :key="field.key" v-for="field in fields">
+      <input v-model="field.value" type="text" :name="field.name" v-bind="field.attrs">
     </div>
     <button type="button" @click="onAppend">
       Append
@@ -323,6 +323,7 @@ const onAppend = () => {
     <button type="submit">
       Order
     </button>
+    <input type="submit" />
   </form>
 </template>
 ```
