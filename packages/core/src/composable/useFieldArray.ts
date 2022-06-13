@@ -73,6 +73,44 @@ const updateAt = <T>(data: T[], index: number, value: T): T[] => {
   return clone;
 };
 
+/**
+ * Custom composition API that exposes convenient to perform operations with a list of fields.
+ *
+ * @param name - field name
+ *
+ * @param options - field array configuration and validation parameters {@link UseFieldArrayOptions}
+ *
+ * @returns filds state and methods. {@link UseFieldArrayReturn}
+ *
+ * @example
+ * ```vue
+ * <script setup lang="ts">
+ * import { useForm, useFieldArray } from '@vue-composition-form/core';
+ *
+ * const { values, handleSubmit } = useForm({
+ *   initialValues: {
+ *     list: ['vue', 'vue-router'],
+ *   },
+ *   onSubmit(values) {
+ *     console.log({ values });
+ *   },
+ * });
+ *
+ * const { fields, append } = useFieldArray('list');
+ * </script>
+ *
+ * <template>
+ *   <pre>{{ values }}</pre>
+ *   <form v-on:submit="handleSubmit">
+ *     <template v-for="field in fields" :key="field.key">
+ *       <input v-model="field.value" :name="field.name" v-bind="field.attrs" />
+ *     </template>
+ *     <button type="button" v-on:click="append('pinia')">Append</button>
+ *     <input type="submit" />
+ *   </form>
+ * </template>
+ * ```
+ */
 export function useFieldArray<Value>(
   name: string,
   options?: UseFieldArrayOptions<Value>,

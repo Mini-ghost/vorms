@@ -138,7 +138,39 @@ function reducer<Values extends FormValues>(
       state.errors.value = message.payload.errors;
   }
 }
-
+/**
+ * Custom composition API to mange the entire form.
+ *
+ * @param options - form configuration and validation parameters. {@link UseFormOptions}
+ *
+ * @returns methods and state of this form. {@link UseFormReturn}
+ *
+ * @example
+ * ```vue
+ * <script setup lang="ts">
+ * const { register, handleSubmit } = useForm({
+ *   initialValues: {
+ *     name: 'Alex',
+ *     age: 18,
+ *   },
+ *   onSubmit (values) {
+ *     console.log({ values })
+ *   },
+ * });
+ *
+ * const { value: name, attrs: nameAttrs } = register('anme')
+ * const { value: age, attrs: ageAttrs } = register('anme')
+ * </script>
+ *
+ * <template>
+ *   <form v-on:submit="handleSubmit">
+ *     <input v-model="name" type="text" v-bind="nameAttrs" />
+ *     <input v-model.number="age" type="text" v-bind="ageAttrs" />
+ *     <input type="submit" />
+ *   </form>
+ * </template>
+ * ```
+ */
 export function useForm<Values extends FormValues = FormValues>(
   options: UseFormOptions<Values>,
 ): UseFormReturn<Values> {
