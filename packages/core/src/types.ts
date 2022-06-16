@@ -120,6 +120,7 @@ export interface UseFormReturn<Values extends FormValues> {
   isValidating: ComputedRef<boolean>;
   dirty: ComputedRef<boolean>;
   register: UseFormRegister<Values>;
+  setValues: (values: Values, shouldValidate?: boolean) => void;
   setFieldValue: UseFormSetFieldValue<Values>;
   handleSubmit: (event?: Event) => void;
   handleReset: (event?: Event) => void;

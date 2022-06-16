@@ -65,6 +65,7 @@ const enum ACTION_TYPE {
   SUBMIT_ATTEMPT,
   SUBMIT_SUCCESS,
   SUBMIT_FAILURE,
+  SET_VALUES,
   SET_FIELD_VALUE,
   SET_TOUCHED,
   SET_ERRORS,
@@ -78,6 +79,7 @@ type FormMessage<Values extends FormValues> =
   | { type: ACTION_TYPE.SUBMIT_ATTEMPT }
   | { type: ACTION_TYPE.SUBMIT_SUCCESS }
   | { type: ACTION_TYPE.SUBMIT_FAILURE }
+  | { type: ACTION_TYPE.SET_VALUES; payload: Values }
   | { type: ACTION_TYPE.SET_FIELD_VALUE; payload: { path: string; value: any } }
   | {
       type: ACTION_TYPE.SET_TOUCHED;
@@ -106,6 +108,15 @@ function reducer<Values extends FormValues>(
       return;
     case ACTION_TYPE.SUBMIT_FAILURE:
       state.isSubmitting.value = false;
+      return;
+    case ACTION_TYPE.SET_VALUES:
+      keysOf(state.values).forEach((key) => {
+        delete state.values[key];
+      });
+
+      keysOf(message.payload).forEach((path) => {
+        (state.values as Values)[path] = message.payload[path];
+      });
       return;
     case ACTION_TYPE.SET_FIELD_VALUE:
       set(state.values, message.payload.path, deepClone(message.payload.value));
@@ -228,6 +239,22 @@ export function useForm<Values extends FormValues = FormValues>(
     });
 
     return validateTiming.value === 'blur'
+      ? runAllValidateHandler(state.values)
+      : Promise.resolve();
+  };
+
+  const setValues = (values: Values, shouldValidate?: boolean) => {
+    dispatch({
+      type: ACTION_TYPE.SET_VALUES,
+      payload: values,
+    });
+
+    const willValidate =
+      shouldValidate == null
+        ? validateTiming.value === 'change'
+        : shouldValidate;
+
+    return willValidate
       ? runAllValidateHandler(state.values)
       : Promise.resolve();
   };
@@ -542,6 +569,7 @@ export function useForm<Values extends FormValues = FormValues>(
     isValidating: computed(() => state.isValidating.value),
     dirty,
     register,
+    setValues,
     setFieldValue,
     handleSubmit,
     handleReset,
