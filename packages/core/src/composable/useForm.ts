@@ -232,7 +232,11 @@ export function useForm<Values extends FormValues = FormValues>(
       : Promise.resolve();
   };
 
-  const setFieldValue = (name: string, value: any) => {
+  const setFieldValue = (
+    name: string,
+    value: any,
+    shouldValidate?: boolean,
+  ) => {
     dispatch({
       type: ACTION_TYPE.SET_FIELD_VALUE,
       payload: {
@@ -241,7 +245,12 @@ export function useForm<Values extends FormValues = FormValues>(
       },
     });
 
-    return validateTiming.value === 'input'
+    const willValidate =
+      shouldValidate == null
+        ? validateTiming.value === 'input'
+        : shouldValidate;
+
+    return willValidate
       ? runAllValidateHandler(state.values)
       : Promise.resolve();
   };
@@ -533,6 +542,7 @@ export function useForm<Values extends FormValues = FormValues>(
     isValidating: computed(() => state.isValidating.value),
     dirty,
     register,
+    setFieldValue,
     handleSubmit,
     handleReset,
     resetForm,

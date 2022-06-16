@@ -12,6 +12,8 @@ import {
   SetFieldArrayValue,
   FormTouched,
   FormErrors,
+  FormValues,
+  UseFormSetFieldValue,
 } from '../types';
 
 function injectMaybeSelf<T>(
@@ -38,7 +40,7 @@ export interface FormInternalContextValuse {
 
   getFieldValue: <Value>(name: string) => WritableComputedRef<Value>;
   getFieldMeta: (name: string) => FieldMeta;
-  setFieldValue: (name: string, value: any) => void;
+  setFieldValue: UseFormSetFieldValue<FormValues>;
 
   getFieldError: (name: string) => FormErrors<any>;
   getFieldTouched: (name: string) => FormTouched<any>;

@@ -82,6 +82,15 @@ export type UseFormRegister<Values extends FormValues> = <
   options?: FieldRegisterOptions<Value>,
 ) => UseFormRegisterReturn<Value>;
 
+export type UseFormSetFieldValue<Values extends FormValues> = <
+  Name extends Path<Values>,
+  FieldValue extends PathValue<Values, Name>,
+>(
+  name: Name,
+  value: FieldValue,
+  shouldValidate?: boolean,
+) => void;
+
 export type ValidateForm<Values extends FormValues> = (
   values?: Values,
 ) => Promise<FormErrors<Values>>;
@@ -111,6 +120,7 @@ export interface UseFormReturn<Values extends FormValues> {
   isValidating: ComputedRef<boolean>;
   dirty: ComputedRef<boolean>;
   register: UseFormRegister<Values>;
+  setFieldValue: UseFormSetFieldValue<Values>;
   handleSubmit: (event?: Event) => void;
   handleReset: (event?: Event) => void;
   resetForm: ResetForm<Values>;
