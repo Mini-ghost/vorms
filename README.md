@@ -4,6 +4,13 @@
 npm install @vue-composition-form/core@beta
 ```
 
+## Feature
+
+- Type Strong (Written in TypeScript, with TSDoc)
+- [Small Size](https://bundlephobia.com/package/@vue-composition-form/core@0.0.1-beta.5) (~11kb, gzip: ~4kb)
+- Pure Composition API
+- Support [Yup](https://github.com/jquense/yup), [Zod](https://github.com/colinhacks/zod) and custom build
+
 ## Examples
 
 - [Login](https://stackblitz.com/edit/vue-composition-form-login?file=src%2FApp.vue)
