@@ -9,8 +9,15 @@ import type {
   FieldAttrs,
   Primitive,
 } from '../types';
-import isUndefined from '../utils/isUndefined';
+
 import omit from '../utils/omit';
+import appendAt from '../utils/append';
+import prependAt from '../utils/prepend';
+import swapAt from '../utils/swap';
+import removeAt from '../utils/remove';
+import moveAt from '../utils/move';
+import insertAt from '../utils/insert';
+import updateAt from '../utils/update';
 
 interface FieldEntry<Value> {
   key: number;
@@ -36,41 +43,6 @@ type UseFieldArrayReturn<Value> = {
   insert: (index: number, value: Value) => void;
   update: (index: number, value: Value) => void;
   replace: (values: Value[]) => void;
-};
-
-const appendAt = (data: any[], value: any) => {
-  return [...data, value];
-};
-
-const prependAt = (data: any[], value: any) => {
-  return [value, ...data];
-};
-
-const swapAt = (data: any[], indexA: number, indexB: number): void => {
-  data[indexA] = [data[indexB], (data[indexB] = data[indexA])][0];
-};
-
-const removeAt = <T>(data: T[], index?: number): T[] => {
-  if (isUndefined(index)) return [];
-
-  const clone = [...data];
-  clone.splice(index, 1);
-  return clone;
-};
-
-const moveAt = (data: any[], from: number, to: number) => {
-  data.splice(to, 0, data.splice(from, 1)[0]);
-};
-
-const insertAt = <T>(data: T[], index: number, value: T): T[] => {
-  return [...data.slice(0, index), value, ...data.slice(index)];
-};
-
-const updateAt = <T>(data: T[], index: number, value: T): T[] => {
-  const clone = [...data];
-
-  clone[index] = value;
-  return clone;
 };
 
 /**
