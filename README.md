@@ -24,15 +24,16 @@ npm install @vue-composition-form/core@beta
 
 **Options**
 
-| Name              | Type                                                                 | Description                                                                                                                |
-| ----------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| initialValues     | `Values`                                                             | This is the form initial value, is required.                                                                               |
-| validate          | `(valuse: Values) => void \| object \| Promise<FormErrors<Values>>`  | This function allows you to write your logic to validate your form, this is optional.                                      |
-| validateMode      | `ValidateMode` = 'submit'                                            | This option allows you to configure the validation strategy **before** first submit.                                       |
-| reValidateMode    | `ValidateMode` = 'change'                                            | This option allows you to configure the validation strategy **after** first submit.                                        |
-| validateOnMounted | `boolean` = `false`                                                  | This option allows you to configure the validation run when the component is mounted.                                      |
-| onSubmit          | `(values: Values, helper: FormSubmitHelper) => void \| Promise<any>` | This is your form submission handler. It is passed your forms `values`. If has validation error, this will not be invoked. |
-| onError           | `(errors: FormErrors<Values>) => void`                               | This is error callback, this be called when you submit form but validation error. This is optional.
+| Name              | Type                                                                 | Required | Description                                                                                                                |
+| ----------------- | -------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------- |
+| initialValues     | `Values`                                                             | ✓        | This is the form initial value, is required.                                                                               |
+| initialErrors     | `FormErrors<Values>`                                                 |          | This is the form initial error.                                                                                            |
+| validate          | `(valuse: Values) => void \| object \| Promise<FormErrors<Values>>`  |          | This function allows you to write your logic to validate your form, this is optional.                                      |
+| validateMode      | `ValidateMode` = 'submit'                                            |          | This option allows you to configure the validation strategy **before** first submit.                                       |
+| reValidateMode    | `ValidateMode` = 'change'                                            |          | This option allows you to configure the validation strategy **after** first submit.                                        |
+| validateOnMounted | `boolean` = `false`                                                  |          | This option allows you to configure the validation run when the component is mounted.                                      |
+| onSubmit          | `(values: Values, helper: FormSubmitHelper) => void \| Promise<any>` | ✓        | This is your form submission handler. It is passed your forms `values`. If has validation error, this will not be invoked. |
+| onError           | `(errors: FormErrors<Values>) => void`                               |          | This is error callback, this be called when you submit form but validation error. This is optional.
 
 <br>
 
@@ -49,6 +50,8 @@ type ValidateMode = 'blur' | 'input' | 'change' | 'submit'
 | errors        | `ComputedRef<FormErrors<Values>>`                                                 | Map of field name to the field has been touched                                                                                            |
 | touched       | `ComputedRef<FormTouched<Values>>`                                                | Map of field name to specific error for that field                                                                                         |
 | dirty         | `ComputedRef<boolean>`                                                            | Return `true` if current values are not deeply equal `initialValues`.                                                                      |
+| setValues     | `(values: Values, shouldValidate?: boolean)`                                      | This function allows you to dynamically update form values.                                                                                |
+| setFieldValue | `(name: string, value: unknown, shouldValidate?: boolean)`                        | This function allows you to dynamically set the value of field.                                                                            |
 | submitCount   | `ComputedRef<number>`                                                             | The number of times user attempted to submit.                                                                                              |
 | isSubmitting  | `Ref<boolean>`                                                                    | Return `true` when form is submitting, If `onSubmit()` is a synchronous function, then you need to call setSubmitting(false) on your own.  |
 | isValidating  | `ComputedRef<boolean>`                                                            | Return `true` when running validation.                                                                                                     |
@@ -203,10 +206,10 @@ const { value: bag, attrs: bagFieldAttrs } = register('bag')
 
 **Options**
 
-| Name             | Type                                                          | Description                                                                            |
-| ---------------- | ------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| name             | `string`                                                      | Name of the field.                                                                     |
-| options.validate | `(valus: Value) => void \| string \| Promise<string \| void>` | This function allows you to write your logic to validate your field, this is optional. |
+| Name             | Type                                                          | Required | Description                                                                            |
+| ---------------- | ------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------- |
+| name             | `string`                                                      | ✓        | Name of the field.                                                                     |
+| options.validate | `(valus: Value) => void \| string \| Promise<string \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
 
 
 **Return**
@@ -253,10 +256,10 @@ const { value, attrs } = useField<string>('ice', {
 
 **Options**
 
-| Name             | Type                                                                                  | Description                                                                            |
-| ---------------- | ------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| name             | `string`                                                                              | Name of the field array.                                                               |
-| options.validate | `(valus: Value) => void \| FormErrors<Values> \| Promise<FormErrors<Values> \| void>` | This function allows you to write your logic to validate your field, this is optional. |
+| Name             | Type                                                                                  | Required | Description                                                                            |
+| ---------------- | ------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------- |
+| name             | `string`                                                                              | ✓        | Name of the field array.                                                               |
+| options.validate | `(valus: Value) => void \| FormErrors<Values> \| Promise<FormErrors<Values> \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
 
 
 **Return**
