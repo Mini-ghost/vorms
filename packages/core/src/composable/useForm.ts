@@ -493,9 +493,8 @@ export function useForm<Values extends FormValues = FormValues>(
             dispatch({ type: ACTION_TYPE.SUBMIT_SUCCESS });
             return result;
           })
-          .catch((error) => {
+          .catch(() => {
             dispatch({ type: ACTION_TYPE.SUBMIT_FAILURE });
-            throw error;
           });
       } else {
         dispatch({ type: ACTION_TYPE.SUBMIT_FAILURE });
