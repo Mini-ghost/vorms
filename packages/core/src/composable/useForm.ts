@@ -547,17 +547,20 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const validateField: ValidateField<Values> = (name) => {
-    dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: true });
-    return runSingleFieldValidateHandler(name, get(state.values, name))
-      .then((error) => {
-        dispatch({
-          type: ACTION_TYPE.SET_FIELD_ERROR,
-          payload: { path: name, error },
+    if (fieldRegistry[name] && isFunction(fieldRegistry[name].validate)) {
+      dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: true });
+      return runSingleFieldValidateHandler(name, get(state.values, name))
+        .then((error) => {
+          dispatch({
+            type: ACTION_TYPE.SET_FIELD_ERROR,
+            payload: { path: name, error },
+          });
+        })
+        .finally(() => {
+          dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: false });
         });
-      })
-      .finally(() => {
-        dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: false });
-      });
+    }
+    return Promise.resolve();
   };
 
   const context = {
