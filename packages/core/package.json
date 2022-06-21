@@ -1,6 +1,6 @@
 {
   "name": "@vue-composition-form/core",
-  "version": "0.0.1-beta.5",
+  "version": "0.0.1-beta.6",
   "description": "Vue form validate with Composition API",
   "source": "src/index.ts",
   "main": "dist/index.cjs.js",
