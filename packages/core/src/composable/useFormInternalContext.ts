@@ -24,7 +24,7 @@ function injectMaybeSelf<T>(
   return vm?.provides[key as any] || inject(key, def);
 }
 
-export interface FormInternalContextValuse {
+export interface FormInternalContextValues {
   registerField: (
     name: string,
     options: { validate?: FieldValidator<any> },
@@ -50,12 +50,12 @@ export interface FormInternalContextValuse {
   setFieldArrayValue: SetFieldArrayValue;
 }
 
-export const FormInternalContextKey: InjectionKey<FormInternalContextValuse> =
+export const FormInternalContextKey: InjectionKey<FormInternalContextValues> =
   Symbol(__DEV__ ? 'vue composition form internal context' : 'fix');
 
 export function useFormInternalContext() {
   const context = injectMaybeSelf(
     FormInternalContextKey,
-  ) as FormInternalContextValuse;
+  ) as FormInternalContextValues;
   return context;
 }

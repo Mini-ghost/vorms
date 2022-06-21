@@ -420,11 +420,11 @@ export function useForm<Values extends FormValues = FormValues>(
       isFunction(fieldRegistry[field].validate),
     ) as string[];
 
-    const fieldValidatePromisea = fieldKeysWithValidation.map((field) =>
+    const fieldValidatePromise = fieldKeysWithValidation.map((field) =>
       runSingleFieldValidateHandler(field, get(values, field)),
     );
 
-    return Promise.all(fieldValidatePromisea).then((errors) =>
+    return Promise.all(fieldValidatePromise).then((errors) =>
       errors.reduce((prev, curr, index) => {
         if (curr) {
           set(prev, fieldKeysWithValidation[index], curr);
