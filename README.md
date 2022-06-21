@@ -35,7 +35,7 @@ npm install @vue-composition-form/core@beta
 | ----------------- | -------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------- |
 | initialValues     | `Values`                                                             | ✓        | This is the form initial value, is required.                                                                               |
 | initialErrors     | `FormErrors<Values>`                                                 |          | This is the form initial error.                                                                                            |
-| validate          | `(valuse: Values) => void \| object \| Promise<FormErrors<Values>>`  |          | This function allows you to write your logic to validate your form, this is optional.                                      |
+| validate          | `(values: Values) => void \| object \| Promise<FormErrors<Values>>`  |          | This function allows you to write your logic to validate your form, this is optional.                                      |
 | validateMode      | `ValidateMode` = 'submit'                                            |          | This option allows you to configure the validation strategy **before** first submit.                                       |
 | reValidateMode    | `ValidateMode` = 'change'                                            |          | This option allows you to configure the validation strategy **after** first submit.                                        |
 | validateOnMounted | `boolean` = `false`                                                  |          | This option allows you to configure the validation run when the component is mounted.                                      |
@@ -216,7 +216,7 @@ const { value: bag, attrs: bagFieldAttrs } = register('bag')
 | Name             | Type                                                          | Required | Description                                                                            |
 | ---------------- | ------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------- |
 | name             | `string`                                                      | ✓        | Name of the field.                                                                     |
-| options.validate | `(valus: Value) => void \| string \| Promise<string \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
+| options.validate | `(value: Value) => void \| string \| Promise<string \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
 
 
 **Return**
@@ -266,7 +266,7 @@ const { value, attrs } = useField<string>('ice', {
 | Name             | Type                                                                                  | Required | Description                                                                            |
 | ---------------- | ------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------- |
 | name             | `string`                                                                              | ✓        | Name of the field array.                                                               |
-| options.validate | `(valus: Value) => void \| FormErrors<Values> \| Promise<FormErrors<Values> \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
+| options.validate | `(value: Value) => void \| FormErrors<Values> \| Promise<FormErrors<Values> \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
 
 
 **Return**

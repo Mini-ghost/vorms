@@ -52,7 +52,7 @@ type UseFieldArrayReturn<Value> = {
  *
  * @param options - field array configuration and validation parameters {@link UseFieldArrayOptions}
  *
- * @returns filds state and methods. {@link UseFieldArrayReturn}
+ * @returns fields state and methods. {@link UseFieldArrayReturn}
  *
  * @example
  * ```vue

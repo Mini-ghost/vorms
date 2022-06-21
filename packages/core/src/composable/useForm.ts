@@ -169,8 +169,8 @@ function reducer<Values extends FormValues>(
  *   },
  * });
  *
- * const { value: name, attrs: nameAttrs } = register('anme')
- * const { value: age, attrs: ageAttrs } = register('anme')
+ * const { value: name, attrs: nameAttrs } = register('name')
+ * const { value: age, attrs: ageAttrs } = register('name')
  * </script>
  *
  * <template>
