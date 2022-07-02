@@ -1,0 +1,10 @@
+/**
+ * Commons
+ */
+:root {
+  --vp-c-text-code: #aac8e4;
+  --vp-c-bg-mute: #2f2f2f;
+
+  --vp-custom-block-tip-bg: #202020;
+  --vp-custom-block-warning-bg: #202020;
+}
