@@ -473,9 +473,7 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const handleSubmit = (event?: Event) => {
-    if (event && event.preventDefault) {
-      event.preventDefault();
-    }
+    event?.preventDefault();
 
     dispatch({ type: ACTION_TYPE.SUBMIT_ATTEMPT });
 
@@ -523,9 +521,7 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const handleReset = (event?: Event) => {
-    if (event && event.preventDefault) {
-      event.preventDefault();
-    }
+    event?.preventDefault();
 
     resetForm();
   };
