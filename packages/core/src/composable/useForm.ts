@@ -504,20 +504,15 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const resetForm: ResetForm<Values> = (nextState) => {
-    const values =
-      nextState && nextState.values ? nextState.values : initialValues;
-
-    const touched = nextState && nextState.touched ? nextState.touched : {};
-    const errors = nextState && nextState.errors ? nextState.errors : {};
-
+    const values = deepClone(nextState?.values || initialValues);
     initialValues = deepClone(values);
 
     dispatch({
       type: ACTION_TYPE.RESET_FORM,
       payload: {
         values,
-        touched,
-        errors,
+        touched: deepClone(nextState?.touched) || {},
+        errors: deepClone(nextState?.errors) || {},
       },
     });
 
