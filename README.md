@@ -300,7 +300,7 @@ interface FieldEntry {
 }
 ```
 
-**Return**
+**Example**
 
 ```vue
 <script setup lang="ts">
