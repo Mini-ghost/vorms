@@ -404,3 +404,7 @@ const onCheckStock = async () => {
 ## Credits
 
 API inspired by [Formik](https://github.com/jaredpalmer/formik), [React Hook Form](https://github.com/react-hook-form/react-hook-form), [VeeValidate](https://github.com/logaretm/vee-validate)
+
+## License
+
+[MIT License](https://github.com/Mini-ghost/vue-composition-form/blob/main/LICENSE) © 2022-PRESENT [Alex Liu](https://github.com/Mini-ghost)
