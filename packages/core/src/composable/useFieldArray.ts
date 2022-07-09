@@ -99,7 +99,9 @@ export function useFieldArray<Value>(
   } = useFormInternalContext();
 
   const fields: Ref<FieldEntry<Value>[]> = ref([]);
-  const values = computed(() => getFieldValue<Value[]>(name).value);
+  const values = computed(() => {
+    return getFieldValue<Value[] | undefined>(name).value || [];
+  });
 
   let seed = 0;
   const reset = () => {

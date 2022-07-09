@@ -7,7 +7,7 @@ npm install @vue-composition-form/core@beta
 ## Feature
 
 - Type Strong (Written in TypeScript, with TSDoc)
-- [Small Size](https://bundlephobia.com/package/@vue-composition-form/core@0.0.1-beta.6) (~11kb, gzip: ~4kb)
+- [Small Size](https://bundlephobia.com/package/@vue-composition-form/core@0.0.1-beta.7) (~11kb, gzip: ~4kb)
 - Pure Composition API
 - Support [Yup](https://github.com/jquense/yup), [Zod](https://github.com/colinhacks/zod) and custom build
 
@@ -218,7 +218,6 @@ const { value: bag, attrs: bagFieldAttrs } = register('bag')
 | name             | `string`                                                      | ✓        | Name of the field.                                                                     |
 | options.validate | `(value: Value) => void \| string \| Promise<string \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
 
-
 **Return**
 
 | Name           | Type                                | Description                                                          |
@@ -268,7 +267,6 @@ const { value, attrs } = useField<string>('ice', {
 | name             | `string`                                                                              | ✓        | Name of the field array.                                                               |
 | options.validate | `(value: Value) => void \| FormErrors<Values> \| Promise<FormErrors<Values> \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
 
-
 **Return**
 
 | Name    | Type                                       | Description                                                                  |
@@ -300,7 +298,7 @@ interface FieldEntry {
 }
 ```
 
-**Return**
+**Example**
 
 ```vue
 <script setup lang="ts">
@@ -402,6 +400,11 @@ const onCheckStock = async () => {
   </div>
 </template>
 ```
+
 ## Credits
 
 API inspired by [Formik](https://github.com/jaredpalmer/formik), [React Hook Form](https://github.com/react-hook-form/react-hook-form), [VeeValidate](https://github.com/logaretm/vee-validate)
+
+## License
+
+[MIT License](https://github.com/Mini-ghost/vue-composition-form/blob/main/LICENSE) © 2022-PRESENT [Alex Liu](https://github.com/Mini-ghost)

@@ -3,7 +3,7 @@
   "workspaces": [
     "packages/*"
   ],
-  "description": "vue fome validate",
+  "description": "vue form validate",
   "scripts": {
     "dev": "pnpm -r --parallel run dev",
     "dev:doc": "vitepress dev docs",
