@@ -147,6 +147,7 @@ function reducer<Values extends FormValues>(
 
       state.touched.value = message.payload.touched;
       state.errors.value = message.payload.errors;
+      state.submitCount.value = message.payload.submitCount;
   }
 }
 /**
@@ -511,6 +512,10 @@ export function useForm<Values extends FormValues = FormValues>(
         values,
         touched: deepClone(nextState?.touched) || {},
         errors: deepClone(nextState?.errors) || {},
+        submitCount:
+          typeof nextState?.submitCount === 'number'
+            ? nextState.submitCount
+            : 0,
       },
     });
 

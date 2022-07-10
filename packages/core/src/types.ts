@@ -105,6 +105,7 @@ export interface FormResetState<Values extends FormValues = FormValues> {
   values: Values;
   touched: FormTouched<Values>;
   errors: FormErrors<Values>;
+  submitCount: number;
 }
 
 export type ResetForm<Values extends FormValues> = (
