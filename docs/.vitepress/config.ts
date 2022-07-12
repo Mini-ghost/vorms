@@ -20,6 +20,10 @@ export default defineConfig({
       { text: 'API', link: '/api/', activeMatch: '/api/' }
     ],
 
+    socialLinks: [
+      { icon: 'github', link: 'https://github.com/Mini-ghost/vue-composition-form' },
+    ],
+
     sidebar: [
       {
         text: 'Guide',
