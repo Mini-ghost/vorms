@@ -7,6 +7,9 @@ titleTemplate: Vue form validate with Composition API
 hero:
   name: Vue Composition Form
   text: Form Validate With Composition API
+  image:
+    src: /logo.svg
+    alt: Vue Composition Form
   actions:
     - theme: brand
       text: Get Started
