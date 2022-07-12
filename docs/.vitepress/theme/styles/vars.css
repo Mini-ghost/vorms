@@ -1,10 +1,16 @@
 /**
- * Commons
+ * Home
  */
 :root {
-  --vp-c-text-code: #aac8e4;
-  --vp-c-bg-mute: #2f2f2f;
+  --vp-home-hero-name-color: transparent;
+  --vp-home-hero-name-background: -webkit-linear-gradient(
+    120deg,
+    #0F5096 10%,
+    #50E669
+  );
+}
 
-  --vp-custom-block-tip-bg: #202020;
-  --vp-custom-block-warning-bg: #202020;
+:root {
+  --vp-button-brand-border: #50E669;
+  --vp-button-brand-bg: #34A77B;
 }
