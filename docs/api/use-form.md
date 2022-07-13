@@ -60,6 +60,98 @@ This function allows you to write your logic to validate your form, this is opti
 
 - Type `(values: Values) => void | object | Promise<FormErrors<Values>>`
 
+This validate value can either be:
+
+1. Synchronous function and return an `errors` object.
+
+```ts
+import { useForm } from '@vue-composition-form/core'
+
+const { values } = useForm({
+  initialValues: {
+    errors: '',
+    age: 10
+  },
+  validate(values) {
+    const errors = {}
+
+    if(!values.name) {
+      errors.name = 'name is required.'
+    }
+
+    if(typeof values.age !== 'number') {
+      errors.age = 'age should be a number.'
+    }
+
+    return errors
+  },
+  onSubmit(values) {
+    console.log(values)
+  }
+}) 
+```
+
+2. Asynchronous function and return a Promise that is resolve to an object containing `errors`.
+
+```ts
+import { useForm } from '@vue-composition-form/core'
+
+const { values } = useForm({
+  initialValues: {
+    name: '',
+    age: 10
+  },
+  validate() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        const errors = {}
+
+        if(!values.name) {
+          errors.name = 'name is required.'
+        }
+
+        if(typeof values.age !== 'number') {
+          errors.age = 'age should be a number.'
+        }
+
+        resolve(errors)
+      }, 300)
+    })
+  },
+  onSubmit(values) {
+    console.log(values)
+  }
+}) 
+```
+
+3. Use resolver to integrate external validation libraries such as [Yup](https://github.com/jquense/yup), [Zod](https://github.com/vriad/zod).
+
+```
+npm install @vue-composition-form/resolvers
+```
+
+```ts
+import { useForm } from '@vue-composition-form/core'
+import { yupResolver } from '@vue-composition-form/resolvers/yup';
+import * as yup from 'yup';
+
+const schema = yup.object().shape({
+  name: yup.string().required(),
+  age: yup.number().required()
+})
+
+const { values } = useForm({
+  initialValues: {
+    name: '',
+    age: 10
+  },
+  validate: yupResolver(schema),
+  onSubmit(values) {
+    console.log(values)
+  }
+}) 
+```
+
 ### onSubmit (Required)
 
 This is your form submission handler. It is passed your forms `values`. If has validation error, this will not be invoked.
@@ -131,6 +223,25 @@ Return `true` when form is submitting, If `onSubmit()` is a synchronous function
 Return `true` when running validation.
 
 - Type `ComputedRef<boolean>`
+
+### resetForm
+
+Reset the entire form state. There are optional arguments and allow set state what you want.
+
+- Type `(nextState?: Partial<FormResetState<Values>>) => void`
+
+```ts
+interface FormResetState<Values> {
+  /** Form values */
+  values: Values;
+  /** Map of field name to specific error for that field. */
+  touched: FormTouched<Values>;
+  /** Map of field name to the field has been touched. */
+  errors: FormErrors<Values>;
+  /** The number of times user attempted to submit. */
+  submitCount: number;
+}
+```
 
 ### register
 

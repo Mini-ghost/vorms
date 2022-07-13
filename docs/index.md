@@ -7,6 +7,7 @@ titleTemplate: Vue form validate with Composition API
 hero:
   name: Vue Composition Form
   text: Form Validate With Composition API
+  tagline: Lightweight, Easy and Flexible
   image:
     src: /logo.svg
     alt: Vue Composition Form
@@ -21,6 +22,8 @@ hero:
 features:
   - title: Type Strong
     details: Written in TypeScript, with TSDoc.
+  - title: Lightweight
+    details: Tiny bundle size, weighing in at a miniscule 4KB gzipped.
   - title: Easy
     details: Pure Composition API, you can easy to integration with UI Library
   - title: Flexible
