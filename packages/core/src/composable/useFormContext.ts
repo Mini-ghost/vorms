@@ -5,7 +5,7 @@ export type FormContextValues<Values extends FormValues = FormValues> =
   UseFormReturn<Values>;
 
 export const FormContextKey: InjectionKey<FormContextValues<FormValues>> =
-  Symbol(__DEV__ ? 'vue composition form context' : 'fx');
+  Symbol(__DEV__ ? 'vorms context' : 'vormsx');
 
 /**
  * Custom composition API that return form context
@@ -15,6 +15,8 @@ export const FormContextKey: InjectionKey<FormContextValues<FormValues>> =
  * @example
  * ```vue
  * <script setup lang="ts">
+ * import { useFormContext } from '@vorms/core'
+ *
  * const { validateField } = useFormContext()
  * const { value, attrs } = useField('drink') // You can also use `register` return from `useFormContext()`
  * </script>

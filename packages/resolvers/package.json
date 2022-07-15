@@ -1,7 +1,7 @@
 {
-  "name": "@vue-composition-form/resolvers",
+  "name": "@vorms/resolvers",
   "version": "0.0.1-beta.2",
-  "description": "Vue Composition Form validation resolvers",
+  "description": "Vorms validation resolvers",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.mjs",
   "types": "dist/index.d.ts",
@@ -38,23 +38,22 @@
   "author": "Alex Liu <dsa1314@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mini-ghost/vue-composition-form.git",
+    "url": "git+https://github.com/mini-ghost/vorms.git",
     "directory": "packages/resolvers"
   },
   "bugs": {
-    "url": "https://github.com/mini-ghost/vue-composition-form/issues"
+    "url": "https://github.com/mini-ghost/vorms/issues"
   },
-  "homepage": "https://github.com/mini-ghost/vue-composition-form#readme",
+  "homepage": "https://github.com/mini-ghost/vorms#readme",
   "keywords": [
     "scheme",
     "validation",
     "scheme-validation",
-    "vue-composition-form",
     "yup",
     "zod"
   ],
   "devDependencies": {
-    "@vue-composition-form/core": "workspace:*",
+    "@vorms/core": "workspace:*",
     "yup": "^0.32.11",
     "zod": "^3.17.3"
   }

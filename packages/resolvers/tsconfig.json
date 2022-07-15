@@ -17,7 +17,7 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@vue-composition-form/resolvers": ["./src"]
+      "@vorms/resolvers": ["./src"]
     },
   },
   "exclude": [

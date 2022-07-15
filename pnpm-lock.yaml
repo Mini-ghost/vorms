@@ -64,19 +64,19 @@ importers:
 
   packages/resolvers:
     specifiers:
-      '@vue-composition-form/core': workspace:*
+      '@vorms/core': workspace:*
       yup: ^0.32.11
       zod: ^3.17.3
     devDependencies:
-      '@vue-composition-form/core': link:../core
+      '@vorms/core': link:../core
       yup: 0.32.11
       zod: 3.17.3
 
   playground:
     specifiers:
       '@vitejs/plugin-vue': ^2.3.1
-      '@vue-composition-form/core': workspace:*
-      '@vue-composition-form/resolvers': workspace:*
+      '@vorms/core': workspace:*
+      '@vorms/resolvers': workspace:*
       typescript: ^4.5.4
       vite: ^2.9.5
       vue: ^3.0.0
@@ -84,8 +84,8 @@ importers:
       yup: ^0.32.11
       zod: ^3.17.3
     dependencies:
-      '@vue-composition-form/core': link:../packages/core
-      '@vue-composition-form/resolvers': link:../packages/resolvers
+      '@vorms/core': link:../packages/core
+      '@vorms/resolvers': link:../packages/resolvers
       vue: 3.2.33
       yup: 0.32.11
       zod: 3.17.3

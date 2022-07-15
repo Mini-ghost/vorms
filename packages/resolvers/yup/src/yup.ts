@@ -1,5 +1,5 @@
 import Yup from 'yup';
-import { toNestError } from '@vue-composition-form/resolvers';
+import { toNestError } from '@vorms/resolvers';
 import type { Resolver } from './types';
 /**
  * Why `path!` ? because it could be `undefined` in some case

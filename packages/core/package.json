@@ -1,5 +1,5 @@
 {
-  "name": "@vue-composition-form/core",
+  "name": "@vorms/core",
   "version": "0.0.1-beta.7",
   "description": "Vue form validate with Composition API",
   "source": "src/index.ts",
@@ -27,13 +27,13 @@
   "author": "Alex Liu <dsa1314@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/mini-ghost/vue-composition-form.git",
+    "url": "git+https://github.com/mini-ghost/vorms.git",
     "directory": "packages/core"
   },
   "bugs": {
-    "url": "https://github.com/mini-ghost/vue-composition-form/issues"
+    "url": "https://github.com/mini-ghost/vorms/issues"
   },
-  "homepage": "https://github.com/mini-ghost/vue-composition-form#readme",
+  "homepage": "https://github.com/mini-ghost/vorms#readme",
   "keywords": [
     "vue",
     "composition-api",
