@@ -1,6 +1,6 @@
 {
   "name": "@vorms/resolvers",
-  "version": "0.0.1-beta.2",
+  "version": "0.0.1-beta.3",
   "description": "Vorms validation resolvers",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.mjs",
