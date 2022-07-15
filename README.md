@@ -7,7 +7,7 @@ npm install @vorms/core@beta
 ## Feature
 
 - Type Strong (Written in TypeScript, with TSDoc)
-- [Small Size](https://bundlephobia.com/package/@vorms/core@0.0.1-beta.7) (~11kb, gzip: ~4kb)
+- [Small Size](https://bundlephobia.com/package/@vorms/core@0.0.1-beta.8) (~11kb, gzip: ~4kb)
 - Pure Composition API
 - Support [Yup](https://github.com/jquense/yup), [Zod](https://github.com/colinhacks/zod) and custom build
 
