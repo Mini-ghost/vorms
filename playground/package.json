@@ -7,8 +7,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vue-composition-form/core": "workspace:*",
-    "@vue-composition-form/resolvers": "workspace:*",
+    "@vorms/core": "workspace:*",
+    "@vorms/resolvers": "workspace:*",
     "vue": "^3.0.0",
     "yup": "^0.32.11",
     "zod": "^3.17.3"

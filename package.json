@@ -1,5 +1,5 @@
 {
-  "name": "vue-composition-form",
+  "name": "vorms",
   "workspaces": [
     "packages/*"
   ],

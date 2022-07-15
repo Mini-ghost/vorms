@@ -23,7 +23,7 @@ for (const format of formats) {
   const ext = format === 'esm' ? 'mjs' : 'js';
 
   const output: OutputOptions = {
-    name: 'VueCompositionForm',
+    name: 'Vorms',
     file: `dist/index.${[format, ext].join('.')}`,
     format,
     globals: {

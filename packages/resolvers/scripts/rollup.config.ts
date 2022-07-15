@@ -34,18 +34,18 @@ for (const module of nodules) {
     const ext = format === 'esm' ? 'mjs' : 'js';
 
     const output: OutputOptions = {
-      name: `VueCompositionForm${module.name}Resolver`,
+      name: `Vorms${module.name}Resolver`,
       file: `${module.path}/dist/index.${[format, ext].join('.')}`,
       format,
       globals: {
-        '@vue-composition-form/core': 'VueCompositionForm',
+        '@vorms/core': 'Vorms',
       },
     };
 
     configs.push({
       input: `./${module.source}`,
       output,
-      external: ['@vue-composition-form/core'],
+      external: ['@vorms/core'],
       plugins: [
         replace({
           preventAssignment: true,

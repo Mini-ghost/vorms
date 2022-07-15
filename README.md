@@ -1,33 +1,33 @@
 ## Install
 
 ```bash
-npm install @vue-composition-form/core@beta
+npm install @vorms/core@beta
 ```
 
 ## Feature
 
 - Type Strong (Written in TypeScript, with TSDoc)
-- [Small Size](https://bundlephobia.com/package/@vue-composition-form/core@0.0.1-beta.7) (~11kb, gzip: ~4kb)
+- [Small Size](https://bundlephobia.com/package/@vorms/core@0.0.1-beta.8) (~11kb, gzip: ~4kb)
 - Pure Composition API
 - Support [Yup](https://github.com/jquense/yup), [Zod](https://github.com/colinhacks/zod) and custom build
 
 ## Examples
 
-- [Login](https://stackblitz.com/edit/vue-composition-form-login?file=src%2FApp.vue)
-- [Field Array](https://stackblitz.com/edit/vue-composition-form-field-array?file=src%2FApp.vue)
-- [Cross Field Validate](https://stackblitz.com/edit/vue-composition-form-corss-field-validate?file=src%2FApp.vue)
-- [Wizard Form](https://stackblitz.com/edit/vue-composition-form-wizard-form?file=src%2FApp.vue)
-- [Custom Components](https://stackblitz.com/edit/vue-composition-form-custom-components?file=src%2FApp.vue)
-- [UI Library - Vuetify](https://stackblitz.com/edit/vue-composition-form-vuetify?file=src%2FApp.vue)
-- [UI Library - Element Plus](https://stackblitz.com/edit/vue-composition-form-with-element-plus?file=src%2FApp.vue)
-- [Validate With Yup](https://stackblitz.com/edit/vue-composition-form-validate-with-yup?file=src%2FApp.vue)
-- [Validate With Zod](https://stackblitz.com/edit/vue-composition-form-validate-with-zod?file=src%2FApp.vue)
+- [Login](https://stackblitz.com/edit/vorms-login?file=src%2FApp.vue)
+- [Field Array](https://stackblitz.com/edit/vorms-field-array?file=src%2FApp.vue)
+- [Cross Field Validate](https://stackblitz.com/edit/vorms-corss-field-validate?file=src%2FApp.vue)
+- [Wizard Form](https://stackblitz.com/edit/vorms-wizard-form?file=src%2FApp.vue)
+- [Custom Components](https://stackblitz.com/edit/vorms-custom-components?file=src%2FApp.vue)
+- [UI Library - Vuetify](https://stackblitz.com/edit/vorms-vuetify?file=src%2FApp.vue)
+- [UI Library - Element Plus](https://stackblitz.com/edit/vorms-with-element-plus?file=src%2FApp.vue)
+- [Validate With Yup](https://stackblitz.com/edit/vorms-validate-with-yup?file=src%2FApp.vue)
+- [Validate With Zod](https://stackblitz.com/edit/vorms-validate-with-zod?file=src%2FApp.vue)
 
 ## API
 
 ### useForm
 
-`useForm()` is a custom Vue composition api that will return all Vue Composition Form state and helpers directly.
+`useForm()` is a custom Vue composition api that will return all Vorms state and helpers directly.
 
 **Options**
 
@@ -35,6 +35,7 @@ npm install @vue-composition-form/core@beta
 | ----------------- | -------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------- |
 | initialValues     | `Values`                                                             | ✓        | This is the form initial value, is required.                                                                               |
 | initialErrors     | `FormErrors<Values>`                                                 |          | This is the form initial error.                                                                                            |
+| initialTouched    | `FormTouched<Values>`                                                |          | This is the form initial touched.                                                                                          |
 | validate          | `(values: Values) => void \| object \| Promise<FormErrors<Values>>`  |          | This function allows you to write your logic to validate your form, this is optional.                                      |
 | validateMode      | `ValidateMode` = 'submit'                                            |          | This option allows you to configure the validation strategy **before** first submit.                                       |
 | reValidateMode    | `ValidateMode` = 'change'                                            |          | This option allows you to configure the validation strategy **after** first submit.                                        |
@@ -97,7 +98,7 @@ type UseFormRegisterReturn<Value> =  {
 
 ```vue
 <script setup lang="ts">
-import { useForm } from '@vue-composition-form/core'
+import { useForm } from '@vorms/core'
 
 interface InitialValues {
   drink: string,
@@ -234,7 +235,7 @@ const { value: bag, attrs: bagFieldAttrs } = register('bag')
 
 ```vue
 <script setup lang="ts">
-import { useField } from '@vue-composition-form/core'
+import { useField } from '@vorms/core'
 
 const { value, attrs } = useField<string>('ice', {
   validate(value) {
@@ -302,7 +303,7 @@ interface FieldEntry {
 
 ```vue
 <script setup lang="ts">
-import { useForm, useFieldArray } from '@vue-composition-form/core'
+import { useForm, useFieldArray } from '@vorms/core'
 
 const { handleSubmit } = useForm({
   initialValues: {
@@ -344,7 +345,7 @@ const onAppend = () => {
 
 ```vue
 <script setup lang="ts">
-import { useForm } from '@vue-composition-form/core'
+import { useForm } from '@vorms/core'
 import NestedTextField from './components/NestedTextField.vue'
 
 const { handleSubmit } = useForm({
@@ -367,7 +368,7 @@ const { handleSubmit } = useForm({
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useField, useFormContext } from '@vue-composition-form/core'
+import { useField, useFormContext } from '@vorms/core'
 
 const { validateField } = useFormContext()
 
@@ -407,4 +408,4 @@ API inspired by [Formik](https://github.com/jaredpalmer/formik), [React Hook For
 
 ## License
 
-[MIT License](https://github.com/Mini-ghost/vue-composition-form/blob/main/LICENSE) © 2022-PRESENT [Alex Liu](https://github.com/Mini-ghost)
+[MIT License](https://github.com/Mini-ghost/vorms/blob/main/LICENSE) © 2022-PRESENT [Alex Liu](https://github.com/Mini-ghost)

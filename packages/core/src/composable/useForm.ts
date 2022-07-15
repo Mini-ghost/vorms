@@ -53,6 +53,7 @@ export type ValidateMode = 'blur' | 'input' | 'change' | 'submit';
 export interface UseFormOptions<Values extends FormValues> {
   initialValues: Values;
   initialErrors?: FormErrors<Values>;
+  initialTouched?: FormTouched<Values>;
   validateMode?: ValidateMode;
   reValidateMode?: ValidateMode;
   validateOnMounted?: boolean;
@@ -147,6 +148,7 @@ function reducer<Values extends FormValues>(
 
       state.touched.value = message.payload.touched;
       state.errors.value = message.payload.errors;
+      state.submitCount.value = message.payload.submitCount;
   }
 }
 /**
@@ -198,7 +200,9 @@ export function useForm<Values extends FormValues = FormValues>(
   >(reducer, {
     values: reactive(deepClone(options.initialValues)),
     errors: ref(options.initialErrors ? deepClone(options.initialErrors) : {}),
-    touched: ref({}),
+    touched: ref(
+      options.initialTouched ? deepClone(options.initialTouched) : {},
+    ),
     submitCount: ref(0),
     isSubmitting: ref(false),
     isValidating: ref(false),
@@ -511,6 +515,10 @@ export function useForm<Values extends FormValues = FormValues>(
         values,
         touched: deepClone(nextState?.touched) || {},
         errors: deepClone(nextState?.errors) || {},
+        submitCount:
+          typeof nextState?.submitCount === 'number'
+            ? nextState.submitCount
+            : 0,
       },
     });
 
