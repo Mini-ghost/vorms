@@ -53,6 +53,7 @@ export type ValidateMode = 'blur' | 'input' | 'change' | 'submit';
 export interface UseFormOptions<Values extends FormValues> {
   initialValues: Values;
   initialErrors?: FormErrors<Values>;
+  initialTouched?: FormTouched<Values>;
   validateMode?: ValidateMode;
   reValidateMode?: ValidateMode;
   validateOnMounted?: boolean;
@@ -199,7 +200,9 @@ export function useForm<Values extends FormValues = FormValues>(
   >(reducer, {
     values: reactive(deepClone(options.initialValues)),
     errors: ref(options.initialErrors ? deepClone(options.initialErrors) : {}),
-    touched: ref({}),
+    touched: ref(
+      options.initialTouched ? deepClone(options.initialTouched) : {},
+    ),
     submitCount: ref(0),
     isSubmitting: ref(false),
     isValidating: ref(false),
