@@ -1,26 +1,26 @@
 # Get Started
 
-Vue Composition Form is a form validate library based on [Composition API](https://vuejs.org/guide/extras/composition-api-faq.html).
+Vorms is a form validate library based on [Composition API](https://vuejs.org/guide/extras/composition-api-faq.html).
 
 ## Installation
 
 ```bash
-npm install @vue-composition-form/core
+npm install @vorms/core
 ```
 
 ## CDN
 
 ```html
-<script src="https://unpkg.com/@vue-composition-form/core"></script>
+<script src="https://unpkg.com/@vorms/core"></script>
 ```
 
-It will be exposed to global as `window.VueCompositionForm`
+It will be exposed to global as `window.Vorms`
 
 ## Usage Example
 
 ```vue
 <script setup lang="ts">
-import { useForm } from '@vue-composition-form/core'
+import { useForm } from '@vorms/core'
 
 interface InitialValues {
   drink: string,

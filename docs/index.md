@@ -1,23 +1,23 @@
 ---
 layout: home
 
-title: Vue Composition Form
+title: Vorms
 titleTemplate: Vue form validate with Composition API
 
 hero:
-  name: Vue Composition Form
+  name: Vorms
   text: Form Validate With Composition API
   tagline: Lightweight, Easy and Flexible
   image:
     src: /logo.svg
-    alt: Vue Composition Form
+    alt: Vorms
   actions:
     - theme: brand
       text: Get Started
       link: /guide/
     - theme: alt
       text: View on GitHub
-      link: https://github.com/Mini-ghost/vue-composition-form
+      link: https://github.com/Mini-ghost/vorms
 
 features:
   - title: Type Strong

@@ -72,7 +72,7 @@ onChange prop to subscribe the input change event.
 
 ```vue
 <script setup lang="ts">
-import { useField } from '@vue-composition-form/core'
+import { useField } from '@vorms/core'
 
 const { value, attrs } = useField<string>('ice', {
   validate(value) {

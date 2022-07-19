@@ -1,6 +1,6 @@
 # useForm
 
-`useForm()` is a custom Vue composition api that will return all Vue Composition Form state and helpers directly.
+`useForm()` is a custom Vue composition api that will return all Vorms state and helpers directly.
 
 ```ts
 useForm({
@@ -65,7 +65,7 @@ This validate value can either be:
 1. Synchronous function and return an `errors` object.
 
 ```ts
-import { useForm } from '@vue-composition-form/core'
+import { useForm } from '@vorms/core'
 
 const { values } = useForm({
   initialValues: {
@@ -94,7 +94,7 @@ const { values } = useForm({
 2. Asynchronous function and return a Promise that is resolve to an object containing `errors`.
 
 ```ts
-import { useForm } from '@vue-composition-form/core'
+import { useForm } from '@vorms/core'
 
 const { values } = useForm({
   initialValues: {
@@ -127,12 +127,12 @@ const { values } = useForm({
 3. Use resolver to integrate external validation libraries such as [Yup](https://github.com/jquense/yup), [Zod](https://github.com/vriad/zod).
 
 ```
-npm install @vue-composition-form/resolvers
+npm install @vorms/resolvers
 ```
 
 ```ts
-import { useForm } from '@vue-composition-form/core'
-import { yupResolver } from '@vue-composition-form/resolvers/yup';
+import { useForm } from '@vorms/core'
+import { yupResolver } from '@vorms/resolvers/yup';
 import * as yup from 'yup';
 
 const schema = yup.object().shape({
@@ -301,7 +301,7 @@ Validate form specific field, if this field validation is register.
 
 ```vue
 <script setup lang="ts">
-import { useForm } from '@vue-composition-form/core'
+import { useForm } from '@vorms/core'
 
 interface InitialValues {
   drink: string,

@@ -6,7 +6,7 @@
 
 ```vue
 <script setup lang="ts">
-import { useForm } from '@vue-composition-form/core'
+import { useForm } from '@vorms/core'
 import NestedTextField from './components/NestedTextField.vue'
 
 const { handleSubmit } = useForm({
@@ -29,7 +29,7 @@ const { handleSubmit } = useForm({
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useField, useFormContext } from '@vue-composition-form/core'
+import { useField, useFormContext } from '@vorms/core'
 
 const { validateField } = useFormContext()
 

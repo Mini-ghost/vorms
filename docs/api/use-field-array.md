@@ -86,7 +86,7 @@ Replace the entire field array values.
 
 ```vue
 <script setup lang="ts">
-import { useForm, useFieldArray } from '@vue-composition-form/core'
+import { useForm, useFieldArray } from '@vorms/core'
 
 const { handleSubmit } = useForm({
   initialValues: {
