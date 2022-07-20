@@ -4,18 +4,21 @@ export default defineConfig({
   title: 'Vorms',
   description: 'Vue form validate with Composition API',
 
+  // TODO: Add `og:image` and `twitter:image`
   head: [
+    ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
     ['meta', { name: 'author', content: 'Alex Liu' }],
     ['meta', { property: 'og:title', content: 'Vorms' }],
-    // ['meta', { property: 'og:image', content: 'https://vueuse.org/og.png' }],
     ['meta', { property: 'og:description', content: 'Vue Form Validate with Composition API' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@Minighost_Alex' }],
-    // ['meta', { name: 'twitter:image', content: 'https://vueuse.org/og.png' }],
   ],
 
   markdown: {
-    theme: 'github-dark-dimmed',
+    theme: {
+      dark: 'github-dark-dimmed',
+      light: 'vitesse-light'
+    },
     config(md) {
       // https://github.com/markdown-it/markdown-it/issues/878
       md.linkify.set({
@@ -25,6 +28,7 @@ export default defineConfig({
   },
 
   themeConfig: {
+    logo: '/favicon.svg',
 
     editLink: {
       pattern: 'https://github.com/Mini-ghost/vorms/tree/docs/docs/:path'
