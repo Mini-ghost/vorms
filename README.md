@@ -54,7 +54,7 @@ type ValidateMode = 'blur' | 'input' | 'change' | 'submit'
 
 | Name          | Type                                                                              | Description                                                                                                                                |
 | ------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| values        | `DeepReadonly<Values>`                                                            | Current form values.                                                                                                                       |
+| values        | `Values`                                                                          | Current form values.                                                                                                                       |
 | errors        | `ComputedRef<FormErrors<Values>>`                                                 | Map of field name to the field has been touched                                                                                            |
 | touched       | `ComputedRef<FormTouched<Values>>`                                                | Map of field name to specific error for that field                                                                                         |
 | dirty         | `ComputedRef<boolean>`                                                            | Return `true` if current values are not deeply equal `initialValues`.                                                                      |
