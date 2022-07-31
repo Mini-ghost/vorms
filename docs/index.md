@@ -7,7 +7,7 @@ titleTemplate: Vue form validate with Composition API
 hero:
   name: Vorms
   text: Form Validate With Composition API
-  tagline: Lightweight, Easy and Flexible
+  tagline: Type Strong, Lightweight, Easy and Flexible
   image:
     src: /logo.svg
     alt: Vorms
