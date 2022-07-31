@@ -1,10 +1,4 @@
-import {
-  ComputedRef,
-  DeepReadonly,
-  WritableComputedRef,
-  UnwrapNestedRefs,
-  Ref,
-} from 'vue';
+import { ComputedRef, WritableComputedRef, UnwrapNestedRefs, Ref } from 'vue';
 
 export type FormValues = Record<string, any>;
 
@@ -113,7 +107,7 @@ export type ResetForm<Values extends FormValues> = (
 ) => void;
 
 export interface UseFormReturn<Values extends FormValues> {
-  values: DeepReadonly<UnwrapNestedRefs<Values>>;
+  values: UnwrapNestedRefs<Values>;
   touched: ComputedRef<FormTouched<Values>>;
   errors: ComputedRef<FormErrors<Values>>;
   submitCount: ComputedRef<number>;

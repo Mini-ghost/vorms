@@ -1,4 +1,4 @@
-import { computed, reactive, ref, onMounted, provide, readonly } from 'vue';
+import { computed, reactive, ref, onMounted, provide } from 'vue';
 import isEqual from 'fast-deep-equal/es6';
 import { klona as deepClone } from 'klona/full';
 import deepmerge from 'deepmerge';
@@ -562,7 +562,7 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const context = {
-    values: readonly(state.values),
+    values: state.values,
     touched: computed(() => state.touched.value),
     errors: computed(() => state.errors.value),
     submitCount: computed(() => state.submitCount.value),
