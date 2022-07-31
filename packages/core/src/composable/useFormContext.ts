@@ -5,7 +5,7 @@ export type FormContextValues<Values extends FormValues = FormValues> =
   UseFormReturn<Values>;
 
 export const FormContextKey: InjectionKey<FormContextValues<FormValues>> =
-  Symbol(__DEV__ ? 'vorms context' : 'vormsx');
+  Symbol(__DEV__ ? 'vorms context' : '');
 
 /**
  * Custom composition API that return form context
