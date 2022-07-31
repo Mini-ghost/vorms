@@ -51,7 +51,7 @@ export interface FormInternalContextValues {
 }
 
 export const FormInternalContextKey: InjectionKey<FormInternalContextValues> =
-  Symbol(__DEV__ ? 'vorms internal context' : 'vormsix');
+  Symbol(__DEV__ ? 'vorms internal context' : '');
 
 export function useFormInternalContext() {
   const context = injectMaybeSelf(
