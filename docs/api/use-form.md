@@ -174,7 +174,11 @@ This is error callback, this be called when you submit form but validation error
 
 Current form values.
 
-- Type `DeepReadonly<Values>`
+- Type `Values`
+
+:::warning Note
+If you use `values` with v-model directly, validation will only be called before submit.
+:::
 
 ### errors
 
