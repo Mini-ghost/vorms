@@ -10,8 +10,10 @@ export default defineConfig({
     ['meta', { name: 'author', content: 'Alex Liu' }],
     ['meta', { property: 'og:title', content: 'Vorms' }],
     ['meta', { property: 'og:description', content: 'Vue Form Validate with Composition API' }],
+    ['meta', { property: 'og:image', content: 'https://vorms.mini-ghost.dev/og.png' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:creator', content: '@Minighost_Alex' }],
+    ['meta', { name: 'twitter:image', content: 'https://vorms.mini-ghost.dev/og.png' }],
   ],
 
   markdown: {
