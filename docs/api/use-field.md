@@ -1,8 +1,8 @@
 # useField
 
-`useForm()` is a custom Vue composition api that will return specific field value, meta (state) and attributes, you can also add validation for that field.
+`useField()` is a custom Vue composition api that will return specific field value, meta (state) and attributes, you can also add validation for that field.
 
-`useField()` API is equal to `register()` that return by `useForm()`.
+`useField()` is equal to `register()` that return by `useForm()`.
 
 ```ts
 useField<Value>(name, {
