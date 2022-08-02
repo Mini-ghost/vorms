@@ -1,6 +1,6 @@
 # Get Started
 
-Vorms is a form validate library based on [Composition API](https://vuejs.org/guide/extras/composition-api-faq.html).
+Vorms is a type strong, lightweight, easy and flexible form validate and state management library based on [Composition API](https://vuejs.org/guide/extras/composition-api-faq.html).
 
 ## Installation
 
