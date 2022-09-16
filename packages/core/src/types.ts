@@ -74,7 +74,7 @@ export type UseFormRegister<Values extends FormValues> = <
   Name extends Path<Values>,
   Value = PathValue<Values, Name>,
 >(
-  name: Name,
+  name: MaybeRef<Name>,
   options?: FieldRegisterOptions<Value>,
 ) => UseFormRegisterReturn<Value>;
 
