@@ -543,7 +543,6 @@ export function useForm<Values extends FormValues = FormValues>(
     registerField(name, options);
 
     return {
-      name,
       value: getFieldValue(name),
       attrs: getFieldAttrs(name),
       ...getFieldMeta(name),
