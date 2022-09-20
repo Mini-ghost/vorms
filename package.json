@@ -1,5 +1,6 @@
 {
   "name": "vorms",
+  "packageManager": "pnpm@7.11.0",
   "workspaces": [
     "packages/*"
   ],
@@ -9,7 +10,7 @@
     "docs:build": "vitepress build docs",
     "docs:dev": "vitepress dev docs",
     "lint": "eslint './packages/**/*.{js,ts}'",
-    "lint:fix": "pnpm lint -- --fix",
+    "lint:fix": "pnpm lint --fix",
     "play": "cd playground && pnpm dev",
     "prepare": "husky install"
   },
