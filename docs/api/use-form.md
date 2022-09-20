@@ -11,7 +11,7 @@ useForm({
   validateOnMounted: false,
   validate() {},
   onSubmit(values, submitHelper) {},
-  onError() {},
+  onError(error) {},
 })
 ```
 
