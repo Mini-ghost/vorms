@@ -5,6 +5,7 @@ import {
   WritableComputedRef,
 } from 'vue';
 import {
+  MaybeRef,
   FieldValidator,
   FieldArrayValidator,
   FieldMeta,
@@ -26,26 +27,26 @@ function injectMaybeSelf<T>(
 
 export interface FormInternalContextValues {
   registerField: (
-    name: string,
+    name: MaybeRef<string>,
     options: { validate?: FieldValidator<any> },
   ) => void;
 
   registerFieldArray: (
-    name: string,
+    name: MaybeRef<string>,
     options: {
       validate?: FieldArrayValidator<any>;
       reset: () => void;
     },
   ) => void;
 
-  getFieldValue: <Value>(name: string) => WritableComputedRef<Value>;
-  getFieldMeta: (name: string) => FieldMeta;
+  getFieldValue: <Value>(name: MaybeRef<string>) => WritableComputedRef<Value>;
+  getFieldMeta: (name: MaybeRef<string>) => FieldMeta;
   setFieldValue: UseFormSetFieldValue<FormValues>;
 
   getFieldError: (name: string) => FormErrors<any>;
   getFieldTouched: (name: string) => FormTouched<any>;
   getFieldDirty: (name: string) => boolean;
-  getFieldAttrs: (name: string) => FieldAttrs;
+  getFieldAttrs: (name: MaybeRef<string>) => FieldAttrs;
 
   setFieldArrayValue: SetFieldArrayValue;
 }

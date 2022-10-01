@@ -1,4 +1,4 @@
-import { computed, reactive, ref, onMounted, provide } from 'vue';
+import { computed, reactive, ref, unref, onMounted, provide } from 'vue';
 import isEqual from 'fast-deep-equal/es6';
 import { klona as deepClone } from 'klona/full';
 import deepmerge from 'deepmerge';
@@ -17,6 +17,7 @@ import isString from '../utils/isString';
 
 import type { Reducer } from './useFormStore';
 import type {
+  MaybeRef,
   FormValues,
   FormState,
   FormErrors,
@@ -217,18 +218,20 @@ export function useForm<Values extends FormValues = FormValues>(
     state.submitCount.value === 0 ? validateMode : reValidateMode,
   );
 
-  const registerField = (name: string, { validate }: any = {}) => {
-    fieldRegistry[name] = {
+  const registerField = (name: MaybeRef<string>, { validate }: any = {}) => {
+    fieldRegistry[unref(name)] = {
       validate,
     };
   };
 
-  const registerFieldArray = (name: string, { reset, validate }: any) => {
-    fieldRegistry[name] = {
+  const registerFieldArray = (name: MaybeRef<string>, options: any) => {
+    const { validate, reset } = options;
+
+    fieldRegistry[unref(name)] = {
       validate,
     };
 
-    fieldArrayRegistry[name] = {
+    fieldArrayRegistry[unref(name)] = {
       reset,
     };
   };
@@ -366,21 +369,23 @@ export function useForm<Values extends FormValues = FormValues>(
     dispatch({ type: ACTION_TYPE.SET_ISSUBMITTING, payload: isSubmitting });
   };
 
-  const getFieldValue = (name: string) => {
+  const getFieldValue = (name: MaybeRef<string>) => {
     return computed<any>({
       get() {
-        return get(state.values, name);
+        return get(state.values, unref(name));
       },
       set(value) {
-        setFieldValue(name, value);
+        setFieldValue(unref(name), value);
       },
     });
   };
 
-  const getFieldMeta = (name: string): FieldMeta => {
-    const error = computed(() => getFieldError(name) as any as string);
-    const touched = computed(() => getFieldTouched(name) as any as boolean);
-    const dirty = computed(() => getFieldDirty(name));
+  const getFieldMeta = (name: MaybeRef<string>): FieldMeta => {
+    const error = computed(() => getFieldError(unref(name)) as any as string);
+    const touched = computed(
+      () => getFieldTouched(unref(name)) as any as boolean,
+    );
+    const dirty = computed(() => getFieldDirty(unref(name)));
 
     return {
       dirty,
@@ -389,12 +394,12 @@ export function useForm<Values extends FormValues = FormValues>(
     };
   };
 
-  const getFieldAttrs = (name: string): FieldAttrs => {
-    return {
-      name,
+  const getFieldAttrs = (name: MaybeRef<string>): FieldAttrs => {
+    return computed(() => ({
+      name: unref(name),
       onBlur: handleBlur,
       onChange: handleChange,
-    };
+    }));
   };
 
   const getFieldError = (name: string): FormErrors<any> => {

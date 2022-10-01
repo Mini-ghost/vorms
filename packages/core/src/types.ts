@@ -1,5 +1,7 @@
 import { ComputedRef, WritableComputedRef, UnwrapNestedRefs, Ref } from 'vue';
 
+export type MaybeRef<T> = T | Ref<T>;
+
 export type FormValues = Record<string, any>;
 
 export type FieldValidator<Value> = (
@@ -72,7 +74,7 @@ export type UseFormRegister<Values extends FormValues> = <
   Name extends Path<Values>,
   Value = PathValue<Values, Name>,
 >(
-  name: Name,
+  name: MaybeRef<Name>,
   options?: FieldRegisterOptions<Value>,
 ) => UseFormRegisterReturn<Value>;
 
@@ -124,11 +126,11 @@ export interface UseFormReturn<Values extends FormValues> {
   validateField: ValidateField<Values>;
 }
 
-export interface FieldAttrs {
+export type FieldAttrs = ComputedRef<{
   name: string;
   onBlur: (event: Event) => void;
   onChange: () => void;
-}
+}>;
 
 export type FieldMeta = {
   dirty: ComputedRef<boolean>;
