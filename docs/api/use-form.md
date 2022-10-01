@@ -1,6 +1,6 @@
 # useForm
 
-`useForm()` is a custom Vue composition api that will return all Vorms state and helpers directly.
+`useForm()` is a custom Vue composition api for managing form value and status. The following example demonstrates all of its options along with their default values.
 
 ```ts
 useForm({
@@ -19,7 +19,7 @@ useForm({
 
 ### initialValues (Required)
 
-This is the form initial value, is required.
+This is the form initial value and is used as the basis for `dirty` comparison.
 
 - Type
 
@@ -27,7 +27,7 @@ This is the form initial value, is required.
 type Values = Record<string, any>
 ```
 
-### `initialErrors`
+### initialErrors
 
 This is the form initial error.
 
@@ -69,7 +69,7 @@ import { useForm } from '@vorms/core'
 
 const { values } = useForm({
   initialValues: {
-    errors: '',
+    name: '',
     age: 10
   },
   validate(values) {
@@ -124,7 +124,7 @@ const { values } = useForm({
 }) 
 ```
 
-3. Use resolver to integrate external validation libraries such as [Yup](https://github.com/jquense/yup), [Zod](https://github.com/vriad/zod).
+3. Use `@vorms/resolvers` to integrate external validation libraries such as [Yup](https://github.com/jquense/yup), [Zod](https://github.com/vriad/zod).
 
 ```
 npm install @vorms/resolvers
