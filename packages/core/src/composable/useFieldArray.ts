@@ -18,6 +18,7 @@ import removeAt from '../utils/remove';
 import moveAt from '../utils/move';
 import insertAt from '../utils/insert';
 import updateAt from '../utils/update';
+import omit from '../utils/omit';
 
 interface FieldEntry<Value> {
   key: number;
@@ -144,7 +145,10 @@ export function useFieldArray<Value>(
       }),
 
       attrs: computed(() => {
-        return getFieldAttrs(`${unref(name)}.${index.value}`);
+        return omit(
+          unref(getFieldAttrs(`${unref(name)}.${index.value}`)),
+          'name',
+        );
       }),
     } as any as FieldEntry<Value>; // `computed` will be auto unwrapped
   };

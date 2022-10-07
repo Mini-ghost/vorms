@@ -394,8 +394,8 @@ export function useForm<Values extends FormValues = FormValues>(
     };
   };
 
-  const getFieldAttrs = (name: MaybeRef<string>): FieldAttrs => {
-    return computed(() => ({
+  const getFieldAttrs = (name: MaybeRef<string>) => {
+    return computed<FieldAttrs>(() => ({
       name: unref(name),
       onBlur: handleBlur,
       onChange: handleChange,

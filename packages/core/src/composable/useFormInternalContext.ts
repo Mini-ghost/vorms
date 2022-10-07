@@ -3,6 +3,7 @@ import {
   getCurrentInstance,
   InjectionKey,
   WritableComputedRef,
+  ComputedRef,
 } from 'vue';
 import {
   MaybeRef,
@@ -46,7 +47,7 @@ export interface FormInternalContextValues {
   getFieldError: (name: string) => FormErrors<any>;
   getFieldTouched: (name: string) => FormTouched<any>;
   getFieldDirty: (name: string) => boolean;
-  getFieldAttrs: (name: MaybeRef<string>) => FieldAttrs;
+  getFieldAttrs: (name: MaybeRef<string>) => ComputedRef<FieldAttrs>;
 
   setFieldArrayValue: SetFieldArrayValue;
 }
