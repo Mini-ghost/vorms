@@ -20,13 +20,13 @@ import {
 
 function injectMaybeSelf<T>(
   key: InjectionKey<T>,
-  def: T | undefined = undefined,
+  defaultValue: T | undefined = undefined,
 ): T | undefined {
   const vm = getCurrentInstance() as any;
-  return vm?.provides[key as any] || inject(key, def);
+  return vm?.provides[key as any] || inject(key, defaultValue);
 }
 
-export interface FormInternalContextValues {
+export interface InternalContextValues {
   registerField: (
     name: MaybeRef<string>,
     options: { validate?: FieldValidator<any> },
@@ -52,12 +52,11 @@ export interface FormInternalContextValues {
   setFieldArrayValue: SetFieldArrayValue;
 }
 
-export const FormInternalContextKey: InjectionKey<FormInternalContextValues> =
-  Symbol(__DEV__ ? 'vorms internal context' : '');
+export const InternalContextKey: InjectionKey<InternalContextValues> = Symbol(
+  __DEV__ ? 'vorms internal context' : '',
+);
 
-export function useFormInternalContext() {
-  const context = injectMaybeSelf(
-    FormInternalContextKey,
-  ) as FormInternalContextValues;
+export function useInternalContext() {
+  const context = injectMaybeSelf(InternalContextKey) as InternalContextValues;
   return context;
 }

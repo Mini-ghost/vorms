@@ -1,6 +1,6 @@
 import { ref, unref, computed, Ref } from 'vue';
 
-import { useFormInternalContext } from './useFormInternalContext';
+import { useInternalContext } from './useInternalContext';
 
 import type {
   MaybeRef,
@@ -97,7 +97,7 @@ export function useFieldArray<Value>(
     getFieldAttrs,
     registerFieldArray,
     setFieldArrayValue,
-  } = useFormInternalContext();
+  } = useInternalContext();
 
   const fields: Ref<FieldEntry<Value>[]> = ref([]);
   const values = computed(() => {

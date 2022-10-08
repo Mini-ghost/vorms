@@ -4,7 +4,7 @@ import { klona as deepClone } from 'klona/full';
 import deepmerge from 'deepmerge';
 
 import { FormContextKey } from './useFormContext';
-import { FormInternalContextKey } from './useFormInternalContext';
+import { InternalContextKey } from './useInternalContext';
 
 import isPromise from '../utils/isPromise';
 import keysOf from '../utils/keysOf';
@@ -584,7 +584,7 @@ export function useForm<Values extends FormValues = FormValues>(
     validateField,
   };
 
-  provide(FormInternalContextKey, {
+  provide(InternalContextKey, {
     getFieldMeta,
     getFieldValue,
     setFieldValue,
