@@ -5,15 +5,14 @@ import deepmerge from 'deepmerge';
 
 import { FormContextKey } from './useFormContext';
 import { InternalContextKey } from './useInternalContext';
+import useFormStore from './useFormStore';
 
 import isPromise from '../utils/isPromise';
-import keysOf from '../utils/keysOf';
+import isString from '../utils/isString';
 import isFunction from '../utils/isFunction';
+import keysOf from '../utils/keysOf';
 import get from '../utils/get';
 import set from '../utils/set';
-
-import useFormStore from './useFormStore';
-import isString from '../utils/isString';
 
 import type { Reducer } from './useFormStore';
 import type {
