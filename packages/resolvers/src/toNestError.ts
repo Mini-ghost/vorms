@@ -1,5 +1,5 @@
-import { set } from '@vue-composition-form/core';
-import type { FormValues, FormErrors } from '@vue-composition-form/core';
+import { set } from '@vorms/core';
+import type { FormValues, FormErrors } from '@vorms/core';
 
 export const toNestError = (
   errors: Record<string, string>,

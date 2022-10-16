@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { toNestError } from '@vue-composition-form/resolvers';
+import { toNestError } from '@vorms/resolvers';
 import type { Resolver } from './types';
 
 const parseErrorSchema = (zodErrors: z.ZodIssue[]) => {

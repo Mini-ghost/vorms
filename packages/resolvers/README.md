@@ -1,7 +1,7 @@
 ## Install
 
 ```bash
-npm install @vue-composition-form/resolvers@beta
+npm install @vorms/resolvers@beta
 ```
 
 ## Quickstart
@@ -12,8 +12,8 @@ Dead simple Object schema validation
 
 ```vue
 <script setup lang="ts">
-import { useForm } from '@vue-composition-form/core';
-import { yupResolver } from '@vue-composition-form/resolvers/yup';
+import { useForm } from '@vorms/core';
+import { yupResolver } from '@vorms/resolvers/yup';
 import * as yup from 'yup'
 
 const { register, errors, handleSubmit } = useForm({
@@ -71,8 +71,8 @@ TypeScript-first schema validation with static type inference
 
 ```vue
 <script setup lang="ts">
-import { useForm } from '@vue-composition-form/core';
-import { zodResolver } from '@vue-composition-form/resolvers/zod';
+import { useForm } from '@vorms/core';
+import { zodResolver } from '@vorms/resolvers/zod';
 import z from 'zod'
 
 const { register, errors, handleSubmit } = useForm({
@@ -126,8 +126,8 @@ const { value: password, attrs: passwordAttrs } = register('password');
 
 ## Examples
 
-- [Validate With Yup](https://stackblitz.com/edit/vue-composition-form-validate-with-yup?file=src%2FApp.vue)
-- [Validate With Zod](https://stackblitz.com/edit/vue-composition-form-validate-with-zod?file=src%2FApp.vue)
+- [Validate With Yup](https://stackblitz.com/edit/vorms-validate-with-yup?file=src%2FApp.vue)
+- [Validate With Zod](https://stackblitz.com/edit/vorms-validate-with-zod?file=src%2FApp.vue)
 
 ## Credits
 

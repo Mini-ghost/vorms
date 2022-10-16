@@ -1,13 +1,14 @@
 {
-  "name": "vue-composition-form",
+  "name": "vorms",
+  "packageManager": "pnpm@7.11.0",
   "workspaces": [
     "packages/*"
   ],
-  "description": "vue fome validate",
+  "description": "vue form validate",
   "scripts": {
     "dev": "pnpm -r --parallel run dev",
     "lint": "eslint './packages/**/*.{js,ts}'",
-    "lint:fix": "pnpm lint -- --fix",
+    "lint:fix": "pnpm lint --fix",
     "play": "cd playground && pnpm dev",
     "prepare": "husky install",
     "test": "vitest run"
@@ -45,13 +46,11 @@
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
     "rollup": "^2.70.2",
+    "rollup-plugin-dts": "^4.2.2",
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.31.2",
     "typescript": "^4.6.3",
     "vitest": "^0.15.1",
     "vue": "^3.0.0"
-  },
-  "dependencies": {
-    "rollup-plugin-dts": "^4.2.2"
   }
 }

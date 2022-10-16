@@ -1,10 +1,6 @@
-import {
-  ComputedRef,
-  DeepReadonly,
-  WritableComputedRef,
-  UnwrapNestedRefs,
-  Ref,
-} from 'vue';
+import { ComputedRef, WritableComputedRef, UnwrapNestedRefs, Ref } from 'vue';
+
+export type MaybeRef<T> = T | Ref<T>;
 
 export type FormValues = Record<string, any>;
 
@@ -60,7 +56,7 @@ export interface FieldRegisterOptions<Values> {
 
 export type UseFormRegisterReturn<Value> = FieldMeta & {
   value: WritableComputedRef<Value>;
-  attrs: FieldAttrs;
+  attrs: ComputedRef<FieldAttrs>;
 };
 
 export type SetFieldArrayValue = <T extends (...args: any) => any>(
@@ -78,7 +74,7 @@ export type UseFormRegister<Values extends FormValues> = <
   Name extends Path<Values>,
   Value = PathValue<Values, Name>,
 >(
-  name: Name,
+  name: MaybeRef<Name>,
   options?: FieldRegisterOptions<Value>,
 ) => UseFormRegisterReturn<Value>;
 
@@ -105,6 +101,7 @@ export interface FormResetState<Values extends FormValues = FormValues> {
   values: Values;
   touched: FormTouched<Values>;
   errors: FormErrors<Values>;
+  submitCount: number;
 }
 
 export type ResetForm<Values extends FormValues> = (
@@ -112,7 +109,7 @@ export type ResetForm<Values extends FormValues> = (
 ) => void;
 
 export interface UseFormReturn<Values extends FormValues> {
-  values: DeepReadonly<UnwrapNestedRefs<Values>>;
+  values: UnwrapNestedRefs<Values>;
   touched: ComputedRef<FormTouched<Values>>;
   errors: ComputedRef<FormErrors<Values>>;
   submitCount: ComputedRef<number>;
@@ -129,11 +126,11 @@ export interface UseFormReturn<Values extends FormValues> {
   validateField: ValidateField<Values>;
 }
 
-export interface FieldAttrs {
+export type FieldAttrs = {
   name: string;
   onBlur: (event: Event) => void;
   onChange: () => void;
-}
+};
 
 export type FieldMeta = {
   dirty: ComputedRef<boolean>;

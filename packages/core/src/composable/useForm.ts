@@ -1,22 +1,22 @@
-import { computed, reactive, ref, onMounted, provide, readonly } from 'vue';
+import { computed, reactive, ref, unref, onMounted, provide } from 'vue';
 import isEqual from 'fast-deep-equal/es6';
 import { klona as deepClone } from 'klona/full';
 import deepmerge from 'deepmerge';
 
 import { FormContextKey } from './useFormContext';
-import { FormInternalContextKey } from './useFormInternalContext';
+import { InternalContextKey } from './useInternalContext';
+import useFormStore from './useFormStore';
 
 import isPromise from '../utils/isPromise';
-import keysOf from '../utils/keysOf';
+import isString from '../utils/isString';
 import isFunction from '../utils/isFunction';
+import keysOf from '../utils/keysOf';
 import get from '../utils/get';
 import set from '../utils/set';
 
-import useFormStore from './useFormStore';
-import isString from '../utils/isString';
-
 import type { Reducer } from './useFormStore';
 import type {
+  MaybeRef,
   FormValues,
   FormState,
   FormErrors,
@@ -53,6 +53,7 @@ export type ValidateMode = 'blur' | 'input' | 'change' | 'submit';
 export interface UseFormOptions<Values extends FormValues> {
   initialValues: Values;
   initialErrors?: FormErrors<Values>;
+  initialTouched?: FormTouched<Values>;
   validateMode?: ValidateMode;
   reValidateMode?: ValidateMode;
   validateOnMounted?: boolean;
@@ -147,6 +148,7 @@ function reducer<Values extends FormValues>(
 
       state.touched.value = message.payload.touched;
       state.errors.value = message.payload.errors;
+      state.submitCount.value = message.payload.submitCount;
   }
 }
 /**
@@ -169,8 +171,8 @@ function reducer<Values extends FormValues>(
  *   },
  * });
  *
- * const { value: name, attrs: nameAttrs } = register('anme')
- * const { value: age, attrs: ageAttrs } = register('anme')
+ * const { value: name, attrs: nameAttrs } = register('name')
+ * const { value: age, attrs: ageAttrs } = register('name')
  * </script>
  *
  * <template>
@@ -198,7 +200,9 @@ export function useForm<Values extends FormValues = FormValues>(
   >(reducer, {
     values: reactive(deepClone(options.initialValues)),
     errors: ref(options.initialErrors ? deepClone(options.initialErrors) : {}),
-    touched: ref({}),
+    touched: ref(
+      options.initialTouched ? deepClone(options.initialTouched) : {},
+    ),
     submitCount: ref(0),
     isSubmitting: ref(false),
     isValidating: ref(false),
@@ -213,18 +217,20 @@ export function useForm<Values extends FormValues = FormValues>(
     state.submitCount.value === 0 ? validateMode : reValidateMode,
   );
 
-  const registerField = (name: string, { validate }: any = {}) => {
-    fieldRegistry[name] = {
+  const registerField = (name: MaybeRef<string>, { validate }: any = {}) => {
+    fieldRegistry[unref(name)] = {
       validate,
     };
   };
 
-  const registerFieldArray = (name: string, { reset, validate }: any) => {
-    fieldRegistry[name] = {
+  const registerFieldArray = (name: MaybeRef<string>, options: any) => {
+    const { validate, reset } = options;
+
+    fieldRegistry[unref(name)] = {
       validate,
     };
 
-    fieldArrayRegistry[name] = {
+    fieldArrayRegistry[unref(name)] = {
       reset,
     };
   };
@@ -362,21 +368,23 @@ export function useForm<Values extends FormValues = FormValues>(
     dispatch({ type: ACTION_TYPE.SET_ISSUBMITTING, payload: isSubmitting });
   };
 
-  const getFieldValue = (name: string) => {
+  const getFieldValue = (name: MaybeRef<string>) => {
     return computed<any>({
       get() {
-        return get(state.values, name);
+        return get(state.values, unref(name));
       },
       set(value) {
-        setFieldValue(name, value);
+        setFieldValue(unref(name), value);
       },
     });
   };
 
-  const getFieldMeta = (name: string): FieldMeta => {
-    const error = computed(() => getFieldError(name) as any as string);
-    const touched = computed(() => getFieldTouched(name) as any as boolean);
-    const dirty = computed(() => getFieldDirty(name));
+  const getFieldMeta = (name: MaybeRef<string>): FieldMeta => {
+    const error = computed(() => getFieldError(unref(name)) as any as string);
+    const touched = computed(
+      () => getFieldTouched(unref(name)) as any as boolean,
+    );
+    const dirty = computed(() => getFieldDirty(unref(name)));
 
     return {
       dirty,
@@ -385,12 +393,12 @@ export function useForm<Values extends FormValues = FormValues>(
     };
   };
 
-  const getFieldAttrs = (name: string): FieldAttrs => {
-    return {
-      name,
+  const getFieldAttrs = (name: MaybeRef<string>) => {
+    return computed<FieldAttrs>(() => ({
+      name: unref(name),
       onBlur: handleBlur,
       onChange: handleChange,
-    };
+    }));
   };
 
   const getFieldError = (name: string): FormErrors<any> => {
@@ -420,11 +428,11 @@ export function useForm<Values extends FormValues = FormValues>(
       isFunction(fieldRegistry[field].validate),
     ) as string[];
 
-    const fieldValidatePromisea = fieldKeysWithValidation.map((field) =>
+    const fieldValidatePromise = fieldKeysWithValidation.map((field) =>
       runSingleFieldValidateHandler(field, get(values, field)),
     );
 
-    return Promise.all(fieldValidatePromisea).then((errors) =>
+    return Promise.all(fieldValidatePromise).then((errors) =>
       errors.reduce((prev, curr, index) => {
         if (curr) {
           set(prev, fieldKeysWithValidation[index], curr);
@@ -473,9 +481,7 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const handleSubmit = (event?: Event) => {
-    if (event && event.preventDefault) {
-      event.preventDefault();
-    }
+    event?.preventDefault();
 
     dispatch({ type: ACTION_TYPE.SUBMIT_ATTEMPT });
 
@@ -493,9 +499,8 @@ export function useForm<Values extends FormValues = FormValues>(
             dispatch({ type: ACTION_TYPE.SUBMIT_SUCCESS });
             return result;
           })
-          .catch((error) => {
+          .catch(() => {
             dispatch({ type: ACTION_TYPE.SUBMIT_FAILURE });
-            throw error;
           });
       } else {
         dispatch({ type: ACTION_TYPE.SUBMIT_FAILURE });
@@ -505,20 +510,19 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const resetForm: ResetForm<Values> = (nextState) => {
-    const values =
-      nextState && nextState.values ? nextState.values : initialValues;
-
-    const touched = nextState && nextState.touched ? nextState.touched : {};
-    const errors = nextState && nextState.errors ? nextState.errors : {};
-
+    const values = deepClone(nextState?.values || initialValues);
     initialValues = deepClone(values);
 
     dispatch({
       type: ACTION_TYPE.RESET_FORM,
       payload: {
         values,
-        touched,
-        errors,
+        touched: deepClone(nextState?.touched) || {},
+        errors: deepClone(nextState?.errors) || {},
+        submitCount:
+          typeof nextState?.submitCount === 'number'
+            ? nextState.submitCount
+            : 0,
       },
     });
 
@@ -529,9 +533,7 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const handleReset = (event?: Event) => {
-    if (event && event.preventDefault) {
-      event.preventDefault();
-    }
+    event?.preventDefault();
 
     resetForm();
   };
@@ -547,21 +549,24 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const validateField: ValidateField<Values> = (name) => {
-    dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: true });
-    return runSingleFieldValidateHandler(name, get(state.values, name))
-      .then((error) => {
-        dispatch({
-          type: ACTION_TYPE.SET_FIELD_ERROR,
-          payload: { path: name, error },
+    if (fieldRegistry[name] && isFunction(fieldRegistry[name].validate)) {
+      dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: true });
+      return runSingleFieldValidateHandler(name, get(state.values, name))
+        .then((error) => {
+          dispatch({
+            type: ACTION_TYPE.SET_FIELD_ERROR,
+            payload: { path: name, error },
+          });
+        })
+        .finally(() => {
+          dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: false });
         });
-      })
-      .finally(() => {
-        dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: false });
-      });
+    }
+    return Promise.resolve();
   };
 
   const context = {
-    values: readonly(state.values),
+    values: state.values,
     touched: computed(() => state.touched.value),
     errors: computed(() => state.errors.value),
     submitCount: computed(() => state.submitCount.value),
@@ -578,7 +583,7 @@ export function useForm<Values extends FormValues = FormValues>(
     validateField,
   };
 
-  provide(FormInternalContextKey, {
+  provide(InternalContextKey, {
     getFieldMeta,
     getFieldValue,
     setFieldValue,

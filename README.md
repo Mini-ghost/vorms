@@ -1,33 +1,33 @@
 ## Install
 
 ```bash
-npm install @vue-composition-form/core@beta
+npm install @vorms/core@beta
 ```
 
 ## Feature
 
 - Type Strong (Written in TypeScript, with TSDoc)
-- [Small Size](https://bundlephobia.com/package/@vue-composition-form/core@0.0.1-beta.5) (~11kb, gzip: ~4kb)
+- [Small Size](https://bundlephobia.com/package/@vorms/core@0.0.1-beta.10) (~11kb, gzip: ~4kb)
 - Pure Composition API
 - Support [Yup](https://github.com/jquense/yup), [Zod](https://github.com/colinhacks/zod) and custom build
 
 ## Examples
 
-- [Login](https://stackblitz.com/edit/vue-composition-form-login?file=src%2FApp.vue)
-- [Field Array](https://stackblitz.com/edit/vue-composition-form-field-array?file=src%2FApp.vue)
-- [Cross Field Validate](https://stackblitz.com/edit/vue-composition-form-corss-field-validate?file=src%2FApp.vue)
-- [Wizard Form](https://stackblitz.com/edit/vue-composition-form-wizard-form?file=src%2FApp.vue)
-- [Custom Components](https://stackblitz.com/edit/vue-composition-form-custom-components?file=src%2FApp.vue)
-- [UI Library - Vuetify](https://stackblitz.com/edit/vue-composition-form-vuetify?file=src%2FApp.vue)
-- [UI Library - Element Plus](https://stackblitz.com/edit/vue-composition-form-with-element-plus?file=src%2FApp.vue)
-- [Validate With Yup](https://stackblitz.com/edit/vue-composition-form-validate-with-yup?file=src%2FApp.vue)
-- [Validate With Zod](https://stackblitz.com/edit/vue-composition-form-validate-with-zod?file=src%2FApp.vue)
+- [Login](https://stackblitz.com/edit/vorms-login?file=src%2FApp.vue)
+- [Field Array](https://stackblitz.com/edit/vorms-field-array?file=src%2FApp.vue)
+- [Cross Field Validate](https://stackblitz.com/edit/vorms-corss-field-validate?file=src%2FApp.vue)
+- [Wizard Form](https://stackblitz.com/edit/vorms-wizard-form?file=src%2FApp.vue)
+- [Custom Components](https://stackblitz.com/edit/vorms-custom-components?file=src%2FApp.vue)
+- [UI Library - Vuetify](https://stackblitz.com/edit/vorms-vuetify?file=src%2FApp.vue)
+- [UI Library - Element Plus](https://stackblitz.com/edit/vorms-with-element-plus?file=src%2FApp.vue)
+- [Validate With Yup](https://stackblitz.com/edit/vorms-validate-with-yup?file=src%2FApp.vue)
+- [Validate With Zod](https://stackblitz.com/edit/vorms-validate-with-zod?file=src%2FApp.vue)
 
 ## API
 
 ### useForm
 
-`useForm()` is a custom Vue composition api that will return all Vue Composition Form state and helpers directly.
+`useForm()` is a custom Vue composition api that will return all Vorms state and helpers directly.
 
 **Options**
 
@@ -35,7 +35,8 @@ npm install @vue-composition-form/core@beta
 | ----------------- | -------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------------------------------------------- |
 | initialValues     | `Values`                                                             | ✓        | This is the form initial value, is required.                                                                               |
 | initialErrors     | `FormErrors<Values>`                                                 |          | This is the form initial error.                                                                                            |
-| validate          | `(valuse: Values) => void \| object \| Promise<FormErrors<Values>>`  |          | This function allows you to write your logic to validate your form, this is optional.                                      |
+| initialTouched    | `FormTouched<Values>`                                                |          | This is the form initial touched.                                                                                          |
+| validate          | `(values: Values) => void \| object \| Promise<FormErrors<Values>>`  |          | This function allows you to write your logic to validate your form, this is optional.                                      |
 | validateMode      | `ValidateMode` = 'submit'                                            |          | This option allows you to configure the validation strategy **before** first submit.                                       |
 | reValidateMode    | `ValidateMode` = 'change'                                            |          | This option allows you to configure the validation strategy **after** first submit.                                        |
 | validateOnMounted | `boolean` = `false`                                                  |          | This option allows you to configure the validation run when the component is mounted.                                      |
@@ -51,22 +52,22 @@ type ValidateMode = 'blur' | 'input' | 'change' | 'submit'
 
 **Return**
 
-| Name          | Type                                                                              | Description                                                                                                                                |
-| ------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| values        | `DeepReadonly<Values>`                                                            | Current form values.                                                                                                                       |
-| errors        | `ComputedRef<FormErrors<Values>>`                                                 | Map of field name to the field has been touched                                                                                            |
-| touched       | `ComputedRef<FormTouched<Values>>`                                                | Map of field name to specific error for that field                                                                                         |
-| dirty         | `ComputedRef<boolean>`                                                            | Return `true` if current values are not deeply equal `initialValues`.                                                                      |
-| setValues     | `(values: Values, shouldValidate?: boolean)`                                      | This function allows you to dynamically update form values.                                                                                |
-| setFieldValue | `(name: string, value: unknown, shouldValidate?: boolean)`                        | This function allows you to dynamically set the value of field.                                                                            |
-| submitCount   | `ComputedRef<number>`                                                             | The number of times user attempted to submit.                                                                                              |
-| isSubmitting  | `Ref<boolean>`                                                                    | Return `true` when form is submitting, If `onSubmit()` is a synchronous function, then you need to call setSubmitting(false) on your own.  |
-| isValidating  | `ComputedRef<boolean>`                                                            | Return `true` when running validation.                                                                                                     |
-| register      | `(name: string, options?: FieldRegisterOptions<Values>) => UseFormRegisterReturn` | This method allows you to get specific field values, meta (state) and attributes, you can also add validation for that field.              |
-| handleSubmit  | `(event?: Event) => void`                                                         | Submit handler.                                                                                                                            |
-| handleReset   | `(event?: Event) => void`                                                         | Reset handler.                                                                                                                             |
-| validateForm  | `(values?: Values) => Promise<FormErrors<Values>>`                                | Validate form values.                                                                                                                      |
-| validateField | `(name: string) => Promise<void>`                                                 | Validate form specific field, if this field validation is register.                                                                        |
+| Name          | Type                                                                                             | Description                                                                                                                                |
+| ------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| values        | `Values`                                                                                         | Current form values.                                                                                                                       |
+| errors        | `ComputedRef<FormErrors<Values>>`                                                                | Map of field name to the field has been touched                                                                                            |
+| touched       | `ComputedRef<FormTouched<Values>>`                                                               | Map of field name to specific error for that field                                                                                         |
+| dirty         | `ComputedRef<boolean>`                                                                           | Return `true` if current values are not deeply equal `initialValues`.                                                                      |
+| setValues     | `(values: Values, shouldValidate?: boolean)`                                                     | This function allows you to dynamically update form values.                                                                                |
+| setFieldValue | `(name: string, value: unknown, shouldValidate?: boolean)`                                       | This function allows you to dynamically set the value of field.                                                                            |
+| submitCount   | `ComputedRef<number>`                                                                            | The number of times user attempted to submit.                                                                                              |
+| isSubmitting  | `Ref<boolean>`                                                                                   | Return `true` when form is submitting, If `onSubmit()` is a synchronous function, then you need to call setSubmitting(false) on your own.  |
+| isValidating  | `ComputedRef<boolean>`                                                                           | Return `true` when running validation.                                                                                                     |
+| register      | `(name: string \| Ref<string>, options?: FieldRegisterOptions<Values>) => UseFormRegisterReturn` | This method allows you to get specific field values, meta (state) and attributes, you can also add validation for that field.              |
+| handleSubmit  | `(event?: Event) => void`                                                                        | Submit handler.                                                                                                                            |
+| handleReset   | `(event?: Event) => void`                                                                        | Reset handler.                                                                                                                             |
+| validateForm  | `(values?: Values) => Promise<FormErrors<Values>>`                                               | Validate form values.                                                                                                                      |
+| validateField | `(name: string) => Promise<void>`                                                                | Validate form specific field, if this field validation is register.                                                                        |
 
 <br>
 
@@ -97,7 +98,7 @@ type UseFormRegisterReturn<Value> =  {
 
 ```vue
 <script setup lang="ts">
-import { useForm } from '@vue-composition-form/core'
+import { useForm } from '@vorms/core'
 
 interface InitialValues {
   drink: string,
@@ -215,9 +216,8 @@ const { value: bag, attrs: bagFieldAttrs } = register('bag')
 
 | Name             | Type                                                          | Required | Description                                                                            |
 | ---------------- | ------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------- |
-| name             | `string`                                                      | ✓        | Name of the field.                                                                     |
-| options.validate | `(valus: Value) => void \| string \| Promise<string \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
-
+| name             | `string \| Ref<string>`                                       | ✓        | Name of the field.                                                                     |
+| options.validate | `(value: Value) => void \| string \| Promise<string \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
 
 **Return**
 
@@ -235,7 +235,7 @@ const { value: bag, attrs: bagFieldAttrs } = register('bag')
 
 ```vue
 <script setup lang="ts">
-import { useField } from '@vue-composition-form/core'
+import { useField } from '@vorms/core'
 
 const { value, attrs } = useField<string>('ice', {
   validate(value) {
@@ -265,9 +265,8 @@ const { value, attrs } = useField<string>('ice', {
 
 | Name             | Type                                                                                  | Required | Description                                                                            |
 | ---------------- | ------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------- |
-| name             | `string`                                                                              | ✓        | Name of the field array.                                                               |
-| options.validate | `(valus: Value) => void \| FormErrors<Values> \| Promise<FormErrors<Values> \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
-
+| name             | `string \| Ref<string>`                                                               | ✓        | Name of the field array.                                                               |
+| options.validate | `(value: Value) => void \| FormErrors<Values> \| Promise<FormErrors<Values> \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
 
 **Return**
 
@@ -300,11 +299,11 @@ interface FieldEntry {
 }
 ```
 
-**Return**
+**Example**
 
 ```vue
 <script setup lang="ts">
-import { useForm, useFieldArray } from '@vue-composition-form/core'
+import { useForm, useFieldArray } from '@vorms/core'
 
 const { handleSubmit } = useForm({
   initialValues: {
@@ -346,7 +345,7 @@ const onAppend = () => {
 
 ```vue
 <script setup lang="ts">
-import { useForm } from '@vue-composition-form/core'
+import { useForm } from '@vorms/core'
 import NestedTextField from './components/NestedTextField.vue'
 
 const { handleSubmit } = useForm({
@@ -369,7 +368,7 @@ const { handleSubmit } = useForm({
 ```vue
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useField, useFormContext } from '@vue-composition-form/core'
+import { useField, useFormContext } from '@vorms/core'
 
 const { validateField } = useFormContext()
 
@@ -402,6 +401,11 @@ const onCheckStock = async () => {
   </div>
 </template>
 ```
+
 ## Credits
 
 API inspired by [Formik](https://github.com/jaredpalmer/formik), [React Hook Form](https://github.com/react-hook-form/react-hook-form), [VeeValidate](https://github.com/logaretm/vee-validate)
+
+## License
+
+[MIT License](https://github.com/Mini-ghost/vorms/blob/main/LICENSE) © 2022-PRESENT [Alex Liu](https://github.com/Mini-ghost)
