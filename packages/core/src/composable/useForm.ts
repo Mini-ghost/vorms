@@ -58,6 +58,9 @@ export interface UseFormOptions<Values extends FormValues> {
   reValidateMode?: ValidateMode;
   validateOnMounted?: boolean;
   onSubmit: (values: Values, helper: FormSubmitHelper) => void | Promise<any>;
+  /**
+   * @deprecated Will be removed in a major release. Please use `watch(errors, callback)` instead.
+   */
   onError?: (errors: FormErrors<Values>) => void;
   validate?: (values: Values) => void | object | Promise<FormErrors<Values>>;
 }
