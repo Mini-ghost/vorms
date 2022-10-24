@@ -151,6 +151,10 @@ function reducer<Values extends FormValues>(
       state.submitCount.value = message.payload.submitCount;
   }
 }
+
+const emptyErrors: FormErrors<unknown> = {};
+const emptyTouched: FormTouched<unknown> = {};
+
 /**
  * Custom composition API to mange the entire form.
  *
@@ -199,16 +203,17 @@ export function useForm<Values extends FormValues = FormValues>(
     Reducer<FormState<Values>, FormMessage<Values>>
   >(reducer, {
     values: reactive(deepClone(options.initialValues)),
-    errors: ref(options.initialErrors ? deepClone(options.initialErrors) : {}),
-    touched: ref(
-      options.initialTouched ? deepClone(options.initialTouched) : {},
-    ),
+    errors: ref(deepClone(options.initialErrors || emptyErrors)),
+    touched: ref(deepClone(options.initialTouched || emptyTouched)),
     submitCount: ref(0),
     isSubmitting: ref(false),
     isValidating: ref(false),
   });
 
   let initialValues = deepClone(options.initialValues);
+  let initialErrors = deepClone(options.initialErrors || emptyErrors);
+  let initialTouched = deepClone(options.initialTouched || emptyTouched);
+
   const fieldRegistry: FieldRegistry = {};
   const fieldArrayRegistry: FieldArrayRegistry = {};
 
@@ -511,14 +516,19 @@ export function useForm<Values extends FormValues = FormValues>(
 
   const resetForm: ResetForm<Values> = (nextState) => {
     const values = deepClone(nextState?.values || initialValues);
+    const errors = deepClone(nextState?.errors || initialErrors);
+    const touched = deepClone(nextState?.touched || initialTouched);
+
     initialValues = deepClone(values);
+    initialErrors = deepClone(errors);
+    initialTouched = deepClone(touched);
 
     dispatch({
       type: ACTION_TYPE.RESET_FORM,
       payload: {
         values,
-        touched: deepClone(nextState?.touched) || {},
-        errors: deepClone(nextState?.errors) || {},
+        touched,
+        errors,
         submitCount:
           typeof nextState?.submitCount === 'number'
             ? nextState.submitCount
