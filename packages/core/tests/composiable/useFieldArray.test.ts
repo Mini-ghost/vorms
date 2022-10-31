@@ -1,0 +1,349 @@
+import { describe, expect, it } from 'vitest';
+import { mount } from '@vue/test-utils';
+import { defineComponent } from 'vue';
+
+import { useForm, useFieldArray } from '../../src';
+
+const noop = () => {};
+
+const setup = (setup: () => unknown) => {
+  const Comp = defineComponent({
+    setup,
+    template: `<div />`,
+  });
+
+  return mount(Comp);
+};
+
+const useBasicTestFieldArray = (
+  options: Omit<Parameters<typeof useForm>[0], 'onSubmit'>,
+) => {
+  useForm({
+    ...options,
+    onSubmit: noop,
+  });
+
+  const {
+    fields,
+    append,
+    prepend,
+    swap,
+    remove,
+    replace,
+    move,
+    insert,
+    update,
+  } = useFieldArray<number>('list');
+
+  return {
+    fields,
+    append,
+    prepend,
+    swap,
+    remove,
+    replace,
+    move,
+    insert,
+    update,
+  };
+};
+
+describe('useFieldArray', () => {
+  it('when not using it in the correct structure', () => {
+    setup(() => {
+      expect(() => useFieldArray('name')).toThrowError();
+    });
+  });
+
+  it('when useFieldArray initialization fields', () => {
+    setup(() => {
+      const { fields } = useBasicTestFieldArray({
+        initialValues: {
+          list: [0, 1, 2],
+        },
+      });
+
+      expect(fields.value[0].value).toEqual(0);
+      expect(fields.value[0].dirty).toEqual(false);
+      expect(fields.value[0].error).toEqual(undefined);
+      expect(fields.value[0].touched).toEqual(undefined);
+      expect(fields.value[0].name).toEqual('list.0');
+
+      expect(fields.value[1].value).toEqual(1);
+      expect(fields.value[1].dirty).toEqual(false);
+      expect(fields.value[1].error).toEqual(undefined);
+      expect(fields.value[1].touched).toEqual(undefined);
+      expect(fields.value[1].name).toEqual('list.1');
+
+      expect(fields.value[2].value).toEqual(2);
+      expect(fields.value[2].dirty).toEqual(false);
+      expect(fields.value[2].error).toEqual(undefined);
+      expect(fields.value[2].touched).toEqual(undefined);
+      expect(fields.value[2].name).toEqual('list.2');
+    });
+  });
+
+  it('when invoke method that append()', () => {
+    setup(() => {
+      const { fields, append } = useBasicTestFieldArray({
+        initialValues: {
+          list: [0],
+        },
+        initialErrors: {
+          list: ['error 0'],
+        },
+        initialTouched: {
+          list: [true],
+        },
+      });
+
+      append(1);
+      expect(fields.value[1].value).toEqual(1);
+      expect(fields.value[1].dirty).toEqual(true);
+      expect(fields.value[1].error).toEqual(undefined);
+      expect(fields.value[1].touched).toEqual(undefined);
+      expect(fields.value[1].name).toEqual('list.1');
+
+      expect(fields.value[0].value).toEqual(0);
+      expect(fields.value[0].dirty).toEqual(false);
+      expect(fields.value[0].error).toEqual('error 0');
+      expect(fields.value[0].touched).toEqual(true);
+      expect(fields.value[0].name).toEqual('list.0');
+    });
+  });
+
+  it('when invoke method that prepend()', () => {
+    setup(() => {
+      const { fields, prepend } = useBasicTestFieldArray({
+        initialValues: {
+          list: [1],
+        },
+        initialErrors: {
+          list: ['error 1'],
+        },
+        initialTouched: {
+          list: [true],
+        },
+      });
+
+      prepend(2);
+      expect(fields.value[0].value).toEqual(2);
+      expect(fields.value[0].dirty).toEqual(true);
+      expect(fields.value[0].error).toEqual(undefined);
+      expect(fields.value[0].touched).toEqual(undefined);
+      expect(fields.value[0].name).toEqual('list.0');
+
+      expect(fields.value[1].value).toEqual(1);
+      expect(fields.value[1].dirty).toEqual(true);
+      expect(fields.value[1].error).toEqual('error 1');
+      expect(fields.value[1].touched).toEqual(true);
+      expect(fields.value[1].name).toEqual('list.1');
+    });
+  });
+
+  it('when invoke method that swap()', () => {
+    setup(() => {
+      const { fields, swap } = useBasicTestFieldArray({
+        initialValues: {
+          list: [1, 2],
+        },
+        initialErrors: {
+          list: ['error 1', 'error 2'],
+        },
+        initialTouched: {
+          list: [true, true],
+        },
+      });
+
+      swap(0, 1);
+      expect(fields.value[0].value).toEqual(2);
+      expect(fields.value[0].dirty).toEqual(true);
+      expect(fields.value[0].error).toEqual('error 2');
+      expect(fields.value[0].touched).toEqual(true);
+      expect(fields.value[0].name).toEqual('list.0');
+
+      expect(fields.value[1].value).toEqual(1);
+      expect(fields.value[1].dirty).toEqual(true);
+      expect(fields.value[1].error).toEqual('error 1');
+      expect(fields.value[1].touched).toEqual(true);
+      expect(fields.value[1].name).toEqual('list.1');
+    });
+  });
+
+  it('when invoke method that remove()', () => {
+    setup(() => {
+      const { fields, remove } = useBasicTestFieldArray({
+        initialValues: {
+          list: [1, 2, 3],
+        },
+        initialErrors: {
+          list: ['error 1', 'error 2', 'error 3'],
+        },
+        initialTouched: {
+          list: [true, true, true],
+        },
+      });
+
+      remove(0);
+      expect(fields.value[0].value).toEqual(2);
+      expect(fields.value[0].dirty).toEqual(true);
+      expect(fields.value[0].error).toEqual('error 2');
+      expect(fields.value[0].touched).toEqual(true);
+      expect(fields.value[0].name).toEqual('list.0');
+
+      expect(fields.value.length).toEqual(2);
+
+      remove();
+      expect(fields.value.length).toEqual(0);
+    });
+  });
+
+  it('when invoke method that move()', () => {
+    setup(() => {
+      const { fields, move } = useBasicTestFieldArray({
+        initialValues: {
+          list: [1, 2, 3],
+        },
+        initialErrors: {
+          list: ['error 1', 'error 2', 'error 3'],
+        },
+        initialTouched: {
+          list: [true, true, true],
+        },
+      });
+
+      move(0, 2);
+      expect(fields.value[0].value).toEqual(2);
+      expect(fields.value[0].dirty).toEqual(true);
+      expect(fields.value[0].error).toEqual('error 2');
+      expect(fields.value[0].touched).toEqual(true);
+      expect(fields.value[0].name).toEqual('list.0');
+
+      expect(fields.value[1].value).toEqual(3);
+      expect(fields.value[1].dirty).toEqual(true);
+      expect(fields.value[1].error).toEqual('error 3');
+      expect(fields.value[1].touched).toEqual(true);
+      expect(fields.value[1].name).toEqual('list.1');
+
+      expect(fields.value[2].value).toEqual(1);
+      expect(fields.value[2].dirty).toEqual(true);
+      expect(fields.value[2].error).toEqual('error 1');
+      expect(fields.value[2].touched).toEqual(true);
+      expect(fields.value[2].name).toEqual('list.2');
+    });
+  });
+
+  it('when invoke method that insert()', () => {
+    setup(() => {
+      const { fields, insert } = useBasicTestFieldArray({
+        initialValues: {
+          list: [1, 3],
+        },
+        initialErrors: {
+          list: ['error 1', 'error 3'],
+        },
+        initialTouched: {
+          list: [true, true],
+        },
+      });
+
+      insert(1, 2);
+
+      expect(fields.value[0].value).toEqual(1);
+      expect(fields.value[0].dirty).toEqual(false);
+      expect(fields.value[0].error).toEqual('error 1');
+      expect(fields.value[0].touched).toEqual(true);
+      expect(fields.value[0].name).toEqual('list.0');
+
+      expect(fields.value[1].value).toEqual(2);
+      expect(fields.value[1].dirty).toEqual(true);
+      expect(fields.value[1].error).toEqual(undefined);
+      expect(fields.value[1].touched).toEqual(undefined);
+      expect(fields.value[1].name).toEqual('list.1');
+
+      expect(fields.value[2].value).toEqual(3);
+      expect(fields.value[2].dirty).toEqual(true);
+      expect(fields.value[2].error).toEqual('error 3');
+      expect(fields.value[2].touched).toEqual(true);
+      expect(fields.value[2].name).toEqual('list.2');
+    });
+  });
+
+  it('when invoke method that update()', () => {
+    setup(() => {
+      const { fields, update } = useBasicTestFieldArray({
+        initialValues: {
+          list: [1, 3],
+        },
+        initialErrors: {
+          list: ['error 1', 'error 3'],
+        },
+        initialTouched: {
+          list: [true, true],
+        },
+      });
+
+      update(1, 2);
+
+      expect(fields.value[0].value).toEqual(1);
+      expect(fields.value[0].dirty).toEqual(false);
+      expect(fields.value[0].error).toEqual('error 1');
+      expect(fields.value[0].touched).toEqual(true);
+      expect(fields.value[0].name).toEqual('list.0');
+
+      expect(fields.value[1].value).toEqual(2);
+      expect(fields.value[1].dirty).toEqual(true);
+      expect(fields.value[1].error).toEqual(undefined);
+      expect(fields.value[1].touched).toEqual(undefined);
+      expect(fields.value[1].name).toEqual('list.1');
+    });
+  });
+
+  it('when invoke method that replace()', () => {
+    setup(() => {
+      const { fields, replace } = useBasicTestFieldArray({
+        initialValues: {
+          list: [1, 2],
+        },
+        initialErrors: {
+          list: ['error 1', 'error 2'],
+        },
+        initialTouched: {
+          list: [true, true],
+        },
+      });
+
+      replace([3, 4]);
+
+      expect(fields.value[0].value).toEqual(3);
+      expect(fields.value[0].dirty).toEqual(true);
+      expect(fields.value[0].error).toEqual('error 1');
+      expect(fields.value[0].touched).toEqual(true);
+      expect(fields.value[0].name).toEqual('list.0');
+
+      expect(fields.value[1].value).toEqual(4);
+      expect(fields.value[1].dirty).toEqual(true);
+      expect(fields.value[1].error).toEqual('error 2');
+      expect(fields.value[1].touched).toEqual(true);
+      expect(fields.value[1].name).toEqual('list.1');
+    });
+  });
+
+  it('when update the value of fields directly', () => {
+    setup(() => {
+      const { fields } = useBasicTestFieldArray({
+        initialValues: {
+          list: [1],
+        },
+      });
+
+      expect(fields.value[0].value).toEqual(1);
+      expect(fields.value[0].dirty).toEqual(false);
+
+      fields.value[0].value = 2;
+
+      expect(fields.value[0].value).toEqual(2);
+      expect(fields.value[0].dirty).toEqual(true);
+    });
+  });
+});
