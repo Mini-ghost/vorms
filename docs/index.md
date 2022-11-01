@@ -21,11 +21,11 @@ hero:
 
 features:
   - title: Type Strong
-    details: Written in TypeScript, with TSDoc.
+    details: Written in TypeScript, with TSDoc. Even if you prefer to use JavaScript in your projects, it still provides developers with rich intellisense.
   - title: Lightweight
-    details: Tiny bundle size, weighing in at a miniscule 4KB gzipped.
-  - title: Easy
-    details: Pure Composition API, you can easy to integration with UI Library
+    details: Tiny bundle size, Only 12kb compressed (4kb compressed + gzip compressed) and fully tree-shaking.
+  - title: Easiest
+    details: Composition API brings us a very flexible development experience, especially when dealing with complex forms.
   - title: Flexible
-    details: Support Yup, Zod and custom build.
+    details: Support Yup, Zod and custom validation. You can choose your favorite validation library or build the validation yourself.
 ---

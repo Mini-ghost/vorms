@@ -6,12 +6,12 @@
 useForm({
   initialValues: {},
   initialErrors: undefined,
+  initialTouched: undefined
   validateMode: 'submit',
   reValidateMode: 'change',
   validateOnMounted: false,
   validate() {},
   onSubmit(values, submitHelper) {},
-  onError(error) {},
 })
 ```
 
@@ -162,12 +162,6 @@ This is your form submission handler. It is passed your forms `values`. If has v
 If `onSubmit()` function is synchronous, you need to call `setSubmitting(false)` yourself.
 :::
 
-### onError
-
-This is error callback, this be called when you submit form but validation error. This is optional.
-
-- Type `(errors: FormErrors<Values>) => void`
-
 ## Returns
 
 ### values
@@ -279,13 +273,13 @@ type UseFormRegisterReturn<Value> =  {
 
 ### handleSubmit
 
-Submit handler.
+Submit handler. It will call `event.preventDefault()` in internally, If `event` is passed.
 
 - Type `(event?: Event) => void`
 
 ### handleReset
 
-Reset handler.
+Reset handler. It will call `event.preventDefault()` in internally, If `event` is passed.
 
 - Type `(event?: Event) => void`
 
