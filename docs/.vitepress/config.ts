@@ -4,6 +4,7 @@ export default defineConfig({
   title: 'Vorms',
   description: 'Vue form validate with Composition API',
 
+
   // TODO: Add `og:image` and `twitter:image`
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
@@ -19,8 +20,8 @@ export default defineConfig({
 
   markdown: {
     theme: {
-      dark: 'github-dark-dimmed',
-      light: 'vitesse-light'
+      light: 'vitesse-light',
+      dark: 'vitesse-dark',
     },
     config(md) {
       // https://github.com/markdown-it/markdown-it/issues/878

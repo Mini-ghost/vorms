@@ -30,7 +30,9 @@ const { fields, append } = useFieldArray<string>('foods')
         v-bind="field.attrs"
       >
     </div>
-    <button type="button" @click="append('Taiwanese Fried Chicken')">Append</button>
+    <button type="button" @click="append('Taiwanese Fried Chicken')">
+      Append
+    </button>
     <button type="submit">Order</button>
   </form>
 </template>
@@ -90,7 +92,7 @@ Replace the entire field array values.
   <summary>Show Type Declarations</summary>
 
   ```ts
-  function useFieldArray <Value>(name: string | MaybeRef<string>, options?: UseFieldArrayOptions<Value>): UseFieldArrayReturn<Value>
+  function useFieldArray <Value>(name: MaybeRef<string>, options?: UseFieldArrayOptions<Value>): UseFieldArrayReturn<Value>
 
   interface UseFieldArrayOptions<Value> {
     validate?: FieldArrayValidator<Value[]>;

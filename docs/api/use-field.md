@@ -2,23 +2,15 @@
 
 `useField()` is a custom Vue composition api that will return specific field value, meta (state) and attributes, you can also add validation for that field.
 
-`useField()` is equal to `register()` that return by `useForm()`.
-
 ## Usage
 
 ```vue
 <script setup lang="ts">
 import { useField } from '@vorms/core'
 
-const { value, attrs } = useField<string>('ice', {
+const { value, error, attrs } = useField<string>('drink', {
   validate(value) {
-    let error: string | undefined
-
-    if(!value.length) {
-      error = 'This is required!!'
-    }
-
-    return error
+    return value ? 'This is required!!' : undefined
   }
 })
 </script>
@@ -26,6 +18,7 @@ const { value, attrs } = useField<string>('ice', {
 <template>
   <div>
     <input v-model="value" type="text" v-bind="attrs" >
+    <span>{{ error }}</span>
   </div>
 </template>
 ```
@@ -34,7 +27,26 @@ const { value, attrs } = useField<string>('ice', {
 
 ### name (Required)
 
-Name of the field.
+The name of a specific field. Its type can be `string` or `Ref<string>`
+
+If you want to create a custom component in your application, such as `<Text Field />`, you should use `Ref<string>` to retain reactivity of `props.name`. as follows:
+
+```vue
+<script setup lang="ts">
+import { toRef } from 'vue'
+import { useField } from '@vorms/core'
+
+interface TextFieldProps {
+  name: string
+}
+
+const props = defineProps<TextFieldProps>()
+
+// or using `const nameSync = computed(() => props.name)`
+const nameRef = toRef(props, 'name')
+const { value } = useField(nameRef)
+</script>
+```
 
 ### options.validate
 
@@ -46,7 +58,9 @@ This function allows you to write your logic to validate your field, this is opt
 
 Current field value.
 
-### errors
+- Type `Ref<Value>`
+
+### error
 
 Field error message.
 
@@ -58,14 +72,23 @@ Return `true` after input first blur.
 
 Return `true` if current field value are not equal initial value.
 
-### attrs.name
+### attrs
 
-Input's name that we pass by.
+`attrs` is attributes that need to be bound on the field.
 
-### attrs.onBlur
+- Type `ComputedRef<FieldAttrs>`
 
-onBlur prop to subscribe the input blur event.
+  ```ts
+  interface FieldAttrs = {
+    // Field's name that we pass by.
+    name: string;
+    onBlur(event: Event): void;
+    onChange(): void;
+  };
+  ```
 
-### attrs.onChange
+- Example
 
-onChange prop to subscribe the input change event.
+  ```html
+  <input v-model="value" type="text" v-bind="attrs" />
+  ```

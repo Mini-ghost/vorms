@@ -1,8 +1,10 @@
 # useForm
 
-`useForm()` is a custom Vue composition api for managing form value and status.
+`useForm()` is a custom Vue composition api that makes form value and state management easiest.
 
 ## Usage
+
+The following code excerpt demonstrates a basic usage example:
 
 ```vue
 <script setup lang="ts">
@@ -12,7 +14,6 @@ const { errors, dirty, register, handleSubmit, handleReset } = useForm({
   initialValues: {
     drink: '',
     sugar: 30,
-    ice: 'light',
   },
   validate (values) {
     const errors: Record<string, any> = {}
@@ -25,57 +26,35 @@ const { errors, dirty, register, handleSubmit, handleReset } = useForm({
   },
 
   onSubmit(data, { setSubmitting }) {
-    // do something ...
-
-    // If `onSubmit()` function is synchronous, you need to call `setSubmitting(false)` yourself.
+    // If `onSubmit()` function is synchronous, you need to call 
+    // `setSubmitting(false)` yourself.
     setSubmitting(false)
   }
 })
 
 // Basic usage
-// The `attrs` need to be bind on <input> to support `validateMode` and `reValidateMode`
+// The `attrs` need to be bind on <input> to support `validateMode`
+// and `reValidateMode`.
 const { value: drink, attrs: drinkFieldAttrs } = register('drink')
 
-// Add validation for field
+// Add field level validation.
 const { value: sugar, attrs: sugarFieldAttrs } = register('sugar', {
   validate(value) {
-    let error: string | undefined
-
-    if(value > 100) {
-      error = 'This max number is 100'
-    }
-
-    return error
+    return value > 100 ? 'This max number is 100' : undefined
   }
 })
-
-const { value: ice, attrs: iceFieldAttrs } = register('ice')
 </script>
 
 <template>
   <form @submit="handleSubmit" @reset="handleReset">
     <div>
-      <label>Drink</label>
       <input v-model="drink" type="text" v-bind="drinkFieldAttrs">
-      <div v-if="errors.drink">
-        {{ errors.drink }}
-      </div>
+      <div>{{ errors.drink }}</div>
     </div>
     
     <div>
-      <label>Sugar level</label>
-      <input v-model="sugar" type="number" v-bind="sugarFieldAttrs">
-      <div v-if="errors.sugar">
-        {{ errors.sugar }}
-      </div>
-    </div>
-
-    <div>
-      <label>Ice level</label>
-      <input v-model="ice" type="text" v-bind="iceFieldAttrs">
-      <div v-if="errors.ice">
-        {{ errors.ice }}
-      </div>
+      <input v-model.number="sugar" type="number" v-bind="sugarFieldAttrs">
+      <div>{{ errors.sugar }}</div>
     </div>
 
     <button type="reset">Reset</button>
@@ -92,15 +71,23 @@ This is the form initial value and is used as the basis for `dirty` comparison.
 
 - Type
 
-```ts
-type Values = Record<string, any>
-```
+  ```ts
+  type Values = Record<string, any>
+  ```
 
 ### initialErrors
 
 This is the form initial error.
 
 - Type `FormErrors<Values>`
+- Default: `undefined`
+
+### initialTouched
+
+This is the form initial touched.
+
+- Type `FormTouched<Values>`
+- Default: `undefined`
 
 ### validateMode
 
@@ -125,54 +112,27 @@ This option allows you to configure the validation run when the component is mou
 
 ### validate
 
-This function allows you to write your logic to validate your form, this is optional.  
+This function allows you to write your logic to validate your form, there validation is **form level**.
 
-- Type `(values: Values) => void | object | Promise<FormErrors<Values>>`
+- Type
+
+  ```ts
+  function validate(values: Values): void | object | Promise<FormErrors<Values>>
+  ```
 
 This validate value can either be:
 
 1. Synchronous function and return an `errors` object.
 
-```ts
-import { useForm } from '@vorms/core'
+    ```ts
+    import { useForm } from '@vorms/core'
 
-const { values } = useForm({
-  initialValues: {
-    name: '',
-    age: 10
-  },
-  validate(values) {
-    const errors = {}
-
-    if(!values.name) {
-      errors.name = 'name is required.'
-    }
-
-    if(typeof values.age !== 'number') {
-      errors.age = 'age should be a number.'
-    }
-
-    return errors
-  },
-  onSubmit(values) {
-    console.log(values)
-  }
-}) 
-```
-
-2. Asynchronous function and return a Promise that is resolve to an object containing `errors`.
-
-```ts
-import { useForm } from '@vorms/core'
-
-const { values } = useForm({
-  initialValues: {
-    name: '',
-    age: 10
-  },
-  validate() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
+    const { values } = useForm({
+      initialValues: {
+        name: '',
+        age: 10
+      },
+      validate(values) {
         const errors = {}
 
         if(!values.name) {
@@ -183,49 +143,84 @@ const { values } = useForm({
           errors.age = 'age should be a number.'
         }
 
-        resolve(errors)
-      }, 300)
-    })
-  },
-  onSubmit(values) {
-    console.log(values)
-  }
-}) 
-```
+        return errors
+      },
+      onSubmit(values) {
+        console.log(values)
+      }
+    }) 
+    ```
+
+2. Asynchronous function and return a Promise that is resolve to an object containing `errors`.
+
+    ```ts
+    import { useForm } from '@vorms/core'
+
+    const { values } = useForm({
+      initialValues: {
+        name: '',
+        age: 10
+      },
+      validate() {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            const errors = {}
+
+            if(!values.name) {
+              errors.name = 'name is required.'
+            }
+
+            if(typeof values.age !== 'number') {
+              errors.age = 'age should be a number.'
+            }
+
+            resolve(errors)
+          }, 300)
+        })
+      },
+      onSubmit(values) {
+        console.log(values)
+      }
+    }) 
+    ```
 
 3. Use `@vorms/resolvers` to integrate external validation libraries such as [Yup](https://github.com/jquense/yup), [Zod](https://github.com/vriad/zod).
 
-```
-npm install @vorms/resolvers
-```
+    ```bash
+    npm install @vorms/resolvers
+    ```
 
-```ts
-import { useForm } from '@vorms/core'
-import { yupResolver } from '@vorms/resolvers/yup';
-import * as yup from 'yup';
+    ```ts
+    import { useForm } from '@vorms/core'
+    import { yupResolver } from '@vorms/resolvers/yup';
+    import * as yup from 'yup';
 
-const schema = yup.object().shape({
-  name: yup.string().required(),
-  age: yup.number().required()
-})
+    const schema = yup.object().shape({
+      name: yup.string().required('Name is required!!'),
+      age: yup.number().required('Age is required!!')
+    })
 
-const { values } = useForm({
-  initialValues: {
-    name: '',
-    age: 10
-  },
-  validate: yupResolver(schema),
-  onSubmit(values) {
-    console.log(values)
-  }
-}) 
-```
+    const { values } = useForm({
+      initialValues: {
+        name: '',
+        age: 10
+      },
+      validate: yupResolver(schema),
+      onSubmit(values) {
+        console.log(values)
+      }
+    }) 
+    ```
 
 ### onSubmit (Required)
 
 This is your form submission handler. It is passed your forms `values`. If has validation error, this will not be invoked.
 
-- Type `(values: Values, helper: FormSubmitHelper) => void | Promise<any>`
+- Type
+
+  ```ts
+  function onSubmit (values: Values, helper: FormSubmitHelper): void | Promise<any>
+  ```
 
 ::: warning Note
 If `onSubmit()` function is synchronous, you need to call `setSubmitting(false)` yourself.
@@ -295,20 +290,22 @@ Return `true` when running validation.
 
 Reset the entire form state. There are optional arguments and allow set state what you want.
 
-- Type `(nextState?: Partial<FormResetState<Values>>) => void`
+- Type
 
-```ts
-interface FormResetState<Values> {
-  /** Form values */
-  values: Values;
-  /** Map of field name to specific error for that field. */
-  touched: FormTouched<Values>;
-  /** Map of field name to the field has been touched. */
-  errors: FormErrors<Values>;
-  /** The number of times user attempted to submit. */
-  submitCount: number;
-}
-```
+  ```ts
+  function resetForm(nextState?: Partial<FormResetState<Values>>): void
+
+  interface FormResetState<Values> {
+    //Form values.
+    values: Values;
+    // Map of field name to specific error for that field.
+    touched: FormTouched<Values>;
+    // Map of field name to the field has been touched.
+    errors: FormErrors<Values>;
+    // The number of times user attempted to submit.
+    submitCount: number;
+  }
+  ```
 
 ### register
 
@@ -316,50 +313,99 @@ This method allows you to get specific field values, meta (state) and attributes
 
 - Type
 
-`(name: string, options?: FieldRegisterOptions<Values>) => UseFormRegisterReturn`
+  ```ts
+  function register<Value>(name: MaybeRef<string>,  options?: FieldRegisterOptions<Value>): UseFormRegisterReturn<Value>
+  ```
 
-```ts
-interface FieldRegisterOptions<Values> {
-  validate?: FieldValidator<Values>;
-}
+  <details>
+    <summary>
+      Show Type Detail
+    </summary>
 
-type FieldValidator<Value> = (
-  value: Value,
-) => string | void | Promise<string | void>
+    ```ts
+    interface FieldRegisterOptions<Value> {
+      validate?: FieldValidator<Value>;
+    }
 
-type UseFormRegisterReturn<Value> =  {
-  value: WritableComputedRef<Value>;
-  dirty: ComputedRef<boolean>;
-  error: ComputedRef<string>;
-  touched: ComputedRef<boolean>;
-  attrs: {
-    name: string
-    onBlur: () => void;
-    onChange: () => void;
-  };
-}
-```
+    type FieldValidator<Value> = (value: Value) => string | void | Promise<string | void>
+
+    type UseFormRegisterReturn<Value> =  {
+      value: WritableComputedRef<Value>;
+      dirty: ComputedRef<boolean>;
+      error: ComputedRef<string | undefined>;
+      touched: ComputedRef<boolean | undefined>;
+      attrs: ComputedRef<FieldAttrs>;
+    }
+
+    interface FieldAttrs {
+      name: string;
+      onBlur: (event: Event) => void;
+      onChange: () => void;
+    }
+
+    ```
+
+  </details>
+
+- Example
+  
+  ```vue
+  <script setup lang="ts">
+  const { register } = useForm({
+    initialValues: {
+      drink: 'Bubble Tea'
+    }
+  })
+
+  const { value, attrs } = register('drink', {
+    // Field level validation
+    validate(value) {
+      return !value ? 'What do you want to drink ?' : undefined
+    }
+  })
+  </script>
+
+  <template>
+    <input v-model="value" type="text" v-bind="attrs" />
+  </template>
+  ```
 
 ### handleSubmit
 
 Submit handler. It will call `event.preventDefault()` in internally, If `event` is passed.
 
-- Type `(event?: Event) => void`
+- Type
+
+  ```ts
+  function handleSubmit(event?: Event): void
+  ```
 
 ### handleReset
 
 Reset handler. It will call `event.preventDefault()` in internally, If `event` is passed.
 
-- Type `(event?: Event) => void`
+- Type
+
+  ```ts
+  function handleReset(event?: Event): void
+  ```
 
 ### validateForm
 
 Validate form values.
 
-- Type `(values?: Values) => Promise<FormErrors<Values>>`
+- Type
+
+  ```ts
+  function validateForm(values?: Values): Promise<FormErrors<Values>>
+  ```
 
 ### validateField
 
 Validate form specific field, if this field validation is register.
 
-- Type `(name: string) => Promise<void>`
+- Type
+
+  ```ts
+  function validateField(name: string): Promise<void>
+  ```
