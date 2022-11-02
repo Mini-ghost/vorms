@@ -1,3 +1,17 @@
+<p align="center">
+<a href="https://github.com/Mini-ghost/vorms"><img src="./docs/public/logo.svg" alt="Vue Conposition Form - Vue Form Validate with Composition API" width="240">
+</a>
+<br>
+Vue Form Validate with Composition API
+</p>
+
+<p align="center">
+<a href="https://www.npmjs.com/package/@vorms/core" target="__blank"><img src="https://img.shields.io/npm/v/@vorms/core/beta?color=34A77B&label=" alt="NPM version"></a>
+<a href="https://www.npmjs.com/package/@vorms/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vorms/core?color=18668F&label="></a>
+<br>
+<a href="https://github.com//Mini-ghost/vorms" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/Mini-ghost/vorms?style=social"></a>
+</p>
+
 ## Install
 
 ```bash
