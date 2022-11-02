@@ -7,7 +7,7 @@ npm install @vorms/core@beta
 ## Feature
 
 - Type Strong (Written in TypeScript, with TSDoc)
-- [Small Size](https://bundlephobia.com/package/@vorms/core@0.0.1-beta.8) (~11kb, gzip: ~4kb)
+- [Small Size](https://bundlephobia.com/package/@vorms/core@0.0.1-beta.10) (~11kb, gzip: ~4kb)
 - Pure Composition API
 - Support [Yup](https://github.com/jquense/yup), [Zod](https://github.com/colinhacks/zod) and custom build
 
@@ -52,22 +52,22 @@ type ValidateMode = 'blur' | 'input' | 'change' | 'submit'
 
 **Return**
 
-| Name          | Type                                                                              | Description                                                                                                                                |
-| ------------- | --------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| values        | `Values`                                                                          | Current form values.                                                                                                                       |
-| errors        | `ComputedRef<FormErrors<Values>>`                                                 | Map of field name to the field has been touched                                                                                            |
-| touched       | `ComputedRef<FormTouched<Values>>`                                                | Map of field name to specific error for that field                                                                                         |
-| dirty         | `ComputedRef<boolean>`                                                            | Return `true` if current values are not deeply equal `initialValues`.                                                                      |
-| setValues     | `(values: Values, shouldValidate?: boolean)`                                      | This function allows you to dynamically update form values.                                                                                |
-| setFieldValue | `(name: string, value: unknown, shouldValidate?: boolean)`                        | This function allows you to dynamically set the value of field.                                                                            |
-| submitCount   | `ComputedRef<number>`                                                             | The number of times user attempted to submit.                                                                                              |
-| isSubmitting  | `Ref<boolean>`                                                                    | Return `true` when form is submitting, If `onSubmit()` is a synchronous function, then you need to call setSubmitting(false) on your own.  |
-| isValidating  | `ComputedRef<boolean>`                                                            | Return `true` when running validation.                                                                                                     |
-| register      | `(name: string, options?: FieldRegisterOptions<Values>) => UseFormRegisterReturn` | This method allows you to get specific field values, meta (state) and attributes, you can also add validation for that field.              |
-| handleSubmit  | `(event?: Event) => void`                                                         | Submit handler.                                                                                                                            |
-| handleReset   | `(event?: Event) => void`                                                         | Reset handler.                                                                                                                             |
-| validateForm  | `(values?: Values) => Promise<FormErrors<Values>>`                                | Validate form values.                                                                                                                      |
-| validateField | `(name: string) => Promise<void>`                                                 | Validate form specific field, if this field validation is register.                                                                        |
+| Name          | Type                                                                                             | Description                                                                                                                                |
+| ------------- | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| values        | `Values`                                                                                         | Current form values.                                                                                                                       |
+| errors        | `ComputedRef<FormErrors<Values>>`                                                                | Map of field name to the field has been touched                                                                                            |
+| touched       | `ComputedRef<FormTouched<Values>>`                                                               | Map of field name to specific error for that field                                                                                         |
+| dirty         | `ComputedRef<boolean>`                                                                           | Return `true` if current values are not deeply equal `initialValues`.                                                                      |
+| setValues     | `(values: Values, shouldValidate?: boolean)`                                                     | This function allows you to dynamically update form values.                                                                                |
+| setFieldValue | `(name: string, value: unknown, shouldValidate?: boolean)`                                       | This function allows you to dynamically set the value of field.                                                                            |
+| submitCount   | `ComputedRef<number>`                                                                            | The number of times user attempted to submit.                                                                                              |
+| isSubmitting  | `Ref<boolean>`                                                                                   | Return `true` when form is submitting, If `onSubmit()` is a synchronous function, then you need to call setSubmitting(false) on your own.  |
+| isValidating  | `ComputedRef<boolean>`                                                                           | Return `true` when running validation.                                                                                                     |
+| register      | `(name: string \| Ref<string>, options?: FieldRegisterOptions<Values>) => UseFormRegisterReturn` | This method allows you to get specific field values, meta (state) and attributes, you can also add validation for that field.              |
+| handleSubmit  | `(event?: Event) => void`                                                                        | Submit handler.                                                                                                                            |
+| handleReset   | `(event?: Event) => void`                                                                        | Reset handler.                                                                                                                             |
+| validateForm  | `(values?: Values) => Promise<FormErrors<Values>>`                                               | Validate form values.                                                                                                                      |
+| validateField | `(name: string) => Promise<void>`                                                                | Validate form specific field, if this field validation is register.                                                                        |
 
 <br>
 
@@ -216,7 +216,7 @@ const { value: bag, attrs: bagFieldAttrs } = register('bag')
 
 | Name             | Type                                                          | Required | Description                                                                            |
 | ---------------- | ------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------- |
-| name             | `string`                                                      | ✓        | Name of the field.                                                                     |
+| name             | `string \| Ref<string>`                                       | ✓        | Name of the field.                                                                     |
 | options.validate | `(value: Value) => void \| string \| Promise<string \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
 
 **Return**
@@ -265,7 +265,7 @@ const { value, attrs } = useField<string>('ice', {
 
 | Name             | Type                                                                                  | Required | Description                                                                            |
 | ---------------- | ------------------------------------------------------------------------------------- | -------- | -------------------------------------------------------------------------------------- |
-| name             | `string`                                                                              | ✓        | Name of the field array.                                                               |
+| name             | `string \| Ref<string>`                                                               | ✓        | Name of the field array.                                                               |
 | options.validate | `(value: Value) => void \| FormErrors<Values> \| Promise<FormErrors<Values> \| void>` |          | This function allows you to write your logic to validate your field, this is optional. |
 
 **Return**

@@ -1,5 +1,7 @@
 import { ComputedRef, WritableComputedRef, UnwrapNestedRefs, Ref } from 'vue';
 
+export type MaybeRef<T> = T | Ref<T>;
+
 export type FormValues = Record<string, any>;
 
 export type FieldValidator<Value> = (
@@ -13,8 +15,8 @@ export type FieldArrayValidator<Value extends Array<any>> = (
 export type FormTouched<Values> = {
   [K in keyof Values]?: Values[K] extends any[]
     ? Values[K][number] extends object
-      ? FormTouched<Values[K][number]>[]
-      : boolean
+      ? FormTouched<Values[K][number]>[] | boolean
+      : boolean | boolean[]
     : Values[K] extends object
     ? FormTouched<Values[K]>
     : boolean;
@@ -54,7 +56,7 @@ export interface FieldRegisterOptions<Values> {
 
 export type UseFormRegisterReturn<Value> = FieldMeta & {
   value: WritableComputedRef<Value>;
-  attrs: FieldAttrs;
+  attrs: ComputedRef<FieldAttrs>;
 };
 
 export type SetFieldArrayValue = <T extends (...args: any) => any>(
@@ -72,7 +74,7 @@ export type UseFormRegister<Values extends FormValues> = <
   Name extends Path<Values>,
   Value = PathValue<Values, Name>,
 >(
-  name: Name,
+  name: MaybeRef<Name>,
   options?: FieldRegisterOptions<Value>,
 ) => UseFormRegisterReturn<Value>;
 
@@ -124,11 +126,11 @@ export interface UseFormReturn<Values extends FormValues> {
   validateField: ValidateField<Values>;
 }
 
-export interface FieldAttrs {
+export type FieldAttrs = {
   name: string;
   onBlur: (event: Event) => void;
   onChange: () => void;
-}
+};
 
 export type FieldMeta = {
   dirty: ComputedRef<boolean>;

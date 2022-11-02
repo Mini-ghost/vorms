@@ -1,22 +1,22 @@
-import { computed, reactive, ref, onMounted, provide } from 'vue';
+import { computed, reactive, ref, unref, onMounted, provide } from 'vue';
 import isEqual from 'fast-deep-equal/es6';
 import { klona as deepClone } from 'klona/full';
 import deepmerge from 'deepmerge';
 
 import { FormContextKey } from './useFormContext';
-import { FormInternalContextKey } from './useFormInternalContext';
+import { InternalContextKey } from './useInternalContext';
+import useFormStore from './useFormStore';
 
 import isPromise from '../utils/isPromise';
-import keysOf from '../utils/keysOf';
+import isString from '../utils/isString';
 import isFunction from '../utils/isFunction';
+import keysOf from '../utils/keysOf';
 import get from '../utils/get';
 import set from '../utils/set';
 
-import useFormStore from './useFormStore';
-import isString from '../utils/isString';
-
 import type { Reducer } from './useFormStore';
 import type {
+  MaybeRef,
   FormValues,
   FormState,
   FormErrors,
@@ -58,6 +58,9 @@ export interface UseFormOptions<Values extends FormValues> {
   reValidateMode?: ValidateMode;
   validateOnMounted?: boolean;
   onSubmit: (values: Values, helper: FormSubmitHelper) => void | Promise<any>;
+  /**
+   * @deprecated Will be removed in a major release. Please use `watch(errors, callback)` instead.
+   */
   onError?: (errors: FormErrors<Values>) => void;
   validate?: (values: Values) => void | object | Promise<FormErrors<Values>>;
 }
@@ -151,6 +154,10 @@ function reducer<Values extends FormValues>(
       state.submitCount.value = message.payload.submitCount;
   }
 }
+
+const emptyErrors: FormErrors<unknown> = {};
+const emptyTouched: FormTouched<unknown> = {};
+
 /**
  * Custom composition API to mange the entire form.
  *
@@ -199,16 +206,17 @@ export function useForm<Values extends FormValues = FormValues>(
     Reducer<FormState<Values>, FormMessage<Values>>
   >(reducer, {
     values: reactive(deepClone(options.initialValues)),
-    errors: ref(options.initialErrors ? deepClone(options.initialErrors) : {}),
-    touched: ref(
-      options.initialTouched ? deepClone(options.initialTouched) : {},
-    ),
+    errors: ref(deepClone(options.initialErrors || emptyErrors)),
+    touched: ref(deepClone(options.initialTouched || emptyTouched)),
     submitCount: ref(0),
     isSubmitting: ref(false),
     isValidating: ref(false),
   });
 
   let initialValues = deepClone(options.initialValues);
+  let initialErrors = deepClone(options.initialErrors || emptyErrors);
+  let initialTouched = deepClone(options.initialTouched || emptyTouched);
+
   const fieldRegistry: FieldRegistry = {};
   const fieldArrayRegistry: FieldArrayRegistry = {};
 
@@ -217,18 +225,20 @@ export function useForm<Values extends FormValues = FormValues>(
     state.submitCount.value === 0 ? validateMode : reValidateMode,
   );
 
-  const registerField = (name: string, { validate }: any = {}) => {
-    fieldRegistry[name] = {
+  const registerField = (name: MaybeRef<string>, { validate }: any = {}) => {
+    fieldRegistry[unref(name)] = {
       validate,
     };
   };
 
-  const registerFieldArray = (name: string, { reset, validate }: any) => {
-    fieldRegistry[name] = {
+  const registerFieldArray = (name: MaybeRef<string>, options: any) => {
+    const { validate, reset } = options;
+
+    fieldRegistry[unref(name)] = {
       validate,
     };
 
-    fieldArrayRegistry[name] = {
+    fieldArrayRegistry[unref(name)] = {
       reset,
     };
   };
@@ -366,21 +376,23 @@ export function useForm<Values extends FormValues = FormValues>(
     dispatch({ type: ACTION_TYPE.SET_ISSUBMITTING, payload: isSubmitting });
   };
 
-  const getFieldValue = (name: string) => {
+  const getFieldValue = (name: MaybeRef<string>) => {
     return computed<any>({
       get() {
-        return get(state.values, name);
+        return get(state.values, unref(name));
       },
       set(value) {
-        setFieldValue(name, value);
+        setFieldValue(unref(name), value);
       },
     });
   };
 
-  const getFieldMeta = (name: string): FieldMeta => {
-    const error = computed(() => getFieldError(name) as any as string);
-    const touched = computed(() => getFieldTouched(name) as any as boolean);
-    const dirty = computed(() => getFieldDirty(name));
+  const getFieldMeta = (name: MaybeRef<string>): FieldMeta => {
+    const error = computed(() => getFieldError(unref(name)) as any as string);
+    const touched = computed(
+      () => getFieldTouched(unref(name)) as any as boolean,
+    );
+    const dirty = computed(() => getFieldDirty(unref(name)));
 
     return {
       dirty,
@@ -389,12 +401,12 @@ export function useForm<Values extends FormValues = FormValues>(
     };
   };
 
-  const getFieldAttrs = (name: string): FieldAttrs => {
-    return {
-      name,
+  const getFieldAttrs = (name: MaybeRef<string>) => {
+    return computed<FieldAttrs>(() => ({
+      name: unref(name),
       onBlur: handleBlur,
       onChange: handleChange,
-    };
+    }));
   };
 
   const getFieldError = (name: string): FormErrors<any> => {
@@ -507,14 +519,19 @@ export function useForm<Values extends FormValues = FormValues>(
 
   const resetForm: ResetForm<Values> = (nextState) => {
     const values = deepClone(nextState?.values || initialValues);
+    const errors = deepClone(nextState?.errors || initialErrors);
+    const touched = deepClone(nextState?.touched || initialTouched);
+
     initialValues = deepClone(values);
+    initialErrors = deepClone(errors);
+    initialTouched = deepClone(touched);
 
     dispatch({
       type: ACTION_TYPE.RESET_FORM,
       payload: {
         values,
-        touched: deepClone(nextState?.touched) || {},
-        errors: deepClone(nextState?.errors) || {},
+        touched,
+        errors,
         submitCount:
           typeof nextState?.submitCount === 'number'
             ? nextState.submitCount
@@ -579,7 +596,7 @@ export function useForm<Values extends FormValues = FormValues>(
     validateField,
   };
 
-  provide(FormInternalContextKey, {
+  provide(InternalContextKey, {
     getFieldMeta,
     getFieldValue,
     setFieldValue,
