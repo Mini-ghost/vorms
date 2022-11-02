@@ -2,7 +2,7 @@
 
 `useFormContext()` is a custom Vue composition api that allow you access the form context. This is useful with deeply nested component structures.
 
-## Example
+## Usage
 
 ```vue
 <script setup lang="ts">

@@ -1,18 +1,87 @@
 # useForm
 
-`useForm()` is a custom Vue composition api for managing form value and status. The following example demonstrates all of its options along with their default values.
+`useForm()` is a custom Vue composition api for managing form value and status.
 
-```ts
-useForm({
-  initialValues: {},
-  initialErrors: undefined,
-  initialTouched: undefined
-  validateMode: 'submit',
-  reValidateMode: 'change',
-  validateOnMounted: false,
-  validate() {},
-  onSubmit(values, submitHelper) {},
+## Usage
+
+```vue
+<script setup lang="ts">
+import { useForm } from '@vorms/core'
+
+const { errors, dirty, register, handleSubmit, handleReset } = useForm({
+  initialValues: {
+    drink: '',
+    sugar: 30,
+    ice: 'light',
+  },
+  validate (values) {
+    const errors: Record<string, any> = {}
+
+    if (!values.drink) {
+      errors.drink = 'This is required!!'
+    }
+
+    return errors
+  },
+
+  onSubmit(data, { setSubmitting }) {
+    // do something ...
+
+    // If `onSubmit()` function is synchronous, you need to call `setSubmitting(false)` yourself.
+    setSubmitting(false)
+  }
 })
+
+// Basic usage
+// The `attrs` need to be bind on <input> to support `validateMode` and `reValidateMode`
+const { value: drink, attrs: drinkFieldAttrs } = register('drink')
+
+// Add validation for field
+const { value: sugar, attrs: sugarFieldAttrs } = register('sugar', {
+  validate(value) {
+    let error: string | undefined
+
+    if(value > 100) {
+      error = 'This max number is 100'
+    }
+
+    return error
+  }
+})
+
+const { value: ice, attrs: iceFieldAttrs } = register('ice')
+</script>
+
+<template>
+  <form @submit="handleSubmit" @reset="handleReset">
+    <div>
+      <label>Drink</label>
+      <input v-model="drink" type="text" v-bind="drinkFieldAttrs">
+      <div v-if="errors.drink">
+        {{ errors.drink }}
+      </div>
+    </div>
+    
+    <div>
+      <label>Sugar level</label>
+      <input v-model="sugar" type="number" v-bind="sugarFieldAttrs">
+      <div v-if="errors.sugar">
+        {{ errors.sugar }}
+      </div>
+    </div>
+
+    <div>
+      <label>Ice level</label>
+      <input v-model="ice" type="text" v-bind="iceFieldAttrs">
+      <div v-if="errors.ice">
+        {{ errors.ice }}
+      </div>
+    </div>
+
+    <button type="reset">Reset</button>
+    <button type="submit">Submit</button>
+  </form>
+</template>
 ```
 
 ## Options
@@ -294,115 +363,3 @@ Validate form values.
 Validate form specific field, if this field validation is register.
 
 - Type `(name: string) => Promise<void>`
-
-## Example
-
-```vue
-<script setup lang="ts">
-import { useForm } from '@vorms/core'
-
-interface InitialValues {
-  drink: string,
-  sugar: number
-  ice: string
-  bag: boolean
-}
-
-const { errors, dirty, register, handleSubmit, handleReset } = useForm<InitialValues>({
-  initialValues: {
-    drink: '',
-    sugar: 30,
-    ice: 'light',
-    bag: false
-  },
-  validate (values) {
-    const errors: Record<string, any> = {}
-
-    if (!values.drink) {
-      errors.drink = 'This is required!!'
-    }
-
-    return errors
-  },
-
-  validateMode: 'submit',
-  reValidateMode: 'change',
-  validateOnMounted: false,
-
-  onSubmit(data, { setSubmitting }) {
-    console.log(data)
-
-    // If `onSubmit()` function is synchronous, you need to call `setSubmitting(false)` yourself.
-    setSubmitting(false)
-  }
-})
-
-// Basic usage
-// The `attrs` need to be bind on <input> to support `validateMode` and `reValidateMode`
-const { value: drink, attrs: drinkFieldAttrs } = register('drink')
-
-// Add validation for field
-const { value: sugar, attrs: sugarFieldAttrs } = register('sugar', {
-  validate(value) {
-    let error: string | undefined
-
-    if(value > 100) {
-      error = 'This max number is 100'
-    }
-
-    return error
-  }
-})
-
-const { value: ice, attrs: iceFieldAttrs } = register('ice')
-const { value: bag, attrs: bagFieldAttrs } = register('bag')
-
-</script>
-
-<template>
-  <form @submit="handleSubmit" @reset="handleReset">
-    <div>
-      Is current values not equal `initialValues`: {{ dirty }}
-    </div>
-
-    <div>
-      <label>Drink</label>
-      <input v-model="drink" type="text" v-bind="drinkFieldAttrs">
-      <div v-if="errors.drink">
-        {{ errors.drink }}
-      </div>
-    </div>
-    
-    <div>
-      <label>Sugar level</label>
-      <input v-model="sugar" type="number" v-bind="sugarFieldAttrs">
-      <div v-if="errors.sugar">
-        {{ errors.sugar }}
-      </div>
-    </div>
-
-    <div>
-      <label>Ice level</label>
-      <input v-model="ice" type="text" v-bind="iceFieldAttrs">
-      <div v-if="errors.ice">
-        {{ errors.ice }}
-      </div>
-    </div>
-
-    <div>
-      <label>Need a bag</label>
-      <input v-model="bag" type="checkbox" v-bind="bagFieldAttrs">
-      <div v-if="errors.bag">
-        {{ errors.bag }}
-      </div>
-    </div>
-
-    <button type="reset">
-      Reset
-    </button>
-    <button type="submit">
-      Submit
-    </button>
-  </form>
-</template>
-```
