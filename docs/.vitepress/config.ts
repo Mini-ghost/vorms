@@ -2,7 +2,8 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'Vorms',
-  description: 'Vue form validate with Composition API',
+  titleTemplate: 'Vorms - Vue Form Validate with Composition API',
+  description: 'Vue Form Validate with Composition API',
 
 
   // TODO: Add `og:image` and `twitter:image`
