@@ -23,13 +23,15 @@ const { value, error, attrs } = useField<string>('drink', {
 </template>
 ```
 
-## Options
+## Params
 
 ### name (Required)
 
 The name of a specific field. Its type can be `string` or `Ref<string>`
 
-If you want to create a custom component in your application, such as `<Text Field />`, you should use `Ref<string>` to retain reactivity of `props.name`. as follows:
+- Type `MaybeRef<string>`
+
+If you want to create a custom component in your application, such as `<TextField />`, you should use `Ref<string>` to retain reactivity of `props.name`. as follows:
 
 ```vue
 <script setup lang="ts">
@@ -44,13 +46,35 @@ const props = defineProps<TextFieldProps>()
 
 // or using `const nameSync = computed(() => props.name)`
 const nameRef = toRef(props, 'name')
-const { value } = useField(nameRef)
+const { value } = useField<string>(nameRef)
 </script>
 ```
 
-### options.validate
+This is useful when you have a dynamic field name, such as name that is generated with a `v-for` loop.
 
-This function allows you to write your logic to validate your field, this is optional.
+```vue
+<template>
+  <div v-for="(order, index) in orders" :key="order.id">
+    <TextField :name="`order.${index}.name`" />
+  </div>
+</template>
+```
+
+### options
+
+- Type
+
+  ```ts
+  interface UseFieldOptions<Value> = {
+    // This function allows you to write your logic to validate your field, 
+    // this is optional.
+    validate?: FieldValidator<Value>;
+  };
+
+  type FieldValidator<Value> = (value: Value) => string | void | Promise<string | void>;
+  ```
+
+The `validate` is a function of field level validation, when the calling `valueField()` will be triggered.
 
 ## Returns
 
@@ -64,13 +88,19 @@ Current field value.
 
 Field error message.
 
+- Type `ComputedRef<string>`
+
 ### touched
 
 Return `true` after input first blur.
 
+- Type `ComputedRef<boolean>`
+
 ### dirty
 
 Return `true` if current field value are not equal initial value.
+
+- Type `ComputedRef<string>`
 
 ### attrs
 

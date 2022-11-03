@@ -38,21 +38,63 @@ const { fields, append } = useFieldArray<string>('foods')
 </template>
 ```
 
-## Options
+## Params
 
 ### name (Required)
 
 Name of the field array.
 
-### options.validate
+- Type `MaybeRef<string>`
 
-This function allows you to write your logic to validate your field, this is optional.
+### options
+
+- Type
+
+```ts
+interface UseFieldArrayOptions<Value> {
+  // This function allows you to write your logic to validate your field,
+  // this is optional.
+  validate?: FieldArrayValidator<Value[]>;
+}
+
+type FieldArrayValidator<Value extends Array<any>> = (value: Value) => FormErrors<Value> | void | Promise<FormErrors<Value> | void>;
+```
+
+The `validate` is a function of field level validation, when the calling `valueField()` will be triggered.
 
 ## Returns
 
 ### fields
 
 This array contains every entry of field's key, value, meta and attrs.
+
+- Type `Ref<FieldEntry<Value>[]>`
+
+  ```ts
+  interface FieldEntry<Value> {
+    key: number;
+    value: Value;
+    name: string;
+    error: FormErrors<Value>;
+    touched: Value extends Primitive ? boolean : FormTouched<Value> | undefined;
+    dirty: boolean;
+    attrs: Omit<FieldAttrs, 'name'>;
+  }
+  ```
+
+`useFieldArray` automatically generates a unique identifier named `key` which is used for key prop. For more information why this is required: [Maintaining State with key](https://vuejs.org/guide/essentials/list.html#maintaining-state-with-key)
+
+The `field.key` must be added as the component key to prevent re-renders breaking the fields.
+
+```vue
+<template>
+  <!-- correct -->
+  <input v-for="field in fields" :key="field.key" />
+
+  <!-- incorrect -->
+  <input v-for="(field, index) in fields" :key="index" />
+</template>
+```
 
 ### append
 

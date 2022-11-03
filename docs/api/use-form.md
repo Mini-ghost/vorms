@@ -63,7 +63,7 @@ const { value: sugar, attrs: sugarFieldAttrs } = register('sugar', {
 </template>
 ```
 
-## Options
+## Params
 
 ### initialValues (Required)
 
