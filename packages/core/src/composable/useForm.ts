@@ -389,9 +389,7 @@ export function useForm<Values extends FormValues = FormValues>(
 
   const getFieldMeta = (name: MaybeRef<string>): FieldMeta => {
     const error = computed(() => getFieldError(unref(name)) as any as string);
-    const touched = computed(
-      () => getFieldTouched(unref(name)) as any as boolean,
-    );
+    const touched = computed(() => getFieldTouched(unref(name)));
     const dirty = computed(() => getFieldDirty(unref(name)));
 
     return {
@@ -413,8 +411,8 @@ export function useForm<Values extends FormValues = FormValues>(
     return get(state.errors.value, name);
   };
 
-  const getFieldTouched = (name: string): FormTouched<any> => {
-    return get(state.touched.value, name);
+  const getFieldTouched = (name: string): FormTouched<boolean> => {
+    return get(state.touched.value, name, false);
   };
 
   const getFieldDirty = (name: string): boolean => {
