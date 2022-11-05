@@ -58,6 +58,9 @@ export interface UseFormOptions<Values extends FormValues> {
   reValidateMode?: ValidateMode;
   validateOnMounted?: boolean;
   onSubmit: (values: Values, helper: FormSubmitHelper) => void | Promise<any>;
+  /**
+   * @deprecated Will be removed in a major release. Please use `watch(errors, callback)` instead.
+   */
   onError?: (errors: FormErrors<Values>) => void;
   validate?: (values: Values) => void | object | Promise<FormErrors<Values>>;
 }
@@ -151,6 +154,10 @@ function reducer<Values extends FormValues>(
       state.submitCount.value = message.payload.submitCount;
   }
 }
+
+const emptyErrors: FormErrors<unknown> = {};
+const emptyTouched: FormTouched<unknown> = {};
+
 /**
  * Custom composition API to mange the entire form.
  *
@@ -199,16 +206,17 @@ export function useForm<Values extends FormValues = FormValues>(
     Reducer<FormState<Values>, FormMessage<Values>>
   >(reducer, {
     values: reactive(deepClone(options.initialValues)),
-    errors: ref(options.initialErrors ? deepClone(options.initialErrors) : {}),
-    touched: ref(
-      options.initialTouched ? deepClone(options.initialTouched) : {},
-    ),
+    errors: ref(deepClone(options.initialErrors || emptyErrors)),
+    touched: ref(deepClone(options.initialTouched || emptyTouched)),
     submitCount: ref(0),
     isSubmitting: ref(false),
     isValidating: ref(false),
   });
 
   let initialValues = deepClone(options.initialValues);
+  let initialErrors = deepClone(options.initialErrors || emptyErrors);
+  let initialTouched = deepClone(options.initialTouched || emptyTouched);
+
   const fieldRegistry: FieldRegistry = {};
   const fieldArrayRegistry: FieldArrayRegistry = {};
 
@@ -381,9 +389,7 @@ export function useForm<Values extends FormValues = FormValues>(
 
   const getFieldMeta = (name: MaybeRef<string>): FieldMeta => {
     const error = computed(() => getFieldError(unref(name)) as any as string);
-    const touched = computed(
-      () => getFieldTouched(unref(name)) as any as boolean,
-    );
+    const touched = computed(() => getFieldTouched(unref(name)));
     const dirty = computed(() => getFieldDirty(unref(name)));
 
     return {
@@ -405,8 +411,8 @@ export function useForm<Values extends FormValues = FormValues>(
     return get(state.errors.value, name);
   };
 
-  const getFieldTouched = (name: string): FormTouched<any> => {
-    return get(state.touched.value, name);
+  const getFieldTouched = (name: string): FormTouched<boolean> => {
+    return get(state.touched.value, name, false);
   };
 
   const getFieldDirty = (name: string): boolean => {
@@ -511,14 +517,19 @@ export function useForm<Values extends FormValues = FormValues>(
 
   const resetForm: ResetForm<Values> = (nextState) => {
     const values = deepClone(nextState?.values || initialValues);
+    const errors = deepClone(nextState?.errors || initialErrors);
+    const touched = deepClone(nextState?.touched || initialTouched);
+
     initialValues = deepClone(values);
+    initialErrors = deepClone(errors);
+    initialTouched = deepClone(touched);
 
     dispatch({
       type: ACTION_TYPE.RESET_FORM,
       payload: {
         values,
-        touched: deepClone(nextState?.touched) || {},
-        errors: deepClone(nextState?.errors) || {},
+        touched,
+        errors,
         submitCount:
           typeof nextState?.submitCount === 'number'
             ? nextState.submitCount

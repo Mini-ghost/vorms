@@ -15,8 +15,8 @@ export type FieldArrayValidator<Value extends Array<any>> = (
 export type FormTouched<Values> = {
   [K in keyof Values]?: Values[K] extends any[]
     ? Values[K][number] extends object
-      ? FormTouched<Values[K][number]>[]
-      : boolean
+      ? FormTouched<Values[K][number]>[] | boolean
+      : boolean | boolean[]
     : Values[K] extends object
     ? FormTouched<Values[K]>
     : boolean;
