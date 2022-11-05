@@ -47,7 +47,7 @@ const { value: sugar, attrs: sugarFieldAttrs } = register('sugar')
     <input v-model="drink" type="text" v-bind="drinkFieldAttrs">
 
     <label>Sugar level</label>
-    <input v-model="sugar" type="number" v-bind="sugarFieldAttrs">
+    <input v-model.number="sugar" type="number" v-bind="sugarFieldAttrs">
 
     <button type="reset">Reset</button>
     <button type="submit">Submit</button>

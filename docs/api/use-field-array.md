@@ -100,33 +100,141 @@ The `field.key` must be added as the component key to prevent re-renders breakin
 
 Append an item to the field array.
 
+- Type `(value: Value) => void;`
+
+```ts
+const { fields, append } = useFieldArray('food')
+
+console.log(fields.value.map(field => field.value))
+// output:  ['Bubble Tea']
+
+append('Stinky Tofu')
+console.log(fields.value.map(field => field.value))
+// output:  ['Bubble Tea', 'Stinky Tofu']
+```
+
 ### prepend
 
 Prepend an item to the field array.
+
+- Type `(value: Value) => void;`
+
+```ts
+const { fields, prepend } = useFieldArray('food')
+
+console.log(fields.value.map(field => field.value))
+// output:  ['Bubble Tea']
+
+prepend('Fried Chicken')
+console.log(fields.value.map(field => field.value))
+// output:  ['Fried Chicken', 'Bubble Tea']
+```
 
 ### swap
 
 Swap items position.
 
+- Type `(indexA: number, indexB: number) => void`
+
+```ts
+const { fields, swap } = useFieldArray('food')
+
+console.log(fields.value.map(field => field.value))
+// output:  ['Aiyu Jelly', 'Shaved Ice', 'Bubble Tea']
+
+swap(0, 2)
+console.log(fields.value.map(field => field.value))
+// output:  ['Bubble Tea', 'Shaved Ice', 'Aiyu Jelly']
+```
+
 ### remove
 
 Remove item at the specified position, or remove all when no index provided.
+
+- Type `(index?: number) => void`
+
+```ts
+const { fields, remove } = useFieldArray('food')
+
+console.log(fields.value.map(field => field.value))
+// output:  ['Century Egg', 'Stinky Tofu', 'Oyster Vermicelli Noodles']
+
+remove(2)
+console.log(fields.value.map(field => field.value))
+// output:  ['Century Egg', 'Stinky Tofu']
+
+remove()
+console.log(fields.value.map(field => field.value))
+// output:  []
+```
 
 ### move
 
 Move item to another position.
 
+- Type `(from: number, to: number) => void`
+
+```ts
+const { fields, move } = useFieldArray('food')
+
+console.log(fields.value.map(field => field.value))
+// output:  ['Avocado', 'Shaved Ice', 'Bubble Tea']
+
+move(0, 2)
+console.log(fields.value.map(field => field.value))
+// output:  ['Shaved Ice', 'Bubble Tea', 'Avocado']
+```
+
 ### insert
 
 Insert item at the specified position.
+
+- Type `(index: number, value: Value) => void`
+
+```ts
+const { fields, insert } = useFieldArray('food')
+
+console.log(fields.value.map(field => field.value))
+// output:  ['Chicken Chop', 'Bubble Tea']
+
+insert(1, 'Bubble Tea')
+console.log(fields.value.map(field => field.value))
+// output:  ['Chicken Chop', 'Bubble Tea', 'Bubble Tea']
+```
 
 ### update
 
 Update int at the specified position.
 
+- Type `(index: number, value: Value) => void`
+
+```ts
+const { fields, update } = useFieldArray('food')
+
+console.log(fields.value.map(field => field.value))
+// output:  ['Fried Chicken', 'Bubble Tea']
+
+insert(0, 'Soup Dumplings')
+console.log(fields.value.map(field => field.value))
+// output:  ['Soup Dumplings', 'Bubble Tea']
+```
+
 ### replace
 
 Replace the entire field array values.
+
+- Type `(values: Value[]) => void`
+
+```ts
+const { fields, update } = useFieldArray('food')
+
+console.log(fields.value.map(field => field.value))
+// output:  ['Fried Chicken', 'Bubble Tea']
+
+insert(['Soup Dumplings', 'Three-Cup Chicken'])
+console.log(fields.value.map(field => field.value))
+// output:  ['Soup Dumplings', 'Three-Cup Chicken']
+```
 
 ## Type Declarations
 
