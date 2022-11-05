@@ -35,7 +35,7 @@ describe('useField', () => {
       expect(nameField.value.value).toEqual('Alex');
       expect(nameField.dirty.value).toEqual(false);
       expect(nameField.error.value).toEqual(undefined);
-      expect(nameField.touched.value).toEqual(undefined);
+      expect(nameField.touched.value).toEqual(false);
       expect(nameField.attrs.value.name).toEqual('name');
 
       nameField.value.value = 'Hunter';

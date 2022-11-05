@@ -66,19 +66,19 @@ describe('useFieldArray', () => {
       expect(fields.value[0].value).toEqual(0);
       expect(fields.value[0].dirty).toEqual(false);
       expect(fields.value[0].error).toEqual(undefined);
-      expect(fields.value[0].touched).toEqual(undefined);
+      expect(fields.value[0].touched).toEqual(false);
       expect(fields.value[0].name).toEqual('list.0');
 
       expect(fields.value[1].value).toEqual(1);
       expect(fields.value[1].dirty).toEqual(false);
       expect(fields.value[1].error).toEqual(undefined);
-      expect(fields.value[1].touched).toEqual(undefined);
+      expect(fields.value[1].touched).toEqual(false);
       expect(fields.value[1].name).toEqual('list.1');
 
       expect(fields.value[2].value).toEqual(2);
       expect(fields.value[2].dirty).toEqual(false);
       expect(fields.value[2].error).toEqual(undefined);
-      expect(fields.value[2].touched).toEqual(undefined);
+      expect(fields.value[2].touched).toEqual(false);
       expect(fields.value[2].name).toEqual('list.2');
     });
   });
@@ -101,7 +101,7 @@ describe('useFieldArray', () => {
       expect(fields.value[1].value).toEqual(1);
       expect(fields.value[1].dirty).toEqual(true);
       expect(fields.value[1].error).toEqual(undefined);
-      expect(fields.value[1].touched).toEqual(undefined);
+      expect(fields.value[1].touched).toEqual(false);
       expect(fields.value[1].name).toEqual('list.1');
 
       expect(fields.value[0].value).toEqual(0);
@@ -130,7 +130,7 @@ describe('useFieldArray', () => {
       expect(fields.value[0].value).toEqual(2);
       expect(fields.value[0].dirty).toEqual(true);
       expect(fields.value[0].error).toEqual(undefined);
-      expect(fields.value[0].touched).toEqual(undefined);
+      expect(fields.value[0].touched).toEqual(false);
       expect(fields.value[0].name).toEqual('list.0');
 
       expect(fields.value[1].value).toEqual(1);
@@ -258,7 +258,7 @@ describe('useFieldArray', () => {
       expect(fields.value[1].value).toEqual(2);
       expect(fields.value[1].dirty).toEqual(true);
       expect(fields.value[1].error).toEqual(undefined);
-      expect(fields.value[1].touched).toEqual(undefined);
+      expect(fields.value[1].touched).toEqual(false);
       expect(fields.value[1].name).toEqual('list.1');
 
       expect(fields.value[2].value).toEqual(3);
@@ -294,7 +294,7 @@ describe('useFieldArray', () => {
       expect(fields.value[1].value).toEqual(2);
       expect(fields.value[1].dirty).toEqual(true);
       expect(fields.value[1].error).toEqual(undefined);
-      expect(fields.value[1].touched).toEqual(undefined);
+      expect(fields.value[1].touched).toEqual(false);
       expect(fields.value[1].name).toEqual('list.1');
     });
   });
