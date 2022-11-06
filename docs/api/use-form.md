@@ -112,7 +112,7 @@ This option allows you to configure the validation run when the component is mou
 
 ### validate
 
-This function allows you to write your logic to validate your form, there validation is **form level**.
+The `validate` is a **form level** validation, This property accepts the form's `values` as an argument. You can return an `errors` object or an undefined value to determine whether or not this is a valid values.
 
 - Type
 
@@ -214,7 +214,7 @@ This validate value can either be:
 
 ### onSubmit (Required)
 
-This is your form submission handler. It is passed your forms `values`. If has validation error, this will not be invoked.
+This is your form submission handler, witch will pass your form's `values`. But this will not be called if there are validation errors.
 
 - Type
 
@@ -240,13 +240,15 @@ If you use `values` with v-model directly, validation will only be called before
 
 ### errors
 
-Map of field name to the field has been touched.
+An object containing all the current validation errors. The shape will match the shape of the form's values.
 
 - Type `ComputedRef<FormErrors<Values>>`
 
 ### touched
 
 Map of field name to specific error for that field.
+
+An object containing all fields that have ever been touched. The shape will match the shape of the form's values.
 
 - Type `ComputedRef<FormTouched<Values>>`
 

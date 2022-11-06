@@ -74,7 +74,7 @@ This is useful when you have a dynamic field name, such as name that is generate
   type FieldValidator<Value> = (value: Value) => string | void | Promise<string | void>;
   ```
 
-The `validate` is a function of field level validation, when the calling `valueField()` will be triggered.
+The `validate` is a **field level** validation, This property accepts the field's `value` as an argument. You can return a string or an undefined value to determine whether or not this is a valid value, the string you return will be the error message for this field.
 
 ## Returns
 
