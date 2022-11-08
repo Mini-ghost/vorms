@@ -1,9 +1,6 @@
 {
   "name": "vorms",
   "packageManager": "pnpm@7.11.0",
-  "workspaces": [
-    "packages/*"
-  ],
   "description": "vue form validate",
   "scripts": {
     "dev": "pnpm -r --parallel run dev",
