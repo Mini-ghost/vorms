@@ -60,7 +60,7 @@ interface UseFieldArrayOptions<Value> {
 type FieldArrayValidator<Value extends Array<any>> = (value: Value) => FormErrors<Value> | void | Promise<FormErrors<Value> | void>;
 ```
 
-The `validate` is a function of field level validation, when the calling `valueField()` will be triggered.
+The `validate` is a **field level** validation. This property accepts the field array's `value` as an argument. You can return an array or an undefined to determine whether or not this filed array is a valid value.
 
 ## Returns
 

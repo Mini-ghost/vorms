@@ -98,7 +98,11 @@ This option allows you to configure the validation strategy **before** first sub
 
 ### reValidateMode
 
-This option allows you to configure the validation strategy **after** first submit.
+This option allows you to configure the validation strategy **after** first submit. By default, validation is triggered during the input change event.
+
+:::info
+Even if your `reValidationMode` is not set to `submit`, Vorms will perform validation again before submitting.
+:::
 
 - Type `'blur' | 'input' | 'change' | 'submit'`
 - Default `'change'`
@@ -112,7 +116,7 @@ This option allows you to configure the validation run when the component is mou
 
 ### validate
 
-The `validate` is a **form level** validation, This property accepts the form's `values` as an argument. You can return an `errors` object or an undefined value to determine whether or not this is a valid values.
+The `validate` is a **form level** validation. This property accepts the form's `values` as an argument. You can return an `errors` object or an undefined to determine whether or not this is a valid values.
 
 - Type
 
@@ -394,7 +398,7 @@ Reset handler. It will call `event.preventDefault()` in internally, If `event` i
 
 ### validateForm
 
-Validate form values.
+Validate form values. It will run all **field level** validation an **form level** validation.
 
 - Type
 
