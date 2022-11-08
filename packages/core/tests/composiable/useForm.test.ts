@@ -154,6 +154,25 @@ describe('useForm', () => {
         onSubmit: noop,
       });
 
+      values.name = 'Hunter';
+      expect(values.name).toEqual('Hunter');
+
+      resetForm();
+
+      expect(values.name).toEqual('Alex');
+      expect(dirty.value).toEqual(false);
+    });
+  });
+
+  it('when invoke resetForm with new values', () => {
+    setup(() => {
+      const { values, dirty, resetForm } = useForm({
+        initialValues: {
+          name: 'Alex',
+        },
+        onSubmit: noop,
+      });
+
       resetForm({
         values: {
           name: 'Hunter',
@@ -623,6 +642,56 @@ describe('useForm', () => {
 
         const { value, error } = register('name', {
           validate(value) {
+            if (!value) return ERROR_MESSAGE;
+            return;
+          },
+        });
+
+        return {
+          error,
+          errors,
+          value,
+          validateField,
+        };
+      },
+      template: `
+        <input v-model="value" />
+        <span>{{ error }}</span>
+        <span>{{ errors.name }}</span>
+        <button type="button" @click="() => validateField('name')" />
+      `,
+    });
+
+    const wrapper = mount(Comp);
+
+    await wrapper.find('button').trigger('click');
+    await sleep();
+
+    expect(wrapper.findAll('span')[0].text()).toBe(ERROR_MESSAGE);
+    expect(wrapper.findAll('span')[1].text()).toBe(ERROR_MESSAGE);
+
+    await wrapper.find('input').setValue('Alex');
+    await wrapper.find('button').trigger('click');
+    await sleep();
+
+    expect(wrapper.findAll('span')[0].text()).toBe('');
+    expect(wrapper.findAll('span')[1].text()).toBe('');
+  });
+
+  it('when invoke register and set asynchronous validate', async () => {
+    const ERROR_MESSAGE = 'Name is required';
+    const Comp = defineComponent({
+      setup() {
+        const { errors, register, validateField } = useForm({
+          initialValues: {
+            name: '',
+          },
+          onSubmit: noop,
+        });
+
+        const { value, error } = register('name', {
+          async validate(value) {
+            await sleep();
             if (!value) return ERROR_MESSAGE;
             return;
           },
