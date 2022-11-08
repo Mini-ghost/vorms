@@ -57,9 +57,11 @@ importers:
   packages/core:
     specifiers:
       deepmerge: ^4.2.2
+      fast-deep-equal: ^3.1.3
       klona: ^2.0.5
     dependencies:
       deepmerge: 4.2.2
+      fast-deep-equal: 3.1.3
       klona: 2.0.5
 
   packages/resolvers:
@@ -1444,7 +1446,6 @@ packages:
 
   /fast-deep-equal/3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
-    dev: true
 
   /fast-diff/1.2.0:
     resolution: {integrity: sha512-xJuoT5+L99XlZ8twedaRf6Ax2TgQVxvgZOYoPKqZufmJib0tL2tegPBOZb1pVNgIhlqDlA0eO0c3wBvQcmzx4w==}
