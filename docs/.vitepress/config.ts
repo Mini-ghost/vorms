@@ -82,6 +82,15 @@ export default defineConfig({
             link: '/api/use-form-context',
           },
         ]
+      },
+      {
+        text: 'Advanced',
+        items: [
+          {
+            text: 'Smart Form Component',
+            link: '/advanced/smart-form-component'
+          }
+        ]
       }
     ],
 
