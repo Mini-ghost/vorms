@@ -25,7 +25,7 @@ features:
   - title: Lightweight
     details: Tiny bundle size, Only 12kb compressed (4kb compressed + gzip compressed) and fully tree-shaking.
   - title: Easiest
-    details: Composition API brings us a very flexible development experience, especially when dealing with complex forms.
+    details: Vorm uses the Composition API to give you a very flexible development experience, especially when you're dealing with complex forms.
   - title: Flexible
-    details: Support Yup, Zod and custom validation. You can choose your favorite validation library or build the validation yourself.
+    details: Yup, Zod and self-def validation are supported. You can choose your favorite validation library or build your own.
 ---
