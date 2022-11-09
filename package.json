@@ -3,7 +3,10 @@
   "packageManager": "pnpm@7.11.0",
   "description": "vue form validate",
   "scripts": {
+    "build:core": "pnpm --filter @vorms/core build",
+    "build:resolvers": "pnpm --filter @vorms/resolvers build",
     "dev": "pnpm -r --parallel run dev",
+    "format": "prettier --write --parser typescript \"packages/**/*.ts\"",
     "lint": "eslint './packages/**/*.{js,ts}'",
     "lint:fix": "pnpm lint --fix",
     "play": "cd playground && pnpm dev",
@@ -13,7 +16,8 @@
   },
   "lint-staged": {
     "{packages}/**/*.{js,ts}": [
-      "pnpm lint:fix"
+      "pnpm lint:fix",
+      "pnpm format"
     ]
   },
   "husky": {
