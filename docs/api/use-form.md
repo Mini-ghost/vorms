@@ -1,6 +1,6 @@
 # useForm
 
-`useForm()` is a custom Vue composition api that makes form value and state management easiest.
+`useForm()` is a custom Vue composition api that makes you to easily manage form values and state.
 
 ## Usage
 
@@ -67,7 +67,7 @@ const { value: sugar, attrs: sugarFieldAttrs } = register('sugar', {
 
 ### initialValues (Required)
 
-This is the form initial value and is used as the basis for `dirty` comparison.
+This is initial values of the form and will be used as the basis for the `dirty` comparison.
 
 - Type
 
@@ -77,14 +77,14 @@ This is the form initial value and is used as the basis for `dirty` comparison.
 
 ### initialErrors
 
-This is the form initial error.
+This is initial errors of the form.
 
 - Type `FormErrors<Values>`
 - Default: `undefined`
 
 ### initialTouched
 
-This is the form initial touched.
+This is initial touched status of the form.
 
 - Type `FormTouched<Values>`
 - Default: `undefined`
@@ -101,7 +101,7 @@ This option allows you to configure the validation strategy **before** first sub
 This option allows you to configure the validation strategy **after** first submit. By default, validation is triggered during the input change event.
 
 :::info
-Even if your `reValidationMode` is not set to `submit`, Vorms will perform validation again before submitting.
+Even if your `reValidationMode` is not set to `submit`, Vorms will revalidate before submitting.
 :::
 
 - Type `'blur' | 'input' | 'change' | 'submit'`
@@ -109,14 +109,14 @@ Even if your `reValidationMode` is not set to `submit`, Vorms will perform valid
 
 ### validateOnMounted
 
-This option allows you to configure the validation run when the component is mounted.
+This option allows you to configure that whether the validation should run or not when component is mounted.
 
 - Type `boolean`
 - Default `false`
 
 ### validate
 
-The `validate` is a **form level** validation. This property accepts the form's `values` as an argument. You can return an `errors` object or an undefined to determine whether or not this is a valid values.
+The `validate` is a **form level** validation. This property accepts the form's `values` as the argument. You could return the `errors` object or undefined to determine whether those values are valid or not.
 
 - Type
 
@@ -124,9 +124,9 @@ The `validate` is a **form level** validation. This property accepts the form's 
   function validate(values: Values): void | object | Promise<FormErrors<Values>>
   ```
 
-This validate value can either be:
+This validate value could either be:
 
-1. Synchronous function and return an `errors` object.
+1. Synchronous function and return the `errors` object.
 
     ```ts
     import { useForm } from '@vorms/core'
@@ -155,7 +155,7 @@ This validate value can either be:
     }) 
     ```
 
-2. Asynchronous function and return a Promise that is resolve to an object containing `errors`.
+2. Asynchronous function and return a Promise that is resolve an object containing `errors`.
 
     ```ts
     import { useForm } from '@vorms/core'
@@ -188,7 +188,7 @@ This validate value can either be:
     }) 
     ```
 
-3. Use `@vorms/resolvers` to integrate external validation libraries such as [Yup](https://github.com/jquense/yup), [Zod](https://github.com/vriad/zod).
+3. Use `@vorms/resolvers` to integrate external validation libraries such as [Yup](https://github.com/jquense/yup) or [Zod](https://github.com/vriad/zod).
 
     ```bash
     npm install @vorms/resolvers
@@ -218,7 +218,7 @@ This validate value can either be:
 
 ### onSubmit (Required)
 
-This is your form submission handler, witch will pass your form's `values`. But this will not be called if there are validation errors.
+This is your form submission handler, witch will pass your form's `values`. But this will not be called if the validation failed.
 
 - Type
 
@@ -250,27 +250,25 @@ An object containing all the current validation errors. The shape will match the
 
 ### touched
 
-Map of field name to specific error for that field.
-
 An object containing all fields that have ever been touched. The shape will match the shape of the form's values.
 
 - Type `ComputedRef<FormTouched<Values>>`
 
 ### dirty
 
-Return `true` if current values are not deeply equal `initialValues`.
+Return `true` if current values are not deeply equal to `initialValues`.
 
 - Type `ComputedRef<boolean>`
 
 ### setValues
 
-This function allows you to dynamically update form values.
+This function allows you to manually update form values.
 
 - Type `(values: Values, shouldValidate?: boolean)`
 
 ### setFieldValue
 
-This function allows you to dynamically set the value of field.  
+This function allows you to manually set the specific value of field.  
 
 - Type `(name: string, value: unknown, shouldValidate?: boolean)`
 
@@ -282,7 +280,7 @@ The number of times user attempted to submit.
 
 ### isSubmitting
 
-Return `true` when form is submitting, If `onSubmit()` is a synchronous function, then you need to call setSubmitting(false) on your own.
+Return `true` when form is submitting, If `onSubmit()` is a synchronous function, then you need to call setSubmitting(false) yourself.
 
 - Type `Ref<boolean>`
 
@@ -294,7 +292,7 @@ Return `true` when running validation.
 
 ### resetForm
 
-Reset the entire form state. There are optional arguments and allow set state what you want.
+Reset the entire form state. There are optional arguments that allow you to set the state to what you want.
 
 - Type
 
@@ -304,9 +302,9 @@ Reset the entire form state. There are optional arguments and allow set state wh
   interface FormResetState<Values> {
     //Form values.
     values: Values;
-    // Map of field name to specific error for that field.
+    // An object containing the name of the field that has been touched.
     touched: FormTouched<Values>;
-    // Map of field name to the field has been touched.
+    // An object containing the name of the field that has error.
     errors: FormErrors<Values>;
     // The number of times user attempted to submit.
     submitCount: number;
@@ -315,7 +313,7 @@ Reset the entire form state. There are optional arguments and allow set state wh
 
 ### register
 
-This method allows you to get specific field values, meta (state) and attributes, you can also add validation for that field.
+This method allows you to get the specific field value, meta (state) and attribute, you can also add validation for that field.
 
 - Type
 
@@ -378,7 +376,7 @@ This method allows you to get specific field values, meta (state) and attributes
 
 ### handleSubmit
 
-Submit handler. It will call `event.preventDefault()` in internally, If `event` is passed.
+Submission handler. It will call `event.preventDefault()` internally, If `event` is passed.
 
 - Type
 
@@ -388,7 +386,7 @@ Submit handler. It will call `event.preventDefault()` in internally, If `event` 
 
 ### handleReset
 
-Reset handler. It will call `event.preventDefault()` in internally, If `event` is passed.
+Reset handler. It will call `event.preventDefault()` internally, If `event` is passed.
 
 - Type
 
@@ -398,7 +396,7 @@ Reset handler. It will call `event.preventDefault()` in internally, If `event` i
 
 ### validateForm
 
-Validate form values. It will run all **field level** validation an **form level** validation.
+Validator of the form. It will run the **form level** validation.
 
 - Type
 
@@ -408,7 +406,7 @@ Validate form values. It will run all **field level** validation an **form level
 
 ### validateField
 
-Validate form specific field, if this field validation is register.
+Validator for specific field, if this field's validation has been registered.
 
 - Type
 
