@@ -7,7 +7,9 @@
     "lint": "eslint './packages/**/*.{js,ts}'",
     "lint:fix": "pnpm lint --fix",
     "play": "cd playground && pnpm dev",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
   },
   "lint-staged": {
     "{packages}/**/*.{js,ts}": [
@@ -29,6 +31,8 @@
     "@types/node": "^16.11.0",
     "@typescript-eslint/eslint-plugin": "^5.20.0",
     "@typescript-eslint/parser": "^5.20.0",
+    "@vitest/coverage-c8": "^0.24.3",
+    "@vue/test-utils": "^2.2.0",
     "consola": "^2.15.3",
     "esbuild-register": "^3.3.2",
     "eslint": "^8.13.0",
@@ -37,6 +41,7 @@
     "esno": "^0.14.1",
     "fs-extra": "^10.1.0",
     "husky": "^7.0.0",
+    "jsdom": "^20.0.1",
     "lint-staged": "^12.4.1",
     "prettier": "^2.6.2",
     "rimraf": "^3.0.2",
@@ -45,6 +50,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "rollup-plugin-typescript2": "^0.31.2",
     "typescript": "^4.6.3",
+    "vitest": "^0.24.3",
     "vue": "^3.0.0"
   }
 }
