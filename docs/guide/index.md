@@ -22,15 +22,12 @@ It will be exposed to global as `window.Vorms`
 <script setup lang="ts">
 import { useForm } from '@vorms/core'
 
-interface InitialValues {
-  drink: string,
-  sugar: number
-}
+const sugarOptions = ['no', 'light', 'half', 'half', 'standard']
 
-const { register, handleSubmit, handleReset } = useForm<InitialValues>({
+const { register, handleSubmit, handleReset } = useForm({
   initialValues: {
     drink: '',
-    sugar: 30,
+    sugar: 'light',
   },
   onSubmit(data) {
     console.log(data)
@@ -47,7 +44,11 @@ const { value: sugar, attrs: sugarFieldAttrs } = register('sugar')
     <input v-model="drink" type="text" v-bind="drinkFieldAttrs">
 
     <label>Sugar level</label>
-    <input v-model.number="sugar" type="number" v-bind="sugarFieldAttrs">
+    <select v-model="sugar" v-bind="sugarFieldAttrs">
+      <option v-for="item in sugarOptions" :key="item" :value="item">
+        {{ item }}
+      </option>
+    </select>
 
     <button type="reset">Reset</button>
     <button type="submit">Submit</button>
