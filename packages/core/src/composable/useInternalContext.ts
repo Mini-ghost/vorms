@@ -45,7 +45,7 @@ export interface InternalContextValues {
   setFieldValue: UseFormSetFieldValue<FormValues>;
 
   getFieldError: (name: string) => FormErrors<any>;
-  getFieldTouched: (name: string) => FormTouched<any>;
+  getFieldTouched: (name: string) => FormTouched<boolean>;
   getFieldDirty: (name: string) => boolean;
   getFieldAttrs: (name: MaybeRef<string>) => ComputedRef<FieldAttrs>;
 
