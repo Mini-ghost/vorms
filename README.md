@@ -6,7 +6,7 @@ Vue Form Validate with Composition API
 </p>
 
 <p align="center">
-<a href="https://www.npmjs.com/package/@vorms/core" target="__blank"><img src="https://img.shields.io/npm/v/@vorms/core/beta?color=46C085&label=" alt="NPM version"></a>
+<a href="https://www.npmjs.com/package/@vorms/core" target="__blank"><img src="https://img.shields.io/npm/v/@vorms/core/beta?color=34A88C&label=" alt="NPM version"></a>
 <a href="https://vorms.mini-ghost.dev/" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs&color=3D957F" alt="Documentations"></a>
 <a href="https://www.npmjs.com/package/@vorms/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vorms/core?color=00629E&label="></a>
 <br>
