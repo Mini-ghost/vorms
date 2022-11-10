@@ -1,12 +1,48 @@
 import { defineConfig } from 'vitepress'
 
+const guide = [
+  {
+    text: 'Get Started',
+    link: '/guide/'
+  },
+  {
+    text: 'Examples',
+    link: '/guide/examples'
+  }
+]
+
+const api = [
+  {
+    text: 'useForm',
+    link: '/api/use-form',
+  },
+  {
+    text: 'useField',
+    link: '/api/use-field',
+  },
+  {
+    text: 'useFieldArray',
+    link: '/api/use-field-array',
+  },
+  {
+    text: 'useFormContext',
+    link: '/api/use-form-context',
+  },
+]
+
+const advanced = [
+  {
+    text: 'Smart Form Component',
+    link: '/advanced/smart-form-component'
+  }
+]
+
 export default defineConfig({
   title: 'Vorms',
   titleTemplate: 'Vorms - Vue Form Validate with Composition API',
   description: 'Vue Form Validate with Composition API',
 
 
-  // TODO: Add `og:image` and `twitter:image`
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
     ['meta', { name: 'author', content: 'Alex Liu' }],
@@ -51,46 +87,15 @@ export default defineConfig({
     sidebar: [
       {
         text: 'Guide',
-        items: [
-          {
-            text: 'Get Started',
-            link: '/guide/'
-          },
-          {
-            text: 'Examples',
-            link: '/guide/examples'
-          }
-        ]
+        items: guide
       },
       {
         text: 'API Reference',
-        items: [
-          {
-            text: 'useForm',
-            link: '/api/use-form',
-          },
-          {
-            text: 'useField',
-            link: '/api/use-field',
-          },
-          {
-            text: 'useFieldArray',
-            link: '/api/use-field-array',
-          },
-          {
-            text: 'useFormContext',
-            link: '/api/use-form-context',
-          },
-        ]
+        items: api
       },
       {
         text: 'Advanced',
-        items: [
-          {
-            text: 'Smart Form Component',
-            link: '/advanced/smart-form-component'
-          }
-        ]
+        items: advanced
       }
     ],
 
