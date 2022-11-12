@@ -286,12 +286,7 @@ export function useForm<Values extends FormValues = FormValues>(
       },
     });
 
-    const willValidate =
-      shouldValidate == null
-        ? validateTiming.value === 'input'
-        : shouldValidate;
-
-    return willValidate
+    return shouldValidate
       ? runAllValidateHandler(state.values)
       : Promise.resolve();
   };
@@ -372,6 +367,12 @@ export function useForm<Values extends FormValues = FormValues>(
     }
   };
 
+  const handleInput: FormEventHandler['handleInput'] = () => {
+    if (validateTiming.value === 'input') {
+      runAllValidateHandler(state.values);
+    }
+  };
+
   const setSubmitting = (isSubmitting: boolean) => {
     dispatch({ type: ACTION_TYPE.SET_ISSUBMITTING, payload: isSubmitting });
   };
@@ -404,6 +405,7 @@ export function useForm<Values extends FormValues = FormValues>(
       name: unref(name),
       onBlur: handleBlur,
       onChange: handleChange,
+      onInput: handleInput,
     }));
   };
 

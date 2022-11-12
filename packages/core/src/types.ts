@@ -48,6 +48,7 @@ export interface FormEventHandler {
   };
 
   handleChange: () => void;
+  handleInput: () => void;
 }
 
 export interface FieldRegisterOptions<Values> {
@@ -130,6 +131,7 @@ export type FieldAttrs = {
   name: string;
   onBlur: (event: Event) => void;
   onChange: () => void;
+  onInput: () => void;
 };
 
 export type FieldMeta = {
