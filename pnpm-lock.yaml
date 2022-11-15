@@ -7,6 +7,7 @@ importers:
       '@rollup/plugin-commonjs': ^21.1.0
       '@rollup/plugin-node-resolve': ^13.2.1
       '@rollup/plugin-replace': ^4.0.0
+      '@stackblitz/sdk': ^1.8.1
       '@types/fs-extra': ^9.0.13
       '@types/node': ^16.11.0
       '@typescript-eslint/eslint-plugin': ^5.20.0
@@ -37,6 +38,7 @@ importers:
       '@rollup/plugin-commonjs': 21.1.0_rollup@2.70.2
       '@rollup/plugin-node-resolve': 13.2.1_rollup@2.70.2
       '@rollup/plugin-replace': 4.0.0_rollup@2.70.2
+      '@stackblitz/sdk': 1.8.1
       '@types/fs-extra': 9.0.13
       '@types/node': 16.11.27
       '@typescript-eslint/eslint-plugin': 5.20.0_xgwjwvswzzo77lpghh6plzerx4
@@ -462,6 +464,10 @@ packages:
     dependencies:
       estree-walker: 2.0.2
       picomatch: 2.3.1
+    dev: true
+
+  /@stackblitz/sdk/1.8.1:
+    resolution: {integrity: sha512-hjYfjOLQBNDzqPD5AkGJOD7j+uvFwGocDTmwNqmLCWR5EY7BDtcOtDY2M+91v/twYWWNvI7N8UNIgojCPNgzMA==}
     dev: true
 
   /@tootallnate/once/2.0.0:

@@ -56,4 +56,4 @@ const { value: sugar, attrs: sugarFieldAttrs } = register('sugar')
 </template>
 ```
 
-More example please read the next section: [Examples](./examples)
+Refer to [Examples](/examples/) section for more usage examples.

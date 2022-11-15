@@ -3,12 +3,8 @@ import { defineConfig } from 'vitepress'
 const guide = [
   {
     text: 'Get Started',
-    link: '/guide/'
+    link: '/guide/',
   },
-  {
-    text: 'Examples',
-    link: '/guide/examples'
-  }
 ]
 
 const api = [
@@ -33,8 +29,8 @@ const api = [
 const advanced = [
   {
     text: 'Smart Form Component',
-    link: '/advanced/smart-form-component'
-  }
+    link: '/advanced/smart-form-component',
+  },
 ]
 
 export default defineConfig({
@@ -77,7 +73,8 @@ export default defineConfig({
 
     nav: [
       { text: 'Get Started', link: '/guide/', activeMatch: '/guide/' },
-      { text: 'API', link: '/api/', activeMatch: '/api/' }
+      { text: 'API', link: '/api/', activeMatch: '/api/' },
+      { text: 'Examples', link: '/examples/', activeMatch: '/examples/' }
     ],
 
     socialLinks: [
