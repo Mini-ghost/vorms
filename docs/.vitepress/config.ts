@@ -73,7 +73,7 @@ export default defineConfig({
 
     nav: [
       { text: 'Get Started', link: '/guide/', activeMatch: '/guide/' },
-      { text: 'API', link: '/api/', activeMatch: '/api/' },
+      { text: 'API', link: '/api/use-form', activeMatch: '/api/' },
       { text: 'Examples', link: '/examples/', activeMatch: '/examples/' }
     ],
 
