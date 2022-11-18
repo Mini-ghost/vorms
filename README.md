@@ -89,6 +89,7 @@ type UseFormRegisterReturn<Value> =  {
     name: string
     onBlur: () => void;
     onChange: () => void;
+    onInput: () => void
   };
 }
 
@@ -230,6 +231,7 @@ const { value: bag, attrs: bagFieldAttrs } = register('bag')
 | attrs.name     | `string`                            | Input's name that we pass by.                                        |
 | attrs.onBlur   | `(event: Event) => void`            | onBlur prop to subscribe the input blur event.                       |
 | attrs.onChange | `() => void`                        | onChange prop to subscribe the input change event.                   |
+| attrs.onInput  | `() => void`                        | onInput prop to subscribe the input input event.                     |
 
 **Example**
 
@@ -295,6 +297,7 @@ interface FieldEntry {
   attrs: {
     onBlur: (event: Event) => void;
     onChange: () => void;
+    onInput: () => void
   };
 }
 ```
