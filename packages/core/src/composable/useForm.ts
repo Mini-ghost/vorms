@@ -202,20 +202,20 @@ export function useForm<Values extends FormValues = FormValues>(
     onError,
   } = options;
 
+  let initialValues = deepClone(options.initialValues);
+  let initialErrors = deepClone(options.initialErrors || emptyErrors);
+  let initialTouched = deepClone(options.initialTouched || emptyTouched);
+
   const [state, dispatch] = useFormStore<
     Reducer<FormState<Values>, FormMessage<Values>>
   >(reducer, {
-    values: reactive(deepClone(options.initialValues)),
-    errors: ref(deepClone(options.initialErrors || emptyErrors)),
-    touched: ref(deepClone(options.initialTouched || emptyTouched)),
+    values: reactive(deepClone(initialValues)),
+    errors: ref(deepClone(initialErrors)),
+    touched: ref(deepClone(initialTouched)),
     submitCount: ref(0),
     isSubmitting: ref(false),
     isValidating: ref(false),
   });
-
-  let initialValues = deepClone(options.initialValues);
-  let initialErrors = deepClone(options.initialErrors || emptyErrors);
-  let initialTouched = deepClone(options.initialTouched || emptyTouched);
 
   const fieldRegistry: FieldRegistry = {};
   const fieldArrayRegistry: FieldArrayRegistry = {};
@@ -286,12 +286,7 @@ export function useForm<Values extends FormValues = FormValues>(
       },
     });
 
-    const willValidate =
-      shouldValidate == null
-        ? validateTiming.value === 'input'
-        : shouldValidate;
-
-    return willValidate
+    return shouldValidate
       ? runAllValidateHandler(state.values)
       : Promise.resolve();
   };
@@ -372,6 +367,12 @@ export function useForm<Values extends FormValues = FormValues>(
     }
   };
 
+  const handleInput: FormEventHandler['handleInput'] = () => {
+    if (validateTiming.value === 'input') {
+      runAllValidateHandler(state.values);
+    }
+  };
+
   const setSubmitting = (isSubmitting: boolean) => {
     dispatch({ type: ACTION_TYPE.SET_ISSUBMITTING, payload: isSubmitting });
   };
@@ -404,6 +405,7 @@ export function useForm<Values extends FormValues = FormValues>(
       name: unref(name),
       onBlur: handleBlur,
       onChange: handleChange,
+      onInput: handleInput,
     }));
   };
 
