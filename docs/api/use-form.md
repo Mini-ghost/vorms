@@ -343,8 +343,9 @@ This method allows you to get the specific field value, meta (state) and attribu
 
     interface FieldAttrs {
       name: string;
-      onBlur: (event: Event) => void;
-      onChange: () => void;
+      onBlur(event: Event): void;
+      onChange(): void;
+      onInput(): void
     }
 
     ```

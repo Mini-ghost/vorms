@@ -114,6 +114,7 @@ Return `true` if current field value are not equal initial value.
     name: string;
     onBlur(event: Event): void;
     onChange(): void;
+    onInput(): void
   };
   ```
 
