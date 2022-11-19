@@ -1,6 +1,6 @@
 {
   "name": "@vorms/core",
-  "version": "0.0.1-beta.10",
+  "version": "1.0.0-rc.1",
   "description": "Vue form validate with Composition API",
   "source": "src/index.ts",
   "main": "dist/index.cjs.js",

@@ -6,7 +6,7 @@ Vue Form Validate with Composition API
 </p>
 
 <p align="center">
-<a href="https://www.npmjs.com/package/@vorms/core" target="__blank"><img src="https://img.shields.io/npm/v/@vorms/core/beta?color=34A88C&label=" alt="NPM version"></a>
+<a href="https://www.npmjs.com/package/@vorms/core" target="__blank"><img src="https://img.shields.io/npm/v/@vorms/core/rc?color=34A88C&label=" alt="NPM version"></a>
 <a href="https://vorms.mini-ghost.dev/" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs&color=3D957F" alt="Documentations"></a>
 <a href="https://www.npmjs.com/package/@vorms/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vorms/core?color=00629E&label="></a>
 <br>
@@ -16,14 +16,14 @@ Vue Form Validate with Composition API
 ## Feature
 
 - **Type Strong**: Written in TypeScript, with TSDoc.
-- **[Lightweight](https://bundlephobia.com/package/@vorms/core@0.0.1-beta.10)**: Only 12kb compressed (4kb compressed + gzip compressed) and fully tree-shaking.
+- **[Lightweight](https://bundlephobia.com/package/@vorms/core@1.0.0-rc.1)**: Only 12kb compressed (4kb compressed + gzip compressed) and fully tree-shaking.
 - **Easiest**: Vorm uses the [Composition API](https://vuejs.org/guide/extras/composition-api-faq.html) to give you a very seamless development experience.
 - **Flexible**: [Yup](https://github.com/jquense/yup), [Zod](https://github.com/colinhacks/zod) and self-def validation are supported.
 
 ## Install
 
 ```bash
-npm install @vorms/core@beta
+npm install @vorms/core@rc
 ```
 
 ## CDN
