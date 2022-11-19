@@ -1,0 +1,16 @@
+iframe {
+  border-width: 0;
+}
+
+.VPFeatures .VPFeature {
+  transition: border-color 0.25s, filter 0.25s;
+}
+
+.VPFeatures:has(.VPFeature:hover) .VPFeature:not(:hover) {
+  opacity: 0.75;
+  filter: blur(2px);
+}
+
+.VPFeature:hover {
+  border-color: var(--vp-button-brand-border);
+}
