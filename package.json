@@ -15,7 +15,8 @@
     "play": "cd playground && pnpm dev",
     "prepare": "husky install",
     "test": "vitest run",
-    "test:coverage": "vitest run --coverage"
+    "test:coverage": "vitest run --coverage",
+    "publish:ci": "esno scripts/publish.ts"
   },
   "lint-staged": {
     "{packages}/**/*.{js,ts}": [

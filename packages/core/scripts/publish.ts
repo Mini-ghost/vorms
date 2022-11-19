@@ -12,7 +12,6 @@ const { name, version } = readJSONSync(
   'utf-8',
 );
 
-const isBeta: boolean = version.includes('beta');
 const readmePath = path.join(resolve(__dirname, '..'), 'README.md');
 
 copyFileSync(
@@ -20,7 +19,13 @@ copyFileSync(
   readmePath,
 );
 
-exec(`${command}${isBeta ? ' --tag beta' : ''}`, { stdio: 'inherit' });
+const tag = version.includes('beta')
+  ? 'beta'
+  : version.includes('rc')
+  ? 'rc'
+  : null;
+
+exec(`${command}${tag ? ` --tag ${tag}` : ''}`, { stdio: 'inherit' });
 
 removeSync(readmePath);
 consola.success(`Published ${name} v${version}`);
