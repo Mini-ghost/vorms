@@ -1,5 +1,6 @@
-import { z } from 'zod';
 import { toNestError } from '@vorms/resolvers';
+import { z } from 'zod';
+
 import type { Resolver } from './types';
 
 const parseErrorSchema = (zodErrors: z.ZodIssue[]) => {

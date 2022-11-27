@@ -1,5 +1,6 @@
 import { set } from '@vorms/core';
-import type { FormValues, FormErrors } from '@vorms/core';
+
+import type { FormErrors, FormValues } from '@vorms/core';
 
 export const toNestError = (
   errors: Record<string, string>,

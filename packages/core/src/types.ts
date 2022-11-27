@@ -1,4 +1,4 @@
-import { ComputedRef, WritableComputedRef, UnwrapNestedRefs, Ref } from 'vue';
+import { ComputedRef, Ref, UnwrapNestedRefs, WritableComputedRef } from 'vue';
 
 export type MaybeRef<T> = T | Ref<T>;
 

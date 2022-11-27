@@ -1,5 +1,5 @@
-import { describe, expect, it, vi } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { describe, expect, it, vi } from 'vitest';
 import { defineComponent, nextTick, ref } from 'vue';
 
 import { useForm } from '../../src';

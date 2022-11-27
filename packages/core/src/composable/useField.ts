@@ -1,5 +1,6 @@
 import { useInternalContext } from './useInternalContext';
-import type { MaybeRef, FieldValidator, UseFormRegisterReturn } from '../types';
+
+import type { FieldValidator, MaybeRef, UseFormRegisterReturn } from '../types';
 
 type UseFieldOptions<Value> = {
   validate?: FieldValidator<Value>;

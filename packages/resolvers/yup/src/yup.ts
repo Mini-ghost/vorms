@@ -1,6 +1,8 @@
-import Yup from 'yup';
 import { toNestError } from '@vorms/resolvers';
+import Yup from 'yup';
+
 import type { Resolver } from './types';
+
 /**
  * Why `path!` ? because it could be `undefined` in some case
  * https://github.com/jquense/yup#validationerrorerrors-string--arraystring-value-any-path-string

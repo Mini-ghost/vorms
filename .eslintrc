@@ -9,14 +9,37 @@
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended"
   ],
-  "plugins": ["@typescript-eslint", "prettier"],
+  "plugins": ["@typescript-eslint", "import", "prettier"],
   "rules": {
+    // eslint
     "no-console": "error",
     "eol-last": ["error", "always"],
+    "sort-imports": ["error", {
+      "allowSeparatedGroups": true,
+      "ignoreCase": true,
+      "ignoreDeclarationSort": true,
+      "ignoreMemberSort": false,
+      "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
+    }],
 
     // typescript
     "@typescript-eslint/ban-types": "off",
-    "@typescript-eslint/no-explicit-any": "off"
+    "@typescript-eslint/no-explicit-any": "off",
+
+    // import
+    "import/order": ["error", {
+      "alphabetize": {
+        "caseInsensitive": true,
+        "order": "asc"
+      },
+      "groups": [
+        ["index"],
+        ["builtin", "external", "object"],
+        ["internal", "parent", "sibling"],
+        ["type"]
+      ],
+      "newlines-between": "always"
+    }]
   },
   "overrides": [
     {

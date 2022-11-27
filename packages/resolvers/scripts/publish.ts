@@ -1,7 +1,7 @@
 import { execSync as exec } from 'child_process';
-import path from 'path';
-import { readJSONSync } from 'fs-extra';
 import consola from 'consola';
+import { readJSONSync } from 'fs-extra';
+import path from 'path';
 
 exec('pnpm build', { stdio: 'inherit' });
 

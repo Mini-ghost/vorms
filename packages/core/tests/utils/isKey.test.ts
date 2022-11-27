@@ -1,4 +1,5 @@
-import { describe, it, expect } from 'vitest';
+import { describe, expect, it } from 'vitest';
+
 import isKey from '../../src/utils/isKey';
 
 describe('isKey', () => {

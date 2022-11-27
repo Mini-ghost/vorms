@@ -1,8 +1,8 @@
-import { describe, expect, it } from 'vitest';
 import { mount } from '@vue/test-utils';
+import { describe, expect, it } from 'vitest';
 import { defineComponent } from 'vue';
 
-import { useForm, useField } from '../../src';
+import { useField, useForm } from '../../src';
 
 const noop = () => {};
 

@@ -1,5 +1,6 @@
 import { inject, InjectionKey } from 'vue';
-import type { UseFormReturn, FormValues } from '../types';
+
+import type { FormValues, UseFormReturn } from '../types';
 
 export type FormContextValues<Values extends FormValues = FormValues> =
   UseFormReturn<Values>;

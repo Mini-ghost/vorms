@@ -1,36 +1,35 @@
-import { computed, reactive, ref, unref, onMounted, provide } from 'vue';
+import deepmerge from 'deepmerge';
 import isEqual from 'fast-deep-equal/es6';
 import { klona as deepClone } from 'klona/full';
-import deepmerge from 'deepmerge';
+import { computed, onMounted, provide, reactive, ref, unref } from 'vue';
 
-import { FormContextKey } from './useFormContext';
-import { InternalContextKey } from './useInternalContext';
-import useFormStore from './useFormStore';
-
+import get from '../utils/get';
+import isFunction from '../utils/isFunction';
 import isPromise from '../utils/isPromise';
 import isString from '../utils/isString';
-import isFunction from '../utils/isFunction';
 import keysOf from '../utils/keysOf';
-import get from '../utils/get';
 import set from '../utils/set';
+import { FormContextKey } from './useFormContext';
+import useFormStore from './useFormStore';
+import { InternalContextKey } from './useInternalContext';
 
-import type { Reducer } from './useFormStore';
 import type {
-  MaybeRef,
-  FormValues,
-  FormState,
+  FieldAttrs,
+  FieldMeta,
   FormErrors,
   FormEventHandler,
-  FieldMeta,
-  FieldAttrs,
+  FormResetState,
+  FormState,
+  FormTouched,
+  FormValues,
+  MaybeRef,
+  ResetForm,
+  SetFieldArrayValue,
   UseFormRegister,
   UseFormReturn,
   ValidateField,
-  SetFieldArrayValue,
-  FormResetState,
-  ResetForm,
-  FormTouched,
 } from '../types';
+import type { Reducer } from './useFormStore';
 
 interface FieldRegistry {
   [field: string]: {

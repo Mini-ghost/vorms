@@ -1,7 +1,7 @@
 import * as Yup from 'yup';
 
+import type { FormErrors, FormValues } from '@vorms/core';
 import type Lazy from 'yup/lib/Lazy';
-import type { FormValues, FormErrors } from '@vorms/core';
 
 export type Resolver = <T extends Yup.AnyObjectSchema | Lazy<any>>(
   schema: T,

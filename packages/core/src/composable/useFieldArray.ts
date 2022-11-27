@@ -1,24 +1,23 @@
-import { ref, unref, computed, Ref } from 'vue';
+import { computed, Ref, ref, unref } from 'vue';
 
+import appendAt from '../utils/append';
+import insertAt from '../utils/insert';
+import moveAt from '../utils/move';
+import omit from '../utils/omit';
+import prependAt from '../utils/prepend';
+import removeAt from '../utils/remove';
+import swapAt from '../utils/swap';
+import updateAt from '../utils/update';
 import { useInternalContext } from './useInternalContext';
 
 import type {
-  MaybeRef,
-  FormErrors,
-  FormTouched,
   FieldArrayValidator,
   FieldAttrs,
+  FormErrors,
+  FormTouched,
+  MaybeRef,
   Primitive,
 } from '../types';
-
-import appendAt from '../utils/append';
-import prependAt from '../utils/prepend';
-import swapAt from '../utils/swap';
-import removeAt from '../utils/remove';
-import moveAt from '../utils/move';
-import insertAt from '../utils/insert';
-import updateAt from '../utils/update';
-import omit from '../utils/omit';
 
 interface FieldEntry<Value> {
   key: number;
