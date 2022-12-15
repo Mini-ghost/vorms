@@ -232,7 +232,7 @@ If `onSubmit()` function is synchronous, you need to call `setSubmitting(false)`
 
 ### onInvalid
 
-This method occurs when the form is submitted with invalid values.
+This is your invalid handler, called when the form is submitted with invalid values.
 
 ## Returns
 
