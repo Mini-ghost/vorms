@@ -2,11 +2,11 @@
 layout: home
 
 title: Vorms
-titleTemplate: Vue form validate with Composition API
+titleTemplate: Vue form validation with Composition API
 
 hero:
   name: Vorms
-  text: Form Validate With Composition API
+  text: Form Validation With Composition API
   tagline: Type Strong, Lightweight, Easy and Flexible
   image:
     src: /logo.svg

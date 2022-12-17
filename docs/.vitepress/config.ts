@@ -35,15 +35,15 @@ const advanced = [
 
 export default defineConfig({
   title: 'Vorms',
-  titleTemplate: 'Vorms - Vue Form Validate with Composition API',
-  description: 'Vue Form Validate with Composition API',
+  titleTemplate: 'Vorms - Vue Form Validation with Composition API',
+  description: 'Vue Form Validation with Composition API',
 
 
   head: [
     ['link', { rel: 'icon', href: '/favicon.svg', type: 'image/svg+xml' }],
     ['meta', { name: 'author', content: 'Alex Liu' }],
     ['meta', { property: 'og:title', content: 'Vorms' }],
-    ['meta', { property: 'og:description', content: 'Vue Form Validate with Composition API' }],
+    ['meta', { property: 'og:description', content: 'Vue Form Validation with Composition API' }],
     ['meta', { property: 'og:image', content: 'https://vorms.mini-ghost.dev/og.png' }],
     ['meta', { property: 'og:image:alt', content: 'Vorms' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],

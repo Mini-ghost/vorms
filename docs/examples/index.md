@@ -1,6 +1,6 @@
 # Examples
 
-Vorms is a easiest and flexible form validate library. This page is going to demonstrates some usage with Vorms.
+Vorms is a easiest and flexible form validation library. This page is going to demonstrates some usage with Vorms.
 
 ## Login
 

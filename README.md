@@ -1,8 +1,8 @@
 <p align="center">
-<a href="https://github.com/Mini-ghost/vorms"><img src="https://raw.githubusercontent.com/Mini-ghost/vorms/main/docs/public/logo.svg" alt="Vorms - Vue Form Validate with Composition API" width="240">
+<a href="https://github.com/Mini-ghost/vorms"><img src="https://raw.githubusercontent.com/Mini-ghost/vorms/main/docs/public/logo.svg" alt="Vorms - Vue Form Validation with Composition API" width="240">
 </a>
 <br>
-Vue Form Validate with Composition API
+Vue Form Validation with Composition API
 </p>
 
 <p align="center">
