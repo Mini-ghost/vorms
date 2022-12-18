@@ -785,6 +785,8 @@ describe('useForm', () => {
     });
 
     await wrapper.find('button[type="submit"]').trigger('click');
+    await sleep();
+
     expect(onSubmit).toHaveBeenCalledTimes(0);
   });
 
@@ -947,6 +949,88 @@ describe('useForm', () => {
     await sleep();
 
     expect(wrapper.find('span').text()).toBe('false');
+  });
+
+  it('when onInvalid with validation pass', async () => {
+    const onInvalid = vi.fn();
+
+    const Comp = defineComponent({
+      setup() {
+        const { handleSubmit } = useForm({
+          initialValues: {
+            name: '',
+          },
+          validate() {
+            return undefined;
+          },
+          onSubmit: noop,
+          onInvalid,
+        });
+
+        return {
+          handleSubmit,
+        };
+      },
+
+      template: `
+        <form @submit="handleSubmit">
+          <button type="submit">Submit</button>
+        </form>
+      `,
+    });
+
+    document.body.innerHTML = `<div id="app"></div>`;
+    const wrapper = mount(Comp, {
+      attachTo: '#app',
+    });
+
+    await wrapper.find('button[type="submit"]').trigger('click');
+    await sleep();
+
+    expect(onInvalid).toHaveBeenCalledTimes(0);
+  });
+
+  it('when onInvalid with validation error', async () => {
+    const onInvalid = vi.fn();
+    const errors = {
+      name: 'name is required',
+    };
+
+    const Comp = defineComponent({
+      setup() {
+        const { handleSubmit } = useForm({
+          initialValues: {
+            name: '',
+          },
+          validate() {
+            return errors;
+          },
+          onSubmit: noop,
+          onInvalid,
+        });
+
+        return {
+          handleSubmit,
+        };
+      },
+
+      template: `
+        <form @submit="handleSubmit">
+          <button type="submit">Submit</button>
+        </form>
+      `,
+    });
+
+    document.body.innerHTML = `<div id="app"></div>`;
+    const wrapper = mount(Comp, {
+      attachTo: '#app',
+    });
+
+    await wrapper.find('button[type="submit"]').trigger('click');
+    await sleep();
+
+    expect(onInvalid).toHaveBeenCalledTimes(1);
+    expect(onInvalid).toHaveBeenCalledWith(errors);
   });
 
   it('when invoke handleReset', async () => {
