@@ -16,7 +16,7 @@ Vue Form Validation with Composition API
 ## Feature
 
 - **Type Strong**: Written in TypeScript, with TSDoc.
-- **[Lightweight](https://bundlephobia.com/package/@vorms/core@1.0.0-rc.1)**: Only 12kb compressed (4kb compressed + gzip compressed) and fully tree-shaking.
+- **[Lightweight](https://bundlephobia.com/package/@vorms/core@1.0.0-rc.2)**: Only 12kb compressed (4kb compressed + gzip compressed) and fully tree-shaking.
 - **Easiest**: Vorm uses the [Composition API](https://vuejs.org/guide/extras/composition-api-faq.html) to give you a very seamless development experience.
 - **Flexible**: [Yup](https://github.com/jquense/yup), [Zod](https://github.com/colinhacks/zod) and self-def validation are supported.
 
