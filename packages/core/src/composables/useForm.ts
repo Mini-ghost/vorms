@@ -57,8 +57,9 @@ export interface UseFormOptions<Values extends FormValues> {
   reValidateMode?: ValidateMode;
   validateOnMounted?: boolean;
   onSubmit: (values: Values, helper: FormSubmitHelper) => void | Promise<any>;
+  onInvalid?: (errors: FormErrors<Values>) => void;
   /**
-   * @deprecated Will be removed in a major release. Please use `watch(errors, callback)` instead.
+   * @deprecated Will be removed in a major release. Please use `onInvalid()` instead.
    */
   onError?: (errors: FormErrors<Values>) => void;
   validate?: (values: Values) => void | object | Promise<FormErrors<Values>>;
@@ -199,6 +200,7 @@ export function useForm<Values extends FormValues = FormValues>(
     reValidateMode = 'change',
     onSubmit,
     onError,
+    onInvalid,
   } = options;
 
   let initialValues = deepClone(options.initialValues);
@@ -511,6 +513,7 @@ export function useForm<Values extends FormValues = FormValues>(
           });
       } else {
         dispatch({ type: ACTION_TYPE.SUBMIT_FAILURE });
+        onInvalid?.(errors);
         onError?.(errors);
       }
     });

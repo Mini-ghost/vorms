@@ -230,6 +230,10 @@ This is your form submission handler, witch will pass your form's `values`. But 
 If `onSubmit()` function is synchronous, you need to call `setSubmitting(false)` yourself.
 :::
 
+### onInvalid
+
+This is your invalid handler, called when the form is submitted with invalid values.
+
 ## Returns
 
 ### values
