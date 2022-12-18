@@ -1,0 +1,7 @@
+contact_links:
+  - name: 📚 Documentation
+    url: https://vorms.mini-ghost.dev/
+    about: Check documentation for usage
+  - name: 💬 Discussions
+    url: https://github.com/Mini-ghost/vorms/discussions
+    about: Use discussions if you have an idea for improvement and asking questions
