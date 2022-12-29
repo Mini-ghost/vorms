@@ -1,6 +1,6 @@
 # useFieldArray
 
-`useFieldArray()` is a custom Vue composition api that will return specific fields values, meta (state), attributes and provides common operation helpers, you can also add validation for those fields.
+`useFieldArray()` is a custom Vue composition api that will return values, meta (state), attributes of specific field and provides common operation helpers, you can also add validation to validate the values in it.
 
 ## Usage
 
@@ -52,7 +52,7 @@ Name of the field array.
 
 ```ts
 interface UseFieldArrayOptions<Value> {
-  // This function allows you to write your logic to validate your field,
+  // This function allows you to write your logic to validate your values in this field,
   // this is optional.
   validate?: FieldArrayValidator<Value[]>;
 }
@@ -60,7 +60,7 @@ interface UseFieldArrayOptions<Value> {
 type FieldArrayValidator<Value extends Array<any>> = (value: Value) => FormErrors<Value> | void | Promise<FormErrors<Value> | void>;
 ```
 
-The `validate` is a **field level** validation. This property accepts the field array's `value` as an argument. You can return an array or an undefined to determine whether or not this filed array is a valid value.
+The `validate` is a **field level** validation. This property accepts the `values` of this field as an argument. You can return an array or an undefined to determine whether the values in it is valid or not.
 
 ## Returns
 
@@ -82,9 +82,9 @@ This array contains every entry of field's key, value, meta and attrs.
   }
   ```
 
-`useFieldArray` automatically generates a unique identifier named `key` which is used for key prop. For more information why this is required: [Maintaining State with key](https://vuejs.org/guide/essentials/list.html#maintaining-state-with-key)
+`useFieldArray` automatically generates an unique identifier named `key` which is used for key prop. For more information why this is required: [Maintaining State with key](https://vuejs.org/guide/essentials/list.html#maintaining-state-with-key)
 
-The `field.key` must be added as the component key to prevent re-renders breaking the fields.
+The `field.key` must be added as the key of component to prevent the field from being broken by re-rendering.
 
 ```vue
 <template>
@@ -132,7 +132,7 @@ console.log(fields.value.map(field => field.value))
 
 ### swap
 
-Swap items position.
+Swap the position of the item.
 
 - Type `(indexA: number, indexB: number) => void`
 
@@ -149,7 +149,7 @@ console.log(fields.value.map(field => field.value))
 
 ### remove
 
-Remove item at the specified position, or remove all when no index provided.
+Remove the item by it index, or remove all when no index is provided.
 
 - Type `(index?: number) => void`
 
@@ -170,7 +170,7 @@ console.log(fields.value.map(field => field.value))
 
 ### move
 
-Move item to another position.
+Move the item to another position.
 
 - Type `(from: number, to: number) => void`
 
@@ -187,7 +187,7 @@ console.log(fields.value.map(field => field.value))
 
 ### insert
 
-Insert item at the specified position.
+Insert an item at the specified position.
 
 - Type `(index: number, value: Value) => void`
 
@@ -204,7 +204,7 @@ console.log(fields.value.map(field => field.value))
 
 ### update
 
-Update int at the specified position.
+Update the item at the specified position.
 
 - Type `(index: number, value: Value) => void`
 
