@@ -1,6 +1,6 @@
 # useField
 
-`useField()` is a custom Vue composition api that will return specific field value, meta (state) and attributes, you can also add validation for that field.
+`useField(name: MaybeRef<string>, options?: UseFieldOptions<Value>)` is a custom Vue composition api that will return the value, meta (state) and attributes of a specific field, you can also add validation to it.
 
 ## Usage
 
@@ -31,7 +31,7 @@ The name of a specific field. Its type can be `string` or `Ref<string>`
 
 - Type `MaybeRef<string>`
 
-If you want to create a custom component in your application, such as `<TextField />`, you should use `Ref<string>` to retain reactivity of `props.name`. as follows:
+If you want to create a custom component in your application, such as `<TextField />`, you should use `Ref<string>` to retain reactivity for `props.name`. as follows:
 
 ```vue
 <script setup lang="ts">
@@ -50,7 +50,7 @@ const { value } = useField<string>(nameRef)
 </script>
 ```
 
-This is useful when you have a dynamic field name, such as name that is generated with a `v-for` loop.
+This is useful when you have a dynamic field name. e.g. the name is generated using a `v-for` loop.
 
 ```vue
 <template>
@@ -64,53 +64,53 @@ This is useful when you have a dynamic field name, such as name that is generate
 
 - Type
 
-  ```ts
-  interface UseFieldOptions<Value> = {
-    // This function allows you to write your logic to validate your field, 
-    // this is optional.
-    validate?: FieldValidator<Value>;
-  };
+```ts
+interface UseFieldOptions<Value> {
+  // This function allows you to write your logic to validate your field, 
+  // this is optional.
+  validate?: FieldValidator<Value>;
+};
 
-  type FieldValidator<Value> = (value: Value) => string | void | Promise<string | void>;
-  ```
+type FieldValidator<Value> = (value: Value) => string | void | Promise<string | void>;
+```
 
-The `validate` is a **field level** validation. This property accepts the field's `value` as an argument. You can return a string or an undefined value to determine whether or not this is a valid value, the string you return will be the error message for this field.
+The `validate` is a **field level** validation. This property accepts the field's `value` as an argument. You can return a string or an undefined value to determine whether this value is valid or not, the string you return will be the error message for this field.
 
 ## Returns
 
 ### value
 
-Current field value.
+Current field's value.
 
 - Type `Ref<Value>`
 
 ### error
 
-Field error message.
+Current field's error message.
 
 - Type `ComputedRef<string>`
 
 ### touched
 
-Return `true` after input first blur.
+Returns `true` after the field has been blurred for the first time.
 
 - Type `ComputedRef<boolean>`
 
 ### dirty
 
-Return `true` if current field value are not equal initial value.
+Return `true` if current field's value are not equal to initial value.
 
 - Type `ComputedRef<string>`
 
 ### attrs
 
-`attrs` is attributes that need to be bound on the field.
+`attrs` is attributes that need to be bound to the field.
 
 - Type `ComputedRef<FieldAttrs>`
 
   ```ts
-  interface FieldAttrs = {
-    // Field's name that we pass by.
+  interface FieldAttrs {
+    // Field's name that you passed earlier.
     name: string;
     onBlur(event: Event): void;
     onChange(): void;
