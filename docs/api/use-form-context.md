@@ -1,6 +1,6 @@
 # useFormContext
 
-`useFormContext()` is a custom Vue composition api that allow you access the form context. This is useful with deeply nested component structures.
+`useFormContext()` is a custom Vue composition api that allow you to access the form context. This is useful with nested component in deep structures.
 
 ## Usage
 
@@ -21,7 +21,7 @@ const { handleSubmit } = useForm({
     <NestedTextField />
     <button type="submit">
       Submit
-    <button>
+    </button>
   </form>
 </template>
 ```
