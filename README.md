@@ -98,7 +98,7 @@ This project is heavily inspired by the following awesome projects.
 - [React Hook Form](https://github.com/react-hook-form/react-hook-form)
 - [VeeValidate](https://github.com/logaretm/vee-validate)
 
-## Contribution
+## Contributors
 
 Thanks to the wonderful people who have already contributed to vorms!
 
