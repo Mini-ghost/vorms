@@ -98,6 +98,16 @@ This project is heavily inspired by the following awesome projects.
 - [React Hook Form](https://github.com/react-hook-form/react-hook-form)
 - [VeeValidate](https://github.com/logaretm/vee-validate)
 
+## Contribution
+
+Thanks to the wonderful people who have already contributed to vorms!
+
+<a href="https://github.com/mini-ghost/vorms/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=mini-ghost/vorms" />
+</a>
+
+Made with [contrib.rocks](https://contrib.rocks).
+
 ## License
 
 [MIT License](https://github.com/Mini-ghost/vorms/blob/main/LICENSE) © 2022-PRESENT [Alex Liu](https://github.com/Mini-ghost)
