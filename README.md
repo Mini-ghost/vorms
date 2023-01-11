@@ -6,7 +6,7 @@ Vue Form Validation with Composition API
 </p>
 
 <p align="center">
-<a href="https://www.npmjs.com/package/@vorms/core" target="__blank"><img src="https://img.shields.io/npm/v/@vorms/core/rc?color=34A88C&label=" alt="NPM version"></a>
+<a href="https://www.npmjs.com/package/@vorms/core" target="__blank"><img src="https://img.shields.io/npm/v/@vorms/core?color=34A88C&label=" alt="NPM version"></a>
 <a href="https://vorms.mini-ghost.dev/" target="__blank"><img src="https://img.shields.io/static/v1?label=&message=docs&color=3D957F" alt="Documentations"></a>
 <a href="https://www.npmjs.com/package/@vorms/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@vorms/core?color=00629E&label="></a>
 <br>
@@ -23,7 +23,7 @@ Vue Form Validation with Composition API
 ## Install
 
 ```bash
-npm install @vorms/core@rc
+npm install @vorms/core
 ```
 
 ## CDN
@@ -100,7 +100,7 @@ This project is heavily inspired by the following awesome projects.
 
 ## Contributors
 
-Thanks to the wonderful people who have already contributed to vorms!
+Thanks to the wonderful people who have already contributed to Vorms!
 
 <a href="https://github.com/mini-ghost/vorms/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=mini-ghost/vorms" />
