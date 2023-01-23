@@ -1,7 +1,7 @@
 ## Install
 
 ```bash
-npm install @vorms/resolvers@rc
+npm install @vorms/resolvers
 ```
 
 ## Quickstart
