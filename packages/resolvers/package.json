@@ -8,17 +8,17 @@
   "exports": {
     ".": {
       "import": "./dist/index.esm.mjs",
-      "require": "./dist/index.cje.js",
+      "require": "./dist/index.cjs.js",
       "umd": "./dist/index.umd.js"
     },
     "./yup": {
       "import": "./yup/dist/index.esm.mjs",
-      "require": "./yup/dist/index.cje.js",
+      "require": "./yup/dist/index.cjs.js",
       "umd": "./yup/dist/index.umd.js"
     },
     "./zod": {
       "import": "./zod/dist/index.esm.mjs",
-      "require": "./zod/dist/index.cje.js",
+      "require": "./zod/dist/index.cjs.js",
       "umd": "./zod/dist/index.umd.js"
     }
   },
