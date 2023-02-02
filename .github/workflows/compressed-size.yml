@@ -27,5 +27,4 @@ jobs:
         with:
           github_token: '${{ secrets.GITHUB_TOKEN }}'
           comment_token: ${{ secrets.COMMENT_TOKEN }}
-          build_script: pnpm build
           path: packages/core
