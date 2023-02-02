@@ -228,14 +228,10 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const registerFieldArray = (name: MaybeRef<string>, options: any) => {
-    const { validate, reset } = options;
-
-    fieldRegistry[unref(name)] = {
-      validate,
-    };
+    registerField(name, options);
 
     fieldArrayRegistry[unref(name)] = {
-      reset,
+      reset: options.reset,
     };
   };
 
