@@ -1,0 +1,30 @@
+name: Package Size
+
+on: 
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: antfu/export-size-action@main
+        with:
+          github_token: '${{ secrets.GITHUB_TOKEN }}'
+          comment_token: ${{ secrets.COMMENT_TOKEN }}
+          build_script: pnpm build
+          path: packages/core
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
+      - name: Set node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          cache: pnpm
