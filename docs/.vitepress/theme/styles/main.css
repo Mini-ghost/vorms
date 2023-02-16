@@ -14,3 +14,7 @@ iframe {
 .VPFeature:hover {
   border-color: var(--vp-button-brand-border);
 }
+
+.custom-block-title {
+  text-transform: uppercase;
+}

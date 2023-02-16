@@ -226,8 +226,8 @@ This is your form submission handler, witch will pass your form's `values`. But 
   function onSubmit (values: Values, helper: FormSubmitHelper): void | Promise<any>
   ```
 
-::: warning Note
-If `onSubmit()` function is synchronous, you need to call `setSubmitting(false)` yourself.
+::: warning Important
+When the `onSubmit()` function is asynchronous, the `isSubmitting` variable is automatically reset to `false` upon completion. Conversely, if `onSubmit()` is synchronous, you must manually call `setSubmitting(false)` to reset `isSubmitting`.
 :::
 
 ### onInvalid
