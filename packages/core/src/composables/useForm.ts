@@ -43,8 +43,9 @@ interface FieldArrayRegistry {
   };
 }
 
-export interface FormSubmitHelper {
+export interface FormSubmitHelper<Values extends FormValues> {
   setSubmitting: (isSubmitting: boolean) => void;
+  initialValue: Values;
 }
 
 export type ValidateMode = 'blur' | 'input' | 'change' | 'submit';
@@ -56,7 +57,10 @@ export interface UseFormOptions<Values extends FormValues> {
   validateMode?: ValidateMode;
   reValidateMode?: ValidateMode;
   validateOnMounted?: boolean;
-  onSubmit: (values: Values, helper: FormSubmitHelper) => void | Promise<any>;
+  onSubmit: (
+    values: Values,
+    helper: FormSubmitHelper<Values>,
+  ) => void | Promise<any>;
   onInvalid?: (errors: FormErrors<Values>) => void;
   validate?: (values: Values) => void | object | Promise<FormErrors<Values>>;
 }
@@ -417,8 +421,11 @@ export function useForm<Values extends FormValues = FormValues>(
     return !isEqual(get(initialValues, name), get(state.values, name));
   };
 
-  const submitHelper: FormSubmitHelper = {
+  const submitHelper: FormSubmitHelper<Values> = {
     setSubmitting,
+    get initialValue() {
+      return deepClone(initialValues);
+    },
   };
 
   const runSingleFieldValidateHandler = (name: string, value: unknown) => {

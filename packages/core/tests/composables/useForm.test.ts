@@ -1066,4 +1066,93 @@ describe('useForm', () => {
     await wrapper.find('button[type="reset"]').trigger('click');
     expect(wrapper.find('span#values').text()).toEqual('');
   });
+
+  it('Get the initial values parameter in the callback of the onSubmit function', async () => {
+    const Comp = defineComponent({
+      setup() {
+        const defaultValues = {
+          name: 'Alex',
+          age: 10,
+          habit: ['basketball', 'football'],
+          family: {
+            tom: {
+              name: 'Tom',
+              age: 12,
+              habit: ['TV', 'PhotoGraphy'],
+            },
+          },
+        };
+
+        const { handleSubmit } = useForm({
+          initialValues: defaultValues,
+          onSubmit(_, { initialValue }) {
+            expect(initialValue).toEqual(defaultValues);
+          },
+        });
+
+        return {
+          handleSubmit,
+        };
+      },
+      template: `
+        <form @submit="handleSubmit">
+          <button type="submit">Submit</button>
+        </form>
+      `,
+    });
+    document.body.innerHTML = `<div id="app"></div>`;
+    const wrapper = mount(Comp, {
+      attachTo: '#app',
+    });
+
+    await wrapper.find('button').trigger('click');
+  });
+
+  it('Get the initial values parameter in the callback of the onSubmit function after resetFrom execute', async () => {
+    const Comp = defineComponent({
+      setup() {
+        const defaultValues = {
+          name: 'Alex',
+          age: 10,
+        };
+
+        const resetValues = {
+          name: 'Alex',
+          age: 10,
+          habit: ['basketball', 'football'],
+          family: {
+            tom: {
+              name: 'Tom',
+              age: 12,
+              habit: ['TV', 'PhotoGraphy'],
+            },
+          },
+        };
+
+        const { handleSubmit, resetForm } = useForm({
+          initialValues: defaultValues,
+          onSubmit(_, { initialValue }) {
+            expect(initialValue).toEqual(resetValues);
+          },
+        });
+
+        resetForm({ values: resetValues });
+
+        return {
+          handleSubmit,
+        };
+      },
+      template: `
+        <form @submit="handleSubmit">
+          <button type="submit">Submit</button>
+        </form>
+      `,
+    });
+    document.body.innerHTML = `<div id="app"></div>`;
+    const wrapper = mount(Comp, {
+      attachTo: '#app',
+    });
+
+    await wrapper.find('button').trigger('click');
+  });
 });
