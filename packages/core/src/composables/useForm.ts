@@ -137,12 +137,9 @@ function reducer<Values extends FormValues>(
       state.isValidating.value = message.payload;
       return;
     case ACTION_TYPE.RESET_FORM:
-      keysOf(state.values).forEach((key) => {
-        delete state.values[key];
-      });
-
-      keysOf(message.payload.values).forEach((path) => {
-        (state.values as Values)[path] = message.payload.values[path];
+      reducer(state, {
+        type: ACTION_TYPE.SET_VALUES,
+        payload: message.payload.values,
       });
 
       state.touched.value = message.payload.touched;
@@ -228,14 +225,10 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   const registerFieldArray = (name: MaybeRef<string>, options: any) => {
-    const { validate, reset } = options;
-
-    fieldRegistry[unref(name)] = {
-      validate,
-    };
+    registerField(name, options);
 
     fieldArrayRegistry[unref(name)] = {
-      reset,
+      reset: options.reset,
     };
   };
 
