@@ -226,6 +226,21 @@ This is your form submission handler, witch will pass your form's `values`. But 
   function onSubmit (values: Values, helper: FormSubmitHelper): void | Promise<any>
   ```
 
+  ```ts
+  interface FormSubmitHelper {
+    setSubmitting: (isSubmitting: boolean) => void;
+  }
+  ```
+
+#### Parameters
+
+- `values`: the validated `values`.
+- `helper`: some states or methods that can be helpful when submitting the form.
+
+  | Name          | Description                   |
+  |---------------|-------------------------------|
+  |`setSubmitting`| Set isSubmitting imperatively.|
+
 ::: warning Important
 When the `onSubmit()` function is asynchronous, the `isSubmitting` variable is automatically reset to `false` upon completion. Conversely, if `onSubmit()` is synchronous, you must manually call `setSubmitting(false)` to reset `isSubmitting`.
 :::
