@@ -229,7 +229,7 @@ This is your form submission handler, witch will pass your form's `values`. But 
   ```ts
   interface FormSubmitHelper {
     setSubmitting: (isSubmitting: boolean) => void;
-    initialValue: Values;
+    initialValues: Values;
   }
   ```
 
