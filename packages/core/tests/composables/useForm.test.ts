@@ -1074,13 +1074,13 @@ describe('useForm', () => {
           name: 'Alex',
           age: 10,
           habit: ['basketball', 'football'],
-          family: {
-            tom: {
+          family: [
+            {
               name: 'Tom',
               age: 12,
               habit: ['TV', 'PhotoGraphy'],
             },
-          },
+          ],
         };
 
         const { handleSubmit } = useForm({
@@ -1120,13 +1120,13 @@ describe('useForm', () => {
           name: 'Alex',
           age: 10,
           habit: ['basketball', 'football'],
-          family: {
-            tom: {
+          family: [
+            {
               name: 'Tom',
               age: 12,
               habit: ['TV', 'PhotoGraphy'],
             },
-          },
+          ],
         };
 
         const { handleSubmit, resetForm } = useForm({
