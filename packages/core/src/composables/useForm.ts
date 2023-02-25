@@ -3,16 +3,17 @@ import isEqual from 'fast-deep-equal/es6';
 import { klona as deepClone } from 'klona/full';
 import { computed, onMounted, provide, reactive, ref, unref } from 'vue';
 
+import { FormContextKey } from './useFormContext';
+import useFormStore from './useFormStore';
+import { InternalContextKey } from './useInternalContext';
 import get from '../utils/get';
 import isFunction from '../utils/isFunction';
 import isPromise from '../utils/isPromise';
 import isString from '../utils/isString';
 import keysOf from '../utils/keysOf';
 import set from '../utils/set';
-import { FormContextKey } from './useFormContext';
-import useFormStore from './useFormStore';
-import { InternalContextKey } from './useInternalContext';
 
+import type { Reducer } from './useFormStore';
 import type {
   FieldAttrs,
   FieldMeta,
@@ -29,7 +30,6 @@ import type {
   UseFormReturn,
   ValidateField,
 } from '../types';
-import type { Reducer } from './useFormStore';
 
 interface FieldRegistry {
   [field: string]: {

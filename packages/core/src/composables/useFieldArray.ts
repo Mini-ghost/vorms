@@ -1,5 +1,6 @@
 import { computed, Ref, ref, unref } from 'vue';
 
+import { useInternalContext } from './useInternalContext';
 import appendAt from '../utils/append';
 import insertAt from '../utils/insert';
 import moveAt from '../utils/move';
@@ -8,7 +9,6 @@ import prependAt from '../utils/prepend';
 import removeAt from '../utils/remove';
 import swapAt from '../utils/swap';
 import updateAt from '../utils/update';
-import { useInternalContext } from './useInternalContext';
 
 import type {
   FieldArrayValidator,
