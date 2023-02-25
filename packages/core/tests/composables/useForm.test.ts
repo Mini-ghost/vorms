@@ -1085,8 +1085,8 @@ describe('useForm', () => {
 
         const { handleSubmit } = useForm({
           initialValues: defaultValues,
-          onSubmit(_, { initialValue }) {
-            expect(initialValue).toEqual(defaultValues);
+          onSubmit(_, { initialValues }) {
+            expect(initialValues).toEqual(defaultValues);
           },
         });
 
@@ -1131,8 +1131,8 @@ describe('useForm', () => {
 
         const { handleSubmit, resetForm } = useForm({
           initialValues: defaultValues,
-          onSubmit(_, { initialValue }) {
-            expect(initialValue).toEqual(resetValues);
+          onSubmit(_, { initialValues }) {
+            expect(initialValues).toEqual(resetValues);
           },
         });
 

@@ -45,7 +45,7 @@ interface FieldArrayRegistry {
 
 export interface FormSubmitHelper<Values extends FormValues> {
   setSubmitting: (isSubmitting: boolean) => void;
-  initialValue: Values;
+  readonly initialValues: Values;
 }
 
 export type ValidateMode = 'blur' | 'input' | 'change' | 'submit';
@@ -423,7 +423,7 @@ export function useForm<Values extends FormValues = FormValues>(
 
   const submitHelper: FormSubmitHelper<Values> = {
     setSubmitting,
-    get initialValue() {
+    get initialValues() {
       return deepClone(initialValues);
     },
   };
