@@ -241,7 +241,7 @@ This is your form submission handler, witch will pass your form's `values`. But 
   | Name          | Description                   |
   |---------------|-------------------------------|
   |`setSubmitting`| Set isSubmitting imperatively.|
-  |`initialValue` | Form Initial Value.           |
+  |`initialValue` | Form initial values.          |
 
 ::: warning Important
 When the `onSubmit()` function is asynchronous, the `isSubmitting` variable is automatically reset to `false` upon completion. Conversely, if `onSubmit()` is synchronous, you must manually call `setSubmitting(false)` to reset `isSubmitting`.
