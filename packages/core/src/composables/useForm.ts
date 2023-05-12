@@ -593,16 +593,15 @@ export function useForm<Values extends FormValues = FormValues>(
   };
 
   provide(InternalContextKey, {
-    getFieldMeta,
     getFieldValue,
     setFieldValue,
     getFieldError,
     getFieldTouched,
     getFieldDirty,
     getFieldAttrs,
-    registerField,
     registerFieldArray,
     setFieldArrayValue,
+    register,
   });
 
   provide<UseFormReturn<Values>>(FormContextKey, context);

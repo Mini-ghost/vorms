@@ -9,13 +9,12 @@ import {
 import {
   FieldArrayValidator,
   FieldAttrs,
-  FieldMeta,
-  FieldValidator,
   FormErrors,
   FormTouched,
   FormValues,
   MaybeRef,
   SetFieldArrayValue,
+  UseFormRegister,
   UseFormSetFieldValue,
 } from '../types';
 
@@ -28,11 +27,6 @@ function injectMaybeSelf<T>(
 }
 
 export interface InternalContextValues {
-  registerField: (
-    name: MaybeRef<string>,
-    options: { validate?: FieldValidator<any> },
-  ) => void;
-
   registerFieldArray: (
     name: MaybeRef<string>,
     options: {
@@ -42,7 +36,6 @@ export interface InternalContextValues {
   ) => void;
 
   getFieldValue: <Value>(name: MaybeRef<string>) => WritableComputedRef<Value>;
-  getFieldMeta: (name: MaybeRef<string>) => FieldMeta;
   setFieldValue: UseFormSetFieldValue<FormValues>;
 
   getFieldError: (name: string) => FormErrors<any>;
@@ -51,6 +44,8 @@ export interface InternalContextValues {
   getFieldAttrs: (name: MaybeRef<string>) => ComputedRef<FieldAttrs>;
 
   setFieldArrayValue: SetFieldArrayValue;
+
+  register: UseFormRegister<FormValues>;
 }
 
 export const InternalContextKey: InjectionKey<InternalContextValues> = Symbol(
