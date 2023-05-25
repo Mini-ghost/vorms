@@ -42,14 +42,9 @@ export function useField<Value>(
   name: MaybeRef<string>,
   options: UseFieldOptions<Value> = {},
 ): UseFormRegisterReturn<Value> {
-  const { registerField, getFieldValue, getFieldAttrs, getFieldMeta } =
-    useInternalContext();
+  const { register } = useInternalContext();
 
-  registerField(name, options);
+  register(name, options);
 
-  return {
-    value: getFieldValue<Value>(name),
-    attrs: getFieldAttrs(name),
-    ...getFieldMeta(name),
-  };
+  return register(name, options);
 }
