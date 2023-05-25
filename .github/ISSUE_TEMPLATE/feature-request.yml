@@ -1,5 +1,5 @@
 name: "🚀 Feature request"
-description: Suggest a feature that will improve Nuxt
+description: Suggest a feature that will improve Vorms
 labels: ["pending triage"]
 body:
   - type: markdown
