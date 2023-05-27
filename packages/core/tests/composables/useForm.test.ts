@@ -751,6 +751,29 @@ describe('useForm', () => {
     });
   });
 
+  it('when use getter for register name', () => {
+    setup(() => {
+      const { register } = useForm({
+        initialValues: {
+          name: 'Alex',
+          city: 'Taichung',
+        },
+        onSubmit: noop,
+      });
+
+      const name = ref<'name' | 'city'>('name');
+      const { value, attrs } = register(() => name.value);
+
+      expect(value.value).toEqual('Alex');
+      expect(attrs.value.name).toEqual('name');
+
+      name.value = 'city';
+
+      expect(value.value).toEqual('Taichung');
+      expect(attrs.value.name).toEqual('city');
+    });
+  });
+
   it('when onSubmit with validation error', async () => {
     const onSubmit = vi.fn();
     const Comp = defineComponent({

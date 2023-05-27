@@ -1,6 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it } from 'vitest';
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 
 import { useFieldArray, useForm } from '../../src';
 
@@ -344,6 +344,82 @@ describe('useFieldArray', () => {
 
       expect(fields.value[0].value).toEqual(2);
       expect(fields.value[0].dirty).toEqual(true);
+    });
+  });
+
+  it('when use ref for field name', () => {
+    setup(() => {
+      useForm({
+        initialValues: {
+          list1: [0, 1, 2],
+          list2: [3, 4, 5],
+        },
+        initialErrors: {
+          list1: ['error 0', 'error 1', 'error 2'],
+          list2: ['error 3', 'error 4', 'error 5'],
+        },
+        initialTouched: {
+          list1: [true, true, true],
+          list2: [false, false, false],
+        },
+        onSubmit: noop,
+      });
+
+      const name = ref<'list1' | 'list2'>('list1');
+      const { fields, prepend } = useFieldArray(name);
+
+      expect(fields.value[0].value).toEqual(0);
+      expect(fields.value[0].error).toEqual('error 0');
+      expect(fields.value[0].touched).toEqual(true);
+
+      name.value = 'list2';
+      expect(fields.value[0].value).toEqual(3);
+      expect(fields.value[0].error).toEqual('error 3');
+      expect(fields.value[0].touched).toEqual(false);
+
+      prepend(6);
+      expect(fields.value[0].value).toEqual(6);
+
+      name.value = 'list1';
+      expect(fields.value[0].value).toEqual(0);
+    });
+  });
+
+  it('when use getter for field name', () => {
+    setup(() => {
+      useForm({
+        initialValues: {
+          list1: [0, 1, 2],
+          list2: [3, 4, 5],
+        },
+        initialErrors: {
+          list1: ['error 0', 'error 1', 'error 2'],
+          list2: ['error 3', 'error 4', 'error 5'],
+        },
+        initialTouched: {
+          list1: [true, true, true],
+          list2: [false, false, false],
+        },
+        onSubmit: noop,
+      });
+
+      const name = ref<'list1' | 'list2'>('list1');
+      const { fields, prepend } = useFieldArray(() => name.value);
+
+      expect(fields.value[0].value).toEqual(0);
+      expect(fields.value[0].error).toEqual('error 0');
+      expect(fields.value[0].touched).toEqual(true);
+
+      name.value = 'list2';
+      expect(fields.value[0].value).toEqual(3);
+      expect(fields.value[0].error).toEqual('error 3');
+      expect(fields.value[0].touched).toEqual(false);
+
+      prepend(6);
+      expect(fields.value[0].value).toEqual(6);
+
+      name.value = 'list1';
+      expect(fields.value[0].value).toEqual(0);
     });
   });
 });
