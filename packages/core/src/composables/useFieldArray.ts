@@ -1,8 +1,10 @@
-import { computed, Ref, ref, unref } from 'vue';
+import { computed, Ref, ref, watch } from 'vue';
 
+import toValue from './toValue';
 import { useInternalContext } from './useInternalContext';
 import appendAt from '../utils/append';
 import insertAt from '../utils/insert';
+import isString from '../utils/isString';
 import moveAt from '../utils/move';
 import omit from '../utils/omit';
 import prependAt from '../utils/prepend';
@@ -15,7 +17,7 @@ import type {
   FieldAttrs,
   FormErrors,
   FormTouched,
-  MaybeRef,
+  MaybeRefOrGetter,
   Primitive,
 } from '../types';
 
@@ -84,7 +86,7 @@ type UseFieldArrayReturn<Value> = {
  * ```
  */
 export function useFieldArray<Value>(
-  name: MaybeRef<string>,
+  name: MaybeRefOrGetter<string>,
   options?: UseFieldArrayOptions<Value>,
 ): UseFieldArrayReturn<Value> {
   const {
@@ -115,6 +117,8 @@ export function useFieldArray<Value>(
       fields.value.findIndex((field) => field.key === key),
     );
 
+    const nameGetter = () => `${toValue(name)}.${index.value}`;
+
     return {
       key,
       value: computed<Value>({
@@ -123,37 +127,20 @@ export function useFieldArray<Value>(
         },
         set(value) {
           if (index.value === -1) return;
-          setFieldValue(`${name}.${index.value}`, value);
+          setFieldValue(nameGetter, value);
         },
       }),
 
-      name: computed(() => {
-        return `${unref(name)}.${index.value}`;
-      }),
-
-      error: computed(() => {
-        return getFieldError(`${unref(name)}.${index.value}`);
-      }),
-
-      touched: computed(() => {
-        return getFieldTouched(`${unref(name)}.${index.value}`);
-      }),
-
-      dirty: computed(() => {
-        return getFieldDirty(`${unref(name)}.${index.value}`);
-      }),
-
-      attrs: computed(() => {
-        return omit(
-          unref(getFieldAttrs(`${unref(name)}.${index.value}`)),
-          'name',
-        );
-      }),
+      name: computed(nameGetter),
+      error: computed(() => getFieldError(nameGetter)),
+      touched: computed(() => getFieldTouched(nameGetter)),
+      dirty: computed(() => getFieldDirty(nameGetter)),
+      attrs: computed(() => omit(getFieldAttrs(nameGetter).value, 'name')),
     } as any as FieldEntry<Value>; // `computed` will be auto unwrapped
   };
 
   const append = (value: Value) => {
-    setFieldArrayValue(unref(name), appendAt(values.value, value), appendAt, {
+    setFieldArrayValue(toValue(name), appendAt(values.value, value), appendAt, {
       argA: undefined,
     });
 
@@ -161,9 +148,14 @@ export function useFieldArray<Value>(
   };
 
   const prepend = (value: Value) => {
-    setFieldArrayValue(unref(name), prependAt(values.value, value), prependAt, {
-      argA: undefined,
-    });
+    setFieldArrayValue(
+      toValue(name),
+      prependAt(values.value, value),
+      prependAt,
+      {
+        argA: undefined,
+      },
+    );
 
     fields.value.unshift(createEntry(value));
   };
@@ -172,7 +164,7 @@ export function useFieldArray<Value>(
     const cloneValues = removeAt(values.value, index);
     const cloneField = removeAt(fields.value, index);
 
-    setFieldArrayValue(unref(name), cloneValues, removeAt, {
+    setFieldArrayValue(toValue(name), cloneValues, removeAt, {
       argA: index,
     });
 
@@ -189,7 +181,7 @@ export function useFieldArray<Value>(
     swapAt(cloneField, indexA, indexB);
 
     setFieldArrayValue(
-      unref(name),
+      toValue(name),
       cloneValues,
       swapAt,
       {
@@ -212,7 +204,7 @@ export function useFieldArray<Value>(
     moveAt(cloneField, from, to);
 
     setFieldArrayValue(
-      unref(name),
+      toValue(name),
       cloneValues,
       moveAt,
       {
@@ -229,7 +221,7 @@ export function useFieldArray<Value>(
     const cloneValues = insertAt(values.value, index, value);
     const cloneField = insertAt(fields.value, index, createEntry(value));
 
-    setFieldArrayValue(unref(name), cloneValues, insertAt, {
+    setFieldArrayValue(toValue(name), cloneValues, insertAt, {
       argA: index,
       argB: undefined,
     });
@@ -242,7 +234,7 @@ export function useFieldArray<Value>(
 
     const cloneValue = updateAt(values.value, index, value);
 
-    setFieldArrayValue(unref(name), cloneValue, updateAt, {
+    setFieldArrayValue(toValue(name), cloneValue, updateAt, {
       argA: index,
       argB: undefined,
     });
@@ -253,7 +245,7 @@ export function useFieldArray<Value>(
   const replace = (values: Value[]) => {
     const cloneValues = [...values];
 
-    setFieldArrayValue(unref(name), cloneValues, <T>(data: T): T => data, {});
+    setFieldArrayValue(toValue(name), cloneValues, <T>(data: T): T => data, {});
 
     fields.value = cloneValues.map(createEntry);
   };
@@ -262,6 +254,12 @@ export function useFieldArray<Value>(
     ...options,
     reset,
   });
+
+  if (!isString(name)) {
+    watch(name, reset, {
+      flush: 'sync',
+    });
+  }
 
   reset();
 

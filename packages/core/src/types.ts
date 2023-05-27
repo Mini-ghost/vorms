@@ -1,6 +1,7 @@
-import { ComputedRef, Ref, UnwrapNestedRefs, WritableComputedRef } from 'vue';
+import { ComputedRef, Ref, WritableComputedRef } from 'vue';
 
 export type MaybeRef<T> = T | Ref<T>;
+export type MaybeRefOrGetter<T> = MaybeRef<T> | (() => T);
 
 export type FormValues = Record<string, any>;
 
@@ -33,7 +34,7 @@ export type FormErrors<Values> = {
 };
 
 export interface FormState<Values extends FormValues> {
-  values: UnwrapNestedRefs<Values>;
+  values: Values;
   touched: Ref<FormTouched<Values>>;
   errors: Ref<FormErrors<Values>>;
   submitCount: Ref<number>;
@@ -75,7 +76,7 @@ export type UseFormRegister<Values extends FormValues> = <
   Name extends Path<Values>,
   Value = PathValue<Values, Name>,
 >(
-  name: MaybeRef<Name>,
+  name: MaybeRefOrGetter<Name>,
   options?: FieldRegisterOptions<Value>,
 ) => UseFormRegisterReturn<Value>;
 
@@ -83,7 +84,7 @@ export type UseFormSetFieldValue<Values extends FormValues> = <
   Name extends Path<Values>,
   FieldValue extends PathValue<Values, Name>,
 >(
-  name: Name,
+  name: MaybeRefOrGetter<Name>,
   value: FieldValue,
   shouldValidate?: boolean,
 ) => void;
@@ -110,7 +111,7 @@ export type ResetForm<Values extends FormValues> = (
 ) => void;
 
 export interface UseFormReturn<Values extends FormValues> {
-  values: UnwrapNestedRefs<Values>;
+  values: Values;
   touched: ComputedRef<FormTouched<Values>>;
   errors: ComputedRef<FormErrors<Values>>;
   submitCount: ComputedRef<number>;
