@@ -28,8 +28,8 @@ export type FormErrors<Values> = {
       ? FormErrors<Values[K][number]>[] | string | string[]
       : string | string[]
     : Values[K] extends object
-    ? FormErrors<Values[K]>
-    : string;
+    ? FormErrors<Values[K]> | string | string[]
+    : string | string[];
 };
 
 export interface FormState<Values extends FormValues> {
@@ -60,8 +60,11 @@ export type UseFormRegisterReturn<Value> = FieldMeta & {
   attrs: ComputedRef<FieldAttrs>;
 };
 
-export type SetFieldArrayValue = <T extends (...args: any) => any>(
-  name: string,
+export type SetFieldArrayValue<Values extends FormValues> = <
+  Name extends Path<Values>,
+  T extends (...args: any) => any,
+>(
+  name: Name,
   value: any[],
   method?: T,
   args?: Partial<{
@@ -98,6 +101,13 @@ export type ValidateField<Values extends FormValues> = <
   name: Name,
 ) => Promise<void>;
 
+export type UseFormSetFieldError<Values extends FormValues> = <
+  Name extends Path<Values>,
+>(
+  name: Name,
+  error: FormErrors<PathValue<Values, Name>> | string | string[],
+) => void;
+
 export interface FormResetState<Values extends FormValues = FormValues> {
   values: Values;
   touched: FormTouched<Values>;
@@ -120,6 +130,8 @@ export interface UseFormReturn<Values extends FormValues> {
   register: UseFormRegister<Values>;
   setValues: (values: Values, shouldValidate?: boolean) => void;
   setFieldValue: UseFormSetFieldValue<Values>;
+  setErrors: (errors: FormErrors<Values>) => void;
+  setFieldError: UseFormSetFieldError<Values>;
   handleSubmit: (event?: Event) => void;
   handleReset: (event?: Event) => void;
   resetForm: ResetForm<Values>;
