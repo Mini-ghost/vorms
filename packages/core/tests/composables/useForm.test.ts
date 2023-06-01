@@ -1,5 +1,6 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
+import { s } from 'vitest/dist/env-afee91f0';
 import { defineComponent, nextTick, ref } from 'vue';
 
 import { useForm } from '../../src';
@@ -1154,5 +1155,43 @@ describe('useForm', () => {
     });
 
     await wrapper.find('button').trigger('click');
+  });
+
+  it('when errors changes via setErrors', () => {
+    setup(() => {
+      const { errors, setErrors, handleSubmit } = useForm({
+        initialValues: {
+          name: '',
+        },
+        onSubmit: noop,
+      });
+
+      expect(errors.value).toEqual({});
+
+      setErrors({ name: 'name is required' });
+      expect(errors.value).toEqual({
+        name: 'name is required',
+      });
+
+      handleSubmit();
+    });
+  });
+
+  it('when errors changes via setErrors', () => {
+    setup(() => {
+      const { errors, setFieldError } = useForm({
+        initialValues: {
+          name: '',
+        },
+        onSubmit: noop,
+      });
+
+      expect(errors.value).toEqual({});
+
+      setFieldError('name', 'name is required');
+      expect(errors.value).toEqual({
+        name: 'name is required',
+      });
+    });
   });
 });
