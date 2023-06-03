@@ -44,7 +44,7 @@ const { fields, append } = useFieldArray<string>('foods')
 
 Name of the field array.
 
-- Type `MaybeRef<string>`
+- Type `MaybeRefOrGetter<string>`
 
 ### options
 
