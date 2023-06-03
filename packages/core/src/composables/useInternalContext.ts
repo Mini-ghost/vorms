@@ -12,7 +12,7 @@ import {
   FormErrors,
   FormTouched,
   FormValues,
-  MaybeRef,
+  MaybeRefOrGetter,
   SetFieldArrayValue,
   UseFormRegister,
   UseFormSetFieldValue,
@@ -28,20 +28,22 @@ function injectMaybeSelf<T>(
 
 export interface InternalContextValues {
   registerFieldArray: (
-    name: MaybeRef<string>,
+    name: MaybeRefOrGetter<string>,
     options: {
       validate?: FieldArrayValidator<any>;
       reset: () => void;
     },
   ) => void;
 
-  getFieldValue: <Value>(name: MaybeRef<string>) => WritableComputedRef<Value>;
+  getFieldValue: <Value>(
+    name: MaybeRefOrGetter<string>,
+  ) => WritableComputedRef<Value>;
   setFieldValue: UseFormSetFieldValue<FormValues>;
 
-  getFieldError: (name: string) => FormErrors<any>;
-  getFieldTouched: (name: string) => FormTouched<boolean>;
-  getFieldDirty: (name: string) => boolean;
-  getFieldAttrs: (name: MaybeRef<string>) => ComputedRef<FieldAttrs>;
+  getFieldError: (name: MaybeRefOrGetter<string>) => FormErrors<any>;
+  getFieldTouched: (name: MaybeRefOrGetter<string>) => FormTouched<boolean>;
+  getFieldDirty: (name: MaybeRefOrGetter<string>) => boolean;
+  getFieldAttrs: (name: MaybeRefOrGetter<string>) => ComputedRef<FieldAttrs>;
 
   setFieldArrayValue: SetFieldArrayValue<FormValues>;
 

@@ -27,15 +27,14 @@ const { value, error, attrs } = useField<string>('drink', {
 
 ### name (Required)
 
-The name of a specific field. Its type can be `string` or `Ref<string>`
+The name of a specific field. Its type can be `string`, `Ref<string>` or `() => string`
 
-- Type `MaybeRef<string>`
+- Type `MaybeRefOrGetter<string>`
 
 If you want to create a custom component in your application, such as `<TextField />`, you should use `Ref<string>` to retain reactivity for `props.name`. as follows:
 
 ```vue
 <script setup lang="ts">
-import { toRef } from 'vue'
 import { useField } from '@vorms/core'
 
 interface TextFieldProps {
@@ -45,8 +44,8 @@ interface TextFieldProps {
 const props = defineProps<TextFieldProps>()
 
 // or using `const nameSync = computed(() => props.name)`
-const nameRef = toRef(props, 'name')
-const { value } = useField<string>(nameRef)
+// or using `const nameRef = toRef(props, 'name')`
+const { value } = useField<string>(() => 'name')
 </script>
 ```
 
