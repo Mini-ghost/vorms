@@ -339,7 +339,7 @@ This method allows you to get the specific field value, meta (state) and attribu
 - Type
 
   ```ts
-  function register<Value>(name: MaybeRef<string>,  options?: FieldRegisterOptions<Value>): UseFormRegisterReturn<Value>
+  function register<Value>(name: MaybeRefOrGetter<string>,  options?: FieldRegisterOptions<Value>): UseFormRegisterReturn<Value>
   ```
 
   <details>
