@@ -2,16 +2,17 @@ import { ComputedRef, Ref, WritableComputedRef } from 'vue';
 
 export type MaybeRef<T> = T | Ref<T>;
 export type MaybeRefOrGetter<T> = MaybeRef<T> | (() => T);
+export type MaybePromise<T> = T | Promise<T>;
 
 export type FormValues = Record<string, any>;
 
 export type FieldValidator<Value> = (
   value: Value,
-) => string | void | Promise<string | void>;
+) => MaybePromise<FieldError<Value>>;
 
 export type FieldArrayValidator<Value extends Array<any>> = (
   value: Value,
-) => FormErrors<Value> | void | Promise<FormErrors<Value> | void>;
+) => MaybePromise<FormErrors<Value> | void>;
 
 export type FormTouched<Values> = {
   [K in keyof Values]?: Values[K] extends any[]
@@ -32,6 +33,10 @@ export type FormErrors<Values> = {
     ? FormErrors<Values[K]> | string | string[]
     : string | string[];
 };
+
+export type FieldError<Value> = Value extends Primitive
+  ? string | string[] | void
+  : string | string[] | FormErrors<Value> | void;
 
 export interface FormState<Values extends FormValues> {
   values: Values;
@@ -56,7 +61,7 @@ export interface FieldRegisterOptions<Values> {
   validate?: FieldValidator<Values>;
 }
 
-export type UseFormRegisterReturn<Value> = FieldMeta & {
+export type UseFormRegisterReturn<Value> = FieldMeta<Value> & {
   value: WritableComputedRef<Value>;
   attrs: ComputedRef<FieldAttrs>;
 };
@@ -147,9 +152,9 @@ export type FieldAttrs = {
   onInput: () => void;
 };
 
-export type FieldMeta = {
+export type FieldMeta<Value> = {
   dirty: ComputedRef<boolean>;
-  error: ComputedRef<string | undefined>;
+  error: ComputedRef<FormErrors<Value>>;
   touched: ComputedRef<boolean | undefined>;
 };
 

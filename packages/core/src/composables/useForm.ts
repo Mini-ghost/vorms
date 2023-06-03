@@ -402,8 +402,10 @@ export function useForm<Values extends FormValues = FormValues>(
     });
   };
 
-  const getFieldMeta = (name: MaybeRefOrGetter<string>): FieldMeta => {
-    const error = computed(() => getFieldError(name) as any as string);
+  const getFieldMeta = <Name extends Path<Values>>(
+    name: MaybeRefOrGetter<Name>,
+  ): FieldMeta<PathValue<Values, Name>> => {
+    const error = computed(() => getFieldError(name));
     const touched = computed(() => getFieldTouched(name));
     const dirty = computed(() => getFieldDirty(name));
 
