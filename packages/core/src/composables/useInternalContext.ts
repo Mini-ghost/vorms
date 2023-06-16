@@ -45,7 +45,7 @@ export interface InternalContextValues {
   getFieldDirty: (name: MaybeRefOrGetter<string>) => boolean;
   getFieldAttrs: (name: MaybeRefOrGetter<string>) => ComputedRef<FieldAttrs>;
 
-  setFieldArrayValue: SetFieldArrayValue;
+  setFieldArrayValue: SetFieldArrayValue<FormValues>;
 
   register: UseFormRegister<FormValues>;
 }

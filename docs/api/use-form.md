@@ -293,6 +293,18 @@ This function allows you to manually set the specific value of field.
 
 - Type `(name: string, value: unknown, shouldValidate?: boolean)`
 
+### setErrors
+
+This function allows you to manually set form errors.
+
+- Type `(errors: FormErrors<Values>)`
+
+### setFieldError
+
+This function allows you to manually set the specific error of field.
+
+- Type `(name: string, error: string | string[] | Record<string, any> | undefined)`
+
 ### submitCount
 
 The number of times user attempted to submit.

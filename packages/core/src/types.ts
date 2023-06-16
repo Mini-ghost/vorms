@@ -2,16 +2,17 @@ import { ComputedRef, Ref, WritableComputedRef } from 'vue';
 
 export type MaybeRef<T> = T | Ref<T>;
 export type MaybeRefOrGetter<T> = MaybeRef<T> | (() => T);
+export type MaybePromise<T> = T | Promise<T>;
 
 export type FormValues = Record<string, any>;
 
 export type FieldValidator<Value> = (
   value: Value,
-) => string | void | Promise<string | void>;
+) => MaybePromise<FieldError<Value>>;
 
 export type FieldArrayValidator<Value extends Array<any>> = (
   value: Value,
-) => FormErrors<Value> | void | Promise<FormErrors<Value> | void>;
+) => MaybePromise<FormErrors<Value> | void>;
 
 export type FormTouched<Values> = {
   [K in keyof Values]?: Values[K] extends any[]
@@ -29,9 +30,13 @@ export type FormErrors<Values> = {
       ? FormErrors<Values[K][number]>[] | string | string[]
       : string | string[]
     : Values[K] extends object
-    ? FormErrors<Values[K]>
-    : string;
+    ? FormErrors<Values[K]> | string | string[]
+    : string | string[];
 };
+
+export type FieldError<Value> = Value extends Primitive
+  ? string | string[] | void
+  : string | string[] | FormErrors<Value> | void;
 
 export interface FormState<Values extends FormValues> {
   values: Values;
@@ -56,13 +61,16 @@ export interface FieldRegisterOptions<Values> {
   validate?: FieldValidator<Values>;
 }
 
-export type UseFormRegisterReturn<Value> = FieldMeta & {
+export type UseFormRegisterReturn<Value> = FieldMeta<Value> & {
   value: WritableComputedRef<Value>;
   attrs: ComputedRef<FieldAttrs>;
 };
 
-export type SetFieldArrayValue = <T extends (...args: any) => any>(
-  name: string,
+export type SetFieldArrayValue<Values extends FormValues> = <
+  Name extends Path<Values>,
+  T extends (...args: any) => any,
+>(
+  name: Name,
   value: any[],
   method?: T,
   args?: Partial<{
@@ -99,6 +107,13 @@ export type ValidateField<Values extends FormValues> = <
   name: Name,
 ) => Promise<void>;
 
+export type UseFormSetFieldError<Values extends FormValues> = <
+  Name extends Path<Values>,
+>(
+  name: Name,
+  error: FormErrors<PathValue<Values, Name>> | string | string[],
+) => void;
+
 export interface FormResetState<Values extends FormValues = FormValues> {
   values: Values;
   touched: FormTouched<Values>;
@@ -121,6 +136,8 @@ export interface UseFormReturn<Values extends FormValues> {
   register: UseFormRegister<Values>;
   setValues: (values: Values, shouldValidate?: boolean) => void;
   setFieldValue: UseFormSetFieldValue<Values>;
+  setErrors: (errors: FormErrors<Values>) => void;
+  setFieldError: UseFormSetFieldError<Values>;
   handleSubmit: (event?: Event) => void;
   handleReset: (event?: Event) => void;
   resetForm: ResetForm<Values>;
@@ -135,9 +152,9 @@ export type FieldAttrs = {
   onInput: () => void;
 };
 
-export type FieldMeta = {
+export type FieldMeta<Value> = {
   dirty: ComputedRef<boolean>;
-  error: ComputedRef<string | undefined>;
+  error: ComputedRef<FormErrors<Value>>;
   touched: ComputedRef<boolean | undefined>;
 };
 

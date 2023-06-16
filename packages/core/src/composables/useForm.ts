@@ -25,10 +25,13 @@ import type {
   FormTouched,
   FormValues,
   MaybeRefOrGetter,
+  Path,
+  PathValue,
   ResetForm,
   SetFieldArrayValue,
   UseFormRegister,
   UseFormReturn,
+  UseFormSetFieldError,
   ValidateField,
 } from '../types';
 
@@ -93,7 +96,10 @@ type FormMessage<Values extends FormValues> =
   | { type: ACTION_TYPE.SET_ERRORS; payload: FormErrors<Values> }
   | {
       type: ACTION_TYPE.SET_FIELD_ERROR;
-      payload: { path: string; error: string };
+      payload: {
+        path: string;
+        error: FormErrors<PathValue<Values, Path<Values>>> | string | string[];
+      };
     }
   | { type: ACTION_TYPE.SET_ISSUBMITTING; payload: boolean }
   | { type: ACTION_TYPE.SET_ISVALIDATING; payload: boolean }
@@ -288,7 +294,7 @@ export function useForm<Values extends FormValues = FormValues>(
       : Promise.resolve();
   };
 
-  const setFieldArrayValue: SetFieldArrayValue = (
+  const setFieldArrayValue: SetFieldArrayValue<Values> = (
     name,
     value,
     method,
@@ -307,13 +313,7 @@ export function useForm<Values extends FormValues = FormValues>(
         );
 
         if (shouldSetValue) {
-          dispatch({
-            type: ACTION_TYPE.SET_FIELD_ERROR,
-            payload: {
-              path: name,
-              error,
-            },
-          });
+          setFieldError(name, error);
         }
       }
 
@@ -340,6 +340,23 @@ export function useForm<Values extends FormValues = FormValues>(
     }
 
     return setFieldValue(name, value);
+  };
+
+  const setErrors = (errors: FormErrors<Values>) => {
+    dispatch({
+      type: ACTION_TYPE.SET_ERRORS,
+      payload: errors,
+    });
+  };
+
+  const setFieldError: UseFormSetFieldError<Values> = (name, error) => {
+    dispatch({
+      type: ACTION_TYPE.SET_FIELD_ERROR,
+      payload: {
+        path: name,
+        error,
+      },
+    });
   };
 
   const handleBlur: FormEventHandler['handleBlur'] = (
@@ -385,8 +402,10 @@ export function useForm<Values extends FormValues = FormValues>(
     });
   };
 
-  const getFieldMeta = (name: MaybeRefOrGetter<string>): FieldMeta => {
-    const error = computed(() => getFieldError(name) as any as string);
+  const getFieldMeta = <Name extends Path<Values>>(
+    name: MaybeRefOrGetter<Name>,
+  ): FieldMeta<PathValue<Values, Name>> => {
+    const error = computed(() => getFieldError(name));
     const touched = computed(() => getFieldTouched(name));
     const dirty = computed(() => getFieldDirty(name));
 
@@ -484,7 +503,7 @@ export function useForm<Values extends FormValues = FormValues>(
           },
         );
 
-        dispatch({ type: ACTION_TYPE.SET_ERRORS, payload: errors });
+        setErrors(errors);
 
         return errors;
       })
@@ -571,10 +590,7 @@ export function useForm<Values extends FormValues = FormValues>(
       dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: true });
       return runSingleFieldValidateHandler(name, get(state.values, name))
         .then((error) => {
-          dispatch({
-            type: ACTION_TYPE.SET_FIELD_ERROR,
-            payload: { path: name, error },
-          });
+          setFieldError(name, error);
         })
         .finally(() => {
           dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: false });
@@ -594,6 +610,8 @@ export function useForm<Values extends FormValues = FormValues>(
     register,
     setValues,
     setFieldValue,
+    setErrors,
+    setFieldError,
     handleSubmit,
     handleReset,
     resetForm,
