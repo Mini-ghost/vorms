@@ -1,6 +1,6 @@
 {
   "name": "vorms",
-  "packageManager": "pnpm@7.11.0",
+  "packageManager": "pnpm@7.33.1",
   "description": "Vue Form Validation with Composition API",
   "scripts": {
     "build:core": "pnpm --filter @vorms/core build",
