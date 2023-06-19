@@ -1,6 +1,5 @@
 import { mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
-import { s } from 'vitest/dist/env-afee91f0';
 import { defineComponent, nextTick, ref } from 'vue';
 
 import { useForm } from '../../src';
