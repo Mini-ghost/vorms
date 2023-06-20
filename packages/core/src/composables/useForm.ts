@@ -54,7 +54,10 @@ export interface FormSubmitHelper<Values extends FormValues> {
 
 export type ValidateMode = 'blur' | 'input' | 'change' | 'submit';
 
-export interface UseFormOptions<Values extends FormValues> {
+export interface UseFormOptions<
+  Values extends FormValues,
+  TransformedValues extends FormValues | undefined = undefined,
+> {
   initialValues: Values;
   initialErrors?: FormErrors<Values>;
   initialTouched?: FormTouched<Values>;
@@ -62,7 +65,7 @@ export interface UseFormOptions<Values extends FormValues> {
   reValidateMode?: ValidateMode;
   validateOnMounted?: boolean;
   onSubmit: (
-    values: Values,
+    values: TransformedValues extends FormValues ? TransformedValues : Values,
     helper: FormSubmitHelper<Values>,
   ) => void | Promise<any>;
   onInvalid?: (errors: FormErrors<Values>) => void;
@@ -195,9 +198,10 @@ const emptyTouched: FormTouched<unknown> = {};
  * </template>
  * ```
  */
-export function useForm<Values extends FormValues = FormValues>(
-  options: UseFormOptions<Values>,
-): UseFormReturn<Values> {
+export function useForm<
+  Values extends FormValues = FormValues,
+  TransformedValues extends FormValues | undefined = undefined,
+>(options: UseFormOptions<Values, TransformedValues>): UseFormReturn<Values> {
   const {
     validateOnMounted = false,
     validateMode = 'submit',
@@ -521,7 +525,12 @@ export function useForm<Values extends FormValues = FormValues>(
       const isValid = keysOf(errors).length === 0;
 
       if (isValid) {
-        const maybePromise = onSubmit(deepClone(state.values), submitHelper);
+        const maybePromise = onSubmit(
+          deepClone(state.values) as TransformedValues extends FormValues
+            ? TransformedValues
+            : Values,
+          submitHelper,
+        );
         if (maybePromise == null) {
           return;
         }
