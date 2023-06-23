@@ -102,7 +102,7 @@ export function useFieldArray<Value>(
 
   const fields: Ref<FieldEntry<Value>[]> = ref([]);
   const values = computed(() => {
-    return getFieldValue<Value[] | undefined>(name).value || [];
+    return getFieldValue(name).value || [];
   });
 
   let seed = 0;
