@@ -35,8 +35,8 @@ export type FormErrors<Values> = {
 };
 
 export type FieldError<Value> = Value extends Primitive
-  ? string | string[] | void
-  : string | string[] | FormErrors<Value> | void;
+  ? string | string[] | undefined
+  : string | string[] | FormErrors<Value> | undefined;
 
 export interface FormState<Values extends FormValues> {
   values: Values;
@@ -154,7 +154,7 @@ export type FieldAttrs = {
 
 export type FieldMeta<Value> = {
   dirty: ComputedRef<boolean>;
-  error: ComputedRef<FormErrors<Value>>;
+  error: ComputedRef<FieldError<Value>>;
   touched: ComputedRef<boolean | undefined>;
 };
 

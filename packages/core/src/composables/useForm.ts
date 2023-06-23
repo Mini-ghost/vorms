@@ -15,8 +15,10 @@ import keysOf from '../utils/keysOf';
 import set from '../utils/set';
 
 import type { Reducer } from './useFormStore';
+import type { InternalContextValues } from './useInternalContext';
 import type {
   FieldAttrs,
+  FieldError,
   FieldMeta,
   FormErrors,
   FormEventHandler,
@@ -406,9 +408,12 @@ export function useForm<
     });
   };
 
-  const getFieldMeta = <Name extends Path<Values>>(
+  const getFieldMeta = <
+    Name extends Path<Values>,
+    Value = PathValue<Values, Name>,
+  >(
     name: MaybeRefOrGetter<Name>,
-  ): FieldMeta<PathValue<Values, Name>> => {
+  ): FieldMeta<Value> => {
     const error = computed(() => getFieldError(name));
     const touched = computed(() => getFieldTouched(name));
     const dirty = computed(() => getFieldDirty(name));
@@ -429,7 +434,12 @@ export function useForm<
     }));
   };
 
-  const getFieldError = (name: MaybeRefOrGetter<string>): FormErrors<any> => {
+  const getFieldError = <
+    Name extends Path<Values>,
+    Value = PathValue<Values, Name>,
+  >(
+    name: MaybeRefOrGetter<Name>,
+  ): FieldError<Value> => {
     name = toValue(name);
     return get(state.errors.value, name);
   };
@@ -628,7 +638,7 @@ export function useForm<
     validateField,
   };
 
-  provide(InternalContextKey, {
+  provide<InternalContextValues<Values>>(InternalContextKey, {
     getFieldValue,
     setFieldValue,
     getFieldError,

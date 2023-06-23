@@ -9,10 +9,12 @@ import {
 import {
   FieldArrayValidator,
   FieldAttrs,
-  FormErrors,
+  FieldError,
   FormTouched,
   FormValues,
   MaybeRefOrGetter,
+  Path,
+  PathValue,
   SetFieldArrayValue,
   UseFormRegister,
   UseFormSetFieldValue,
@@ -26,21 +28,25 @@ function injectMaybeSelf<T>(
   return vm?.provides[key as any] || inject(key, defaultValue);
 }
 
-export interface InternalContextValues {
+export interface InternalContextValues<Values extends FormValues> {
   registerFieldArray: (
-    name: MaybeRefOrGetter<string>,
+    name: MaybeRefOrGetter<Path<Values>>,
     options: {
-      validate?: FieldArrayValidator<any>;
+      validate?: FieldArrayValidator<PathValue<Values, Path<Values>>>;
       reset: () => void;
     },
   ) => void;
 
-  getFieldValue: <Value>(
-    name: MaybeRefOrGetter<string>,
-  ) => WritableComputedRef<Value>;
+  getFieldValue: (
+    name: MaybeRefOrGetter<Path<Values>>,
+  ) => WritableComputedRef<PathValue<Values, Path<Values>>>;
+
   setFieldValue: UseFormSetFieldValue<FormValues>;
 
-  getFieldError: (name: MaybeRefOrGetter<string>) => FormErrors<any>;
+  getFieldError: (
+    name: MaybeRefOrGetter<Path<Values>>,
+  ) => FieldError<PathValue<Values, Path<Values>>>;
+
   getFieldTouched: (name: MaybeRefOrGetter<string>) => FormTouched<boolean>;
   getFieldDirty: (name: MaybeRefOrGetter<string>) => boolean;
   getFieldAttrs: (name: MaybeRefOrGetter<string>) => ComputedRef<FieldAttrs>;
@@ -50,11 +56,13 @@ export interface InternalContextValues {
   register: UseFormRegister<FormValues>;
 }
 
-export const InternalContextKey: InjectionKey<InternalContextValues> = Symbol(
-  __DEV__ ? 'vorms internal context' : '',
-);
+export const InternalContextKey: InjectionKey<
+  InternalContextValues<FormValues>
+> = Symbol(__DEV__ ? 'vorms internal context' : '');
 
 export function useInternalContext() {
-  const context = injectMaybeSelf(InternalContextKey) as InternalContextValues;
+  const context = injectMaybeSelf(
+    InternalContextKey,
+  ) as InternalContextValues<FormValues>;
   return context;
 }
