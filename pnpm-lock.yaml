@@ -122,6 +122,9 @@ importers:
       '@vorms/core':
         specifier: workspace:*
         version: link:../core
+      valibot:
+        specifier: ^0.7.0
+        version: 0.7.0
       yup:
         specifier: ^0.32.11
         version: 0.32.11
@@ -1501,6 +1504,17 @@ packages:
       '@vue/shared': 3.2.47
       vue: 3.2.47
 
+  /@vue/server-renderer@3.3.4(vue@3.2.47):
+    resolution: {integrity: sha512-Q6jDDzR23ViIb67v+vM1Dqntu+HUexQcsWKhhQa4ARVzxOY2HbC7QRW/ggkDBd5BU+uM1sV6XOAP0b216o34JQ==}
+    peerDependencies:
+      vue: 3.3.4
+    dependencies:
+      '@vue/compiler-ssr': 3.3.4
+      '@vue/shared': 3.3.4
+      vue: 3.2.47
+    dev: true
+    optional: true
+
   /@vue/server-renderer@3.3.4(vue@3.3.4):
     resolution: {integrity: sha512-Q6jDDzR23ViIb67v+vM1Dqntu+HUexQcsWKhhQa4ARVzxOY2HbC7QRW/ggkDBd5BU+uM1sV6XOAP0b216o34JQ==}
     peerDependencies:
@@ -1526,8 +1540,8 @@ packages:
       js-beautify: 1.14.6
       vue: 3.2.47
     optionalDependencies:
-      '@vue/compiler-dom': 3.2.47
-      '@vue/server-renderer': 3.2.47(vue@3.2.47)
+      '@vue/compiler-dom': 3.3.4
+      '@vue/server-renderer': 3.3.4(vue@3.2.47)
     dev: true
 
   /@vueuse/core@10.2.0(vue@3.3.4):
@@ -4454,6 +4468,10 @@ packages:
       '@jridgewell/trace-mapping': 0.3.17
       '@types/istanbul-lib-coverage': 2.0.4
       convert-source-map: 1.9.0
+    dev: true
+
+  /valibot@0.7.0:
+    resolution: {integrity: sha512-QNxqDtYuVUILZtWnLsfCEg4IXrhnIuwGIJlF7tmI8+gWgkB0ujzrXrl607rGmjwbxAhBevQ2RpNxmCO+isNYJg==}
     dev: true
 
   /vite-node@0.32.2(@types/node@18.16.18):
