@@ -49,6 +49,10 @@ interface FieldArrayRegistry {
   };
 }
 
+interface ValidateHandlerOptions {
+  onlyBlurred?: boolean;
+}
+
 export interface FormSubmitHelper<Values extends FormValues> {
   setSubmitting: (isSubmitting: boolean) => void;
   readonly initialValues: Values;
@@ -262,7 +266,7 @@ export function useForm<
     });
 
     return validateTiming.value === 'blur'
-      ? runAllValidateHandler(state.values)
+      ? runAllValidateHandler(state.values, { onlyBlurred: true })
       : Promise.resolve();
   };
 
@@ -503,19 +507,49 @@ export function useForm<
     });
   };
 
-  const runAllValidateHandler = (values: Values = state.values) => {
+  /**
+   * Creates a new object of errors, but only with the errors of touched fields.
+   *
+   * @param errors The union of field and form errors
+   * @returns The field errors that have been touched
+   */
+  const getTouchedErrors = (errors: FormErrors<Values>) => {
+    const touchedFieldsKeys: any = [];
+
+    Object.entries(state.touched.value).forEach(([key, isTouched]) => {
+      if (isTouched) {
+        touchedFieldsKeys.push(key);
+      }
+    });
+
+    const touchedErrorsEntries: Array<[keyof FormErrors<Values>, string]> =
+      Object.entries(errors).filter(([key]) => {
+        return touchedFieldsKeys.includes(key);
+      });
+
+    return Object.fromEntries(touchedErrorsEntries) as FormErrors<Values>;
+  };
+
+  const runAllValidateHandler = (
+    values: Values = state.values,
+    validateOptions?: ValidateHandlerOptions,
+  ) => {
     dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: true });
     return Promise.all([
       runFieldValidateHandler(values),
       options.validate ? runValidateHandler(values) : {},
     ])
       .then(([fieldErrors, validateErrors]) => {
-        const errors = deepmerge.all<FormErrors<Values>>(
+        const baseErrors = deepmerge.all<FormErrors<Values>>(
           [fieldErrors, validateErrors],
           {
             arrayMerge,
           },
         );
+
+        const errors = validateOptions?.onlyBlurred
+          ? getTouchedErrors(baseErrors)
+          : baseErrors;
 
         setErrors(errors);
 
