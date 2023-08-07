@@ -24,7 +24,7 @@ const parseErrorSchema = (valibotIssues: Issues) => {
   return errors;
 };
 
-export const zodResolver: Resolver = (schema) => async (values) => {
+export const valibotResolver: Resolver = (schema) => async (values) => {
   try {
     parse(schema, values);
     return {};
