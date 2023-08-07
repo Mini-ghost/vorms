@@ -29,6 +29,7 @@
   },
   "files": [
     "dist",
+    "valibot/dist",
     "yup/dist",
     "zod/dist"
   ],
