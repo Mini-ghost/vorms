@@ -9,6 +9,7 @@
   "dependencies": {
     "@vorms/core": "workspace:*",
     "@vorms/resolvers": "workspace:*",
+    "valibot": "^0.11.0",
     "vue": "^3.2.47",
     "yup": "^0.32.11",
     "zod": "^3.20.6"
