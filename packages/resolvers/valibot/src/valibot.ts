@@ -8,11 +8,14 @@ const parseErrorSchema = (valibotIssues: Issues) => {
   const errors: Record<string, string> = {};
 
   while (valibotIssues.length) {
-    const { path: _parse, message } = valibotIssues[0];
-    const path = _parse!.map((pares) => pares.key).join('.');
+    const issue = valibotIssues[0];
 
-    if (!errors[path]) {
-      errors[path] = message;
+    if (issue.path) {
+      const path = issue.path.map((pares) => pares.key).join('.');
+
+      if (!errors[path]) {
+        errors[path] = issue.message;
+      }
     }
 
     valibotIssues.shift();
