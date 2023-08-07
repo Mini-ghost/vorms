@@ -14,6 +14,11 @@ const nodules = [
     source: 'src/index.ts',
   },
   {
+    path: 'valibot',
+    name: 'Valibot',
+    source: 'valibot/src/index.ts',
+  },
+  {
     path: 'yup',
     name: 'Yup',
     source: 'yup/src/index.ts',

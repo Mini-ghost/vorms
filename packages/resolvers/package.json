@@ -11,6 +11,11 @@
       "require": "./dist/index.cjs.js",
       "umd": "./dist/index.umd.js"
     },
+    "./valibot": {
+      "import": "./valibot/dist/index.esm.mjs",
+      "require": "./valibot/dist/index.cjs.js",
+      "umd": "./valibot/dist/index.umd.js"
+    },
     "./yup": {
       "import": "./yup/dist/index.esm.mjs",
       "require": "./yup/dist/index.cjs.js",
@@ -49,11 +54,13 @@
     "scheme",
     "validation",
     "scheme-validation",
+    "valibot",
     "yup",
     "zod"
   ],
   "devDependencies": {
     "@vorms/core": "workspace:*",
+    "valibot": "^0.11.0",
     "yup": "^0.32.11",
     "zod": "^3.20.2"
   }
