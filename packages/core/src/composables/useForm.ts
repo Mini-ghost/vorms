@@ -1,7 +1,7 @@
 import deepmerge from 'deepmerge';
 import isEqual from 'fast-deep-equal/es6';
 import { klona as deepClone } from 'klona/full';
-import { computed, onMounted, provide, reactive, ref } from 'vue';
+import { computed, onMounted, provide, reactive, ref, unref } from 'vue';
 
 import toValue from './toValue';
 import { FormContextKey } from './useFormContext';
@@ -513,21 +513,27 @@ export function useForm<
    * @param errors The union of field and form errors
    * @returns The field errors that have been touched
    */
-  const getTouchedErrors = (errors: FormErrors<Values>) => {
-    const touchedFieldsKeys: any = [];
+  const getTouchedErrors = <
+    T extends FormErrors<Values>,
+    F extends FormTouched<Values>,
+  >(
+    errors: T,
+    touched: F,
+  ): Partial<T> => {
+    const result: any = {};
 
-    Object.entries(state.touched.value).forEach(([key, isTouched]) => {
-      if (isTouched) {
-        touchedFieldsKeys.push(key);
+    for (const key in errors) {
+      if (typeof touched[key] === 'object' && typeof errors[key] === 'object') {
+        result[key] = getTouchedErrors(
+          errors[key] as FormErrors<Values>,
+          touched[key] as FormTouched<Values>,
+        );
+      } else if (touched[key] === true && errors[key]) {
+        result[key] = errors[key];
       }
-    });
+    }
 
-    const touchedErrorsEntries: Array<[keyof FormErrors<Values>, string]> =
-      Object.entries(errors).filter(([key]) => {
-        return touchedFieldsKeys.includes(key);
-      });
-
-    return Object.fromEntries(touchedErrorsEntries) as FormErrors<Values>;
+    return result;
   };
 
   const runAllValidateHandler = (
@@ -548,7 +554,7 @@ export function useForm<
         );
 
         const errors = validateOptions?.onlyBlurred
-          ? getTouchedErrors(baseErrors)
+          ? getTouchedErrors(baseErrors, unref(state.touched))
           : baseErrors;
 
         setErrors(errors);
