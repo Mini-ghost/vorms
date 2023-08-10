@@ -93,7 +93,7 @@ This is initial touched status of the form.
 
 This option allows you to configure the validation strategy **before** first submit.
 
-- Type `'blur' | 'input' | 'change' | 'submit'`
+- Type `'blur' | 'input' | 'change' | 'submit' | ('blur' | 'input' | 'change' | 'submit')[]`
 - Default `'submit'`
 
 ### reValidateMode
@@ -104,7 +104,7 @@ This option allows you to configure the validation strategy **after** first subm
 Even if your `reValidationMode` is not set to `submit`, Vorms will revalidate before submitting.
 :::
 
-- Type `'blur' | 'input' | 'change' | 'submit'`
+- Type `'blur' | 'input' | 'change' | 'submit' | ('blur' | 'input' | 'change' | 'submit')[]`
 - Default `'change'`
 
 ### validateOnMounted
