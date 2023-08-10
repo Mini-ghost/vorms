@@ -293,6 +293,116 @@ describe('useForm', () => {
     expect(validate).toHaveBeenCalledTimes(1);
   });
 
+  it('when validateMode is array [blur]', async () => {
+    const validate = vi.fn();
+    const Comp = defineComponent({
+      setup() {
+        const { register } = useForm({
+          initialValues: {
+            name: '',
+          },
+          validateMode: ['blur'],
+          validate,
+          onSubmit: noop,
+        });
+
+        const { value, attrs } = register('name');
+
+        return { value, attrs };
+      },
+      template: `
+        <input v-model="value" v-bind="attrs">
+      `,
+    });
+
+    const wrapper = mount(Comp);
+    await wrapper.find('input').trigger('blur');
+    expect(validate).toHaveBeenCalledTimes(1);
+  });
+
+  it('when validateMode is array [change]', async () => {
+    const validate = vi.fn();
+    const Comp = defineComponent({
+      setup() {
+        const { register } = useForm({
+          initialValues: {
+            name: '',
+          },
+          validateMode: ['change'],
+          validate,
+          onSubmit: noop,
+        });
+
+        const { value, attrs } = register('name');
+
+        return { value, attrs };
+      },
+      template: `
+        <input v-model="value" v-bind="attrs">
+      `,
+    });
+
+    const wrapper = mount(Comp);
+    await wrapper.find('input').trigger('change');
+    expect(validate).toHaveBeenCalledTimes(1);
+  });
+
+  it('when validateMode is array [input]', async () => {
+    const validate = vi.fn();
+    const Comp = defineComponent({
+      setup() {
+        const { register } = useForm({
+          initialValues: {
+            name: '',
+          },
+          validateMode: ['input'],
+          validate,
+          onSubmit: noop,
+        });
+
+        const { value, attrs } = register('name');
+
+        return { value, attrs };
+      },
+      template: `
+        <input v-model="value" v-bind="attrs">
+      `,
+    });
+
+    const wrapper = mount(Comp);
+    await wrapper.find('input').trigger('input');
+    expect(validate).toHaveBeenCalledTimes(1);
+  });
+
+  it('when validateMode is array [blur, change, input]', async () => {
+    const validate = vi.fn();
+    const Comp = defineComponent({
+      setup() {
+        const { register } = useForm({
+          initialValues: {
+            name: '',
+          },
+          validateMode: ['blur', 'change', 'input'],
+          validate,
+          onSubmit: noop,
+        });
+
+        const { value, attrs } = register('name');
+
+        return { value, attrs };
+      },
+      template: `
+        <input v-model="value" v-bind="attrs">
+      `,
+    });
+
+    const wrapper = mount(Comp);
+    await wrapper.find('input').trigger('blur');
+    await wrapper.find('input').trigger('change');
+    await wrapper.find('input').trigger('input');
+    expect(validate).toHaveBeenCalledTimes(3);
+  });
+
   it('when reValidateMode is default', async () => {
     const validate = vi.fn();
     const Comp = defineComponent({
@@ -430,6 +540,44 @@ describe('useForm', () => {
     await wrapper.find('button[type="submit"]').trigger('click');
     await wrapper.find('button[type="submit"]').trigger('click');
     expect(validate).toHaveBeenCalledTimes(2);
+  });
+
+  it('when reValidateMode is array [blur, change, input]', async () => {
+    const validate = vi.fn();
+    const Comp = defineComponent({
+      setup() {
+        const { register, handleSubmit } = useForm({
+          initialValues: {
+            name: '',
+          },
+          validate,
+          reValidateMode: ['blur', 'change', 'input'],
+          onSubmit: noop,
+        });
+
+        const { value, attrs } = register('name');
+
+        return { value, attrs, handleSubmit };
+      },
+      template: `
+        <form @submit="handleSubmit">
+          <input v-model="value" v-bind="attrs">
+          <button type="submit">Submit</button>
+        </form>
+      `,
+    });
+
+    document.body.innerHTML = `<div id="app"></div>`;
+    const wrapper = mount(Comp, {
+      attachTo: '#app',
+    });
+
+    await wrapper.find('button[type="submit"]').trigger('click');
+    await wrapper.find('input').trigger('change');
+    await wrapper.find('input').trigger('blur');
+    await wrapper.find('input').trigger('input');
+    await wrapper.find('button[type="submit"]').trigger('click');
+    expect(validate).toHaveBeenCalledTimes(5);
   });
 
   it('when validateOnMounted is true', async () => {
