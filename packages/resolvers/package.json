@@ -9,22 +9,26 @@
     ".": {
       "import": "./dist/index.esm.mjs",
       "require": "./dist/index.cjs.js",
-      "umd": "./dist/index.umd.js"
+      "umd": "./dist/index.umd.js",
+      "types": "./dist/index.d.ts"
     },
     "./valibot": {
       "import": "./valibot/dist/index.esm.mjs",
       "require": "./valibot/dist/index.cjs.js",
-      "umd": "./valibot/dist/index.umd.js"
+      "umd": "./valibot/dist/index.umd.js",
+      "types": "./valibot/dist/index.d.ts"
     },
     "./yup": {
       "import": "./yup/dist/index.esm.mjs",
       "require": "./yup/dist/index.cjs.js",
-      "umd": "./yup/dist/index.umd.js"
+      "umd": "./yup/dist/index.umd.js",
+      "types": "./yup/dist/index.d.ts"
     },
     "./zod": {
       "import": "./zod/dist/index.esm.mjs",
       "require": "./zod/dist/index.cjs.js",
-      "umd": "./zod/dist/index.umd.js"
+      "umd": "./zod/dist/index.umd.js",
+      "types": "./zod/dist/index.d.ts"
     }
   },
   "files": [
