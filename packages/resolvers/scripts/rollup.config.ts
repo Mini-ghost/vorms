@@ -44,13 +44,14 @@ for (const module of nodules) {
       format,
       globals: {
         '@vorms/core': 'Vorms',
+        valibot: 'Valibot',
       },
     };
 
     configs.push({
       input: `./${module.source}`,
       output,
-      external: ['@vorms/core'],
+      external: ['@vorms/core', 'valibot'],
       plugins: [
         replace({
           preventAssignment: true,
