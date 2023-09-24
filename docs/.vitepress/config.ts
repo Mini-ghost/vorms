@@ -64,6 +64,18 @@ export default defineConfig({
     }
   },
 
+  locales: {
+    root: {
+      label: 'English',
+      lang: 'en'
+    },
+    tw: {
+      label: 'Chinese(Traditional)',
+      lang: 'tw',
+      link: '/tw/'
+    }
+  },
+
   themeConfig: {
     logo: '/favicon.svg',
 
