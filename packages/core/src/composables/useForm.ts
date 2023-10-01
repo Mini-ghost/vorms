@@ -601,6 +601,7 @@ export function useForm<
       value: getFieldValue(name),
       attrs: getFieldAttrs(name),
       ...getFieldMeta(name),
+      validateField: () => validateField(toValue(name)),
     };
   };
 

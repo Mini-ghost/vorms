@@ -64,6 +64,7 @@ export interface FieldRegisterOptions<Values> {
 export type UseFormRegisterReturn<Value> = FieldMeta<Value> & {
   value: WritableComputedRef<Value>;
   attrs: ComputedRef<FieldAttrs>;
+  validateField(): Promise<void>;
 };
 
 export type SetFieldArrayValue<Values extends FormValues> = <
