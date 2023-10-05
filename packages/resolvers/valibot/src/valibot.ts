@@ -17,6 +17,9 @@ const parseErrorSchema = (valibotIssues: Issues) => {
         errors[path] = issue.message;
       }
     }
+    if (issue.issues) {
+      Object.assign(errors, parseErrorSchema(issue.issues));
+    }
 
     valibotIssues.shift();
   }
