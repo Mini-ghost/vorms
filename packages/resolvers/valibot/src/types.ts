@@ -1,8 +1,12 @@
-import { ObjectSchema } from 'valibot';
+import { ObjectSchema, UnionSchema } from 'valibot';
 
 import type { FormErrors, FormValues } from '@vorms/core';
 
-export type Resolver = <T extends ObjectSchema<any, any>>(
+type UnionObjectSchema = UnionSchema<
+  [ObjectSchema<any, any>, ObjectSchema<any, any>, ...ObjectSchema<any, any>[]]
+>;
+
+export type Resolver = <T extends ObjectSchema<any, any> | UnionObjectSchema>(
   schema: T,
 ) => <Values extends FormValues = FormValues>(
   values: Values,
