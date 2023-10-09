@@ -55,4 +55,4 @@ const { value: sugar, attrs: sugarFieldAttrs } = register('sugar')
 </template>
 ```
 
-請參考 [範例](/examples/) 部分以獲得更多使用範例。
+請參考 [範例](/zh-tw/examples/) 部分以獲得更多使用範例。

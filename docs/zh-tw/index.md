@@ -14,7 +14,7 @@ hero:
   actions:
     - theme: brand
       text: 開始
-      link: /guide/
+      link: /zh-tw/guide/
     - theme: alt
       text: 在GitHub上查看
       link: https://github.com/Mini-ghost/vorms

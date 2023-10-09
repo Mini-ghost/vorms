@@ -1,37 +1,6 @@
 import { defineConfig } from 'vitepress'
-
-const guide = [
-  {
-    text: 'Get Started',
-    link: '/guide/',
-  },
-]
-
-const api = [
-  {
-    text: 'useForm',
-    link: '/api/use-form',
-  },
-  {
-    text: 'useField',
-    link: '/api/use-field',
-  },
-  {
-    text: 'useFieldArray',
-    link: '/api/use-field-array',
-  },
-  {
-    text: 'useFormContext',
-    link: '/api/use-form-context',
-  },
-]
-
-const advanced = [
-  {
-    text: 'Smart Form Component',
-    link: '/advanced/smart-form-component',
-  },
-]
+import enConfig from './theme/config/en'
+import zhTWConfig from './theme/config/zh-tw'
 
 export default defineConfig({
   title: 'Vorms',
@@ -67,12 +36,14 @@ export default defineConfig({
   locales: {
     root: {
       label: 'English',
-      lang: 'en'
+      lang: 'en',
+      themeConfig: enConfig
     },
     'zh-tw': {
       label: 'Chinese(Traditional)',
       lang: 'zh-tw',
-      link: '/zh-tw/'
+      link: '/zh-tw/',
+      themeConfig: zhTWConfig
     }
   },
 
@@ -83,29 +54,9 @@ export default defineConfig({
       pattern: 'https://github.com/Mini-ghost/vorms/tree/docs/docs/:path'
     },
 
-    nav: [
-      { text: 'Get Started', link: '/guide/', activeMatch: '/guide/' },
-      { text: 'API', link: '/api/use-form', activeMatch: '/api/' },
-      { text: 'Examples', link: '/examples/', activeMatch: '/examples/' }
-    ],
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/Mini-ghost/vorms' },
-    ],
-
-    sidebar: [
-      {
-        text: 'Guide',
-        items: guide
-      },
-      {
-        text: 'API Reference',
-        items: api
-      },
-      {
-        text: 'Advanced',
-        items: advanced
-      }
     ],
 
     footer: {
