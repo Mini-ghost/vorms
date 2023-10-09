@@ -69,10 +69,10 @@ export default defineConfig({
       label: 'English',
       lang: 'en'
     },
-    tw: {
+    'zh-tw': {
       label: 'Chinese(Traditional)',
-      lang: 'tw',
-      link: '/tw/'
+      lang: 'zh-tw',
+      link: '/zh-tw/'
     }
   },
 
