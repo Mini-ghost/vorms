@@ -1,5 +1,5 @@
 import { toNestError } from '@vorms/resolvers';
-import { parse } from 'valibot';
+import { parseAsync } from 'valibot';
 
 import type { Resolver } from './types';
 import type { Issues } from 'valibot';
@@ -26,7 +26,7 @@ const parseErrorSchema = (valibotIssues: Issues) => {
 
 export const valibotResolver: Resolver = (schema) => async (values) => {
   try {
-    parse(schema, values);
+    await parseAsync(schema, values);
     return {};
   } catch (error: any) {
     if (error.name !== 'ValiError') throw error;
