@@ -138,6 +138,7 @@ export interface UseFormReturn<Values extends FormValues> {
   setFieldValue: UseFormSetFieldValue<Values>;
   setErrors: (errors: FormErrors<Values>) => void;
   setFieldError: UseFormSetFieldError<Values>;
+  setFieldTouched: (name: Values, touched?: boolean) => void;
   handleSubmit: (event?: Event) => void;
   handleReset: (event?: Event) => void;
   resetForm: ResetForm<Values>;

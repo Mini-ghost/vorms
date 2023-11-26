@@ -631,6 +631,7 @@ export function useForm<
     setFieldValue,
     setErrors,
     setFieldError,
+    setFieldTouched,
     handleSubmit,
     handleReset,
     resetForm,
@@ -647,6 +648,7 @@ export function useForm<
     getFieldAttrs,
     registerFieldArray,
     setFieldArrayValue,
+    setFieldTouched,
     register,
   });
 
