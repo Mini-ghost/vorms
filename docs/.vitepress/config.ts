@@ -40,7 +40,7 @@ export default defineConfig({
       themeConfig: enConfig
     },
     'zh-tw': {
-      label: 'Chinese(Traditional)',
+      label: '繁體中文',
       lang: 'zh-tw',
       link: '/zh-tw/',
       themeConfig: zhTWConfig
