@@ -111,7 +111,7 @@ export type UseFormSetFieldError<Values extends FormValues> = <
   Name extends Path<Values>,
 >(
   name: Name,
-  error: FormErrors<PathValue<Values, Name>> | string | string[],
+  error: FieldError<PathValue<Values, Name>> | string | string[],
 ) => void;
 
 export interface FormResetState<Values extends FormValues = FormValues> {
