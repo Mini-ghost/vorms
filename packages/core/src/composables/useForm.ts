@@ -34,7 +34,7 @@ import type {
   UseFormRegister,
   UseFormReturn,
   UseFormSetFieldError,
-  UseFormsSetFieldTouched,
+  UseFormSetFieldTouched,
   ValidateField,
 } from '../types';
 
@@ -253,7 +253,7 @@ export function useForm<
     };
   };
 
-  const setFieldTouched: UseFormsSetFieldTouched<Values> = (name: string, touched = true) => {
+  const setFieldTouched: UseFormSetFieldTouched<Values> = (name: string, touched = true) => {
     dispatch({
       type: ACTION_TYPE.SET_TOUCHED,
       payload: {
