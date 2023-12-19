@@ -114,6 +114,13 @@ export type UseFormSetFieldError<Values extends FormValues> = <
   error: FormErrors<PathValue<Values, Name>> | string | string[],
 ) => void;
 
+export type UseFormsSetFieldTouched<Values extends FormValues> = <
+  Name extends Path<Values>,
+>(
+  name: Name,
+  touched: boolean,
+) => Promise<FormErrors<Values>> | Promise<void>
+
 export interface FormResetState<Values extends FormValues = FormValues> {
   values: Values;
   touched: FormTouched<Values>;
@@ -138,7 +145,7 @@ export interface UseFormReturn<Values extends FormValues> {
   setFieldValue: UseFormSetFieldValue<Values>;
   setErrors: (errors: FormErrors<Values>) => void;
   setFieldError: UseFormSetFieldError<Values>;
-  setFieldTouched: (name: Values, touched?: boolean) => void;
+  setFieldTouched: UseFormsSetFieldTouched<Values>;
   handleSubmit: (event?: Event) => void;
   handleReset: (event?: Event) => void;
   resetForm: ResetForm<Values>;

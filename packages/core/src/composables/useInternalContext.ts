@@ -18,6 +18,7 @@ import {
   SetFieldArrayValue,
   UseFormRegister,
   UseFormSetFieldValue,
+  UseFormsSetFieldTouched
 } from '../types';
 
 function injectMaybeSelf<T>(
@@ -52,6 +53,7 @@ export interface InternalContextValues<Values extends FormValues> {
   getFieldAttrs: (name: MaybeRefOrGetter<string>) => ComputedRef<FieldAttrs>;
 
   setFieldArrayValue: SetFieldArrayValue<FormValues>;
+  setFieldTouched: UseFormsSetFieldTouched<FormValues>;
 
   register: UseFormRegister<FormValues>;
 }
