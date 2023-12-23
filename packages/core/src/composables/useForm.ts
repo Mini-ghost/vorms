@@ -63,8 +63,8 @@ export interface UseFormOptions<
   initialValues: Values;
   initialErrors?: FormErrors<Values>;
   initialTouched?: FormTouched<Values>;
-  validateMode?: ValidateMode;
-  reValidateMode?: ValidateMode;
+  validateMode?: ValidateMode | ValidateMode[];
+  reValidateMode?: ValidateMode | ValidateMode[];
   validateOnMounted?: boolean;
   onSubmit: (
     values: ValidatedValues extends FormValues ? ValidatedValues : Values,
@@ -231,9 +231,6 @@ export function useForm<
   const fieldArrayRegistry: FieldArrayRegistry = {};
 
   const dirty = computed(() => !isEqual(state.values, initialValues));
-  const validateTiming = computed(() =>
-    state.submitCount.value === 0 ? validateMode : reValidateMode,
-  );
 
   const registerField = (
     name: MaybeRefOrGetter<string>,
@@ -252,6 +249,14 @@ export function useForm<
     };
   };
 
+  const validateTimingInclude = (mode: ValidateMode) => {
+    const validateTiming =
+      state.submitCount.value === 0 ? validateMode : reValidateMode;
+    return isString(validateTiming)
+      ? mode === validateTiming
+      : validateTiming.includes(mode);
+  };
+
   const setFieldTouched = (name: string, touched = true) => {
     dispatch({
       type: ACTION_TYPE.SET_TOUCHED,
@@ -261,7 +266,7 @@ export function useForm<
       },
     });
 
-    return validateTiming.value === 'blur'
+    return validateTimingInclude('blur')
       ? runAllValidateHandler(state.values)
       : Promise.resolve();
   };
@@ -273,9 +278,7 @@ export function useForm<
     });
 
     const willValidate =
-      shouldValidate == null
-        ? validateTiming.value === 'change'
-        : shouldValidate;
+      shouldValidate == null ? validateTimingInclude('change') : shouldValidate;
 
     return willValidate
       ? runAllValidateHandler(state.values)
@@ -382,13 +385,13 @@ export function useForm<
   };
 
   const handleChange: FormEventHandler['handleChange'] = () => {
-    if (validateTiming.value === 'change') {
+    if (validateTimingInclude('change')) {
       runAllValidateHandler(state.values);
     }
   };
 
   const handleInput: FormEventHandler['handleInput'] = () => {
-    if (validateTiming.value === 'input') {
+    if (validateTimingInclude('input')) {
       runAllValidateHandler(state.values);
     }
   };
