@@ -253,7 +253,10 @@ export function useForm<
     };
   };
 
-  const setFieldTouched: UseFormSetFieldTouched<Values> = (name: string, touched = true) => {
+  const setFieldTouched: UseFormSetFieldTouched<Values> = (
+    name,
+    touched = true,
+  ) => {
     dispatch({
       type: ACTION_TYPE.SET_TOUCHED,
       payload: {
@@ -366,19 +369,21 @@ export function useForm<
     });
   };
 
-  const handleBlur: FormEventHandler['handleBlur'] = (
-    eventOrName: Event | string,
-    path?: string,
-  ): void | (() => void) => {
-    if (isString(eventOrName)) {
+  const handleBlur: FormEventHandler<Path<Values>>['handleBlur'] = (
+    eventOrName,
+    path,
+  ) => {
+    const isPath = (value: any): value is Path<Values> => isString(value);
+
+    if (isPath(eventOrName)) {
       return () => setFieldTouched(eventOrName, true);
     }
 
     const { name, id } = eventOrName.target as HTMLInputElement;
-    const field = path ?? (name || id);
+    const field = path ?? ((name || id) as Path<Values>);
 
     if (field) {
-      setFieldTouched(field, true);
+      return setFieldTouched(field, true);
     }
   };
 

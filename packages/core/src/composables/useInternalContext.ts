@@ -17,8 +17,8 @@ import {
   PathValue,
   SetFieldArrayValue,
   UseFormRegister,
+  UseFormSetFieldTouched,
   UseFormSetFieldValue,
-  UseFormSetFieldTouched
 } from '../types';
 
 function injectMaybeSelf<T>(
