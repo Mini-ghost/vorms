@@ -104,7 +104,7 @@ type FormMessage<Values extends FormValues> =
       type: ACTION_TYPE.SET_FIELD_ERROR;
       payload: {
         path: string;
-        error: FormErrors<PathValue<Values, Path<Values>>> | string | string[];
+        error: FieldError<PathValue<Values, Path<Values>>> | string | string[];
       };
     }
   | { type: ACTION_TYPE.SET_ISSUBMITTING; payload: boolean }
