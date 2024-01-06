@@ -1,0 +1,19 @@
+{
+  "hash": "b98aed0b",
+  "browserHash": "3662c0c2",
+  "optimized": {
+    "vue": {
+      "src": "../../../../node_modules/.pnpm/vue@3.2.47/node_modules/vue/dist/vue.runtime.esm-bundler.js",
+      "file": "vue.js",
+      "fileHash": "566a3dd0",
+      "needsInterop": false
+    },
+    "@stackblitz/sdk": {
+      "src": "../../../../node_modules/.pnpm/@stackblitz+sdk@1.9.0/node_modules/@stackblitz/sdk/bundles/sdk.m.js",
+      "file": "@stackblitz_sdk.js",
+      "fileHash": "55c10195",
+      "needsInterop": false
+    }
+  },
+  "chunks": {}
+}

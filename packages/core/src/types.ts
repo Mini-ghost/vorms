@@ -47,12 +47,8 @@ export interface FormState<Values extends FormValues> {
   isValidating: Ref<boolean>;
 }
 
-export interface FormEventHandler {
-  handleBlur: {
-    (event: Event, name?: string): void;
-    <T = string | Event>(name: T): T extends string ? () => void : void;
-  };
-
+export interface FormEventHandler<S = string> {
+  handleBlur: (event: Event | S, name?: S) => void;
   handleChange: () => void;
   handleInput: () => void;
 }
@@ -112,7 +108,14 @@ export type UseFormSetFieldError<Values extends FormValues> = <
   Name extends Path<Values>,
 >(
   name: Name,
-  error: FormErrors<PathValue<Values, Name>> | string | string[],
+  error: FieldError<PathValue<Values, Name>> | string | string[],
+) => void;
+
+export type UseFormSetFieldTouched<Values extends FormValues> = <
+  Name extends Path<Values>,
+>(
+  name: Name,
+  touched: boolean,
 ) => void;
 
 export interface FormResetState<Values extends FormValues = FormValues> {
@@ -139,6 +142,7 @@ export interface UseFormReturn<Values extends FormValues> {
   setFieldValue: UseFormSetFieldValue<Values>;
   setErrors: (errors: FormErrors<Values>) => void;
   setFieldError: UseFormSetFieldError<Values>;
+  setFieldTouched: UseFormSetFieldTouched<Values>;
   handleSubmit: (event?: Event) => void;
   handleReset: (event?: Event) => void;
   resetForm: ResetForm<Values>;

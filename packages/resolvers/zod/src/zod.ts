@@ -28,7 +28,7 @@ const parseErrorSchema = (zodErrors: z.ZodIssue[]) => {
 
 export const zodResolver: Resolver = (schema) => async (values) => {
   try {
-    await schema.parse(values);
+    await schema.parseAsync(values);
 
     return {};
   } catch (error: any) {

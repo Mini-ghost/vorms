@@ -17,6 +17,7 @@ import {
   PathValue,
   SetFieldArrayValue,
   UseFormRegister,
+  UseFormSetFieldTouched,
   UseFormSetFieldValue,
 } from '../types';
 
@@ -52,6 +53,7 @@ export interface InternalContextValues<Values extends FormValues> {
   getFieldAttrs: (name: MaybeRefOrGetter<string>) => ComputedRef<FieldAttrs>;
 
   setFieldArrayValue: SetFieldArrayValue<FormValues>;
+  setFieldTouched: UseFormSetFieldTouched<FormValues>;
 
   register: UseFormRegister<FormValues>;
 }
