@@ -65,8 +65,8 @@
   ],
   "devDependencies": {
     "@vorms/core": "workspace:*",
-    "valibot": "^0.11.0",
-    "yup": "^0.32.11",
+    "valibot": "^0.28.1",
+    "yup": "^1.3.3",
     "zod": "^3.20.2"
   }
 }
