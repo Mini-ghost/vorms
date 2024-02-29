@@ -20,6 +20,7 @@ import type {
   FieldAttrs,
   FieldError,
   FieldMeta,
+  FieldValidator,
   FormErrors,
   FormEventHandler,
   FormResetState,
@@ -40,7 +41,7 @@ import type {
 
 interface FieldRegistry {
   [field: string]: {
-    validate: (value: any) => string | Promise<string> | boolean | undefined;
+    validate: FieldValidator<FormValues>;
   };
 }
 
@@ -240,9 +241,11 @@ export function useForm<
     name: MaybeRefOrGetter<string>,
     { validate }: any = {},
   ) => {
-    fieldRegistry[toValue(name)] = {
-      validate,
-    };
+    if (validate) {
+      fieldRegistry[toValue(name)] = {
+        validate,
+      };
+    }
   };
 
   const registerFieldArray = (name: MaybeRefOrGetter<string>, options: any) => {
@@ -469,28 +472,32 @@ export function useForm<
     },
   };
 
-  const runSingleFieldValidateHandler = (name: string, value: unknown) => {
-    return new Promise<string>((resolve) =>
-      resolve(fieldRegistry[name].validate(value) as string),
-    );
+  const runSingleFieldValidateHandler = <
+    Name extends Path<Values>,
+    Value extends PathValue<Values, Name>,
+  >(
+    name: Name,
+    value: Value,
+  ) => {
+    return Promise.resolve(fieldRegistry[name].validate(value));
   };
 
   const runFieldValidateHandler = (values: Values) => {
     const fieldKeysWithValidation = keysOf(fieldRegistry).filter((field) =>
       isFunction(fieldRegistry[field].validate),
-    ) as string[];
+    ) as Path<Values>[];
 
     const fieldValidatePromise = fieldKeysWithValidation.map((field) =>
       runSingleFieldValidateHandler(field, get(values, field)),
     );
 
     return Promise.all(fieldValidatePromise).then((errors) =>
-      errors.reduce((prev, curr, index) => {
+      errors.reduce((prev: FormErrors<Values>, curr, index) => {
         if (curr) {
           set(prev, fieldKeysWithValidation[index], curr);
         }
         return prev;
-      }, {} as FormErrors<Values>),
+      }, {}),
     );
   };
 
@@ -610,16 +617,20 @@ export function useForm<
     };
   };
 
-  const validateField: ValidateField<Values> = (name) => {
+  const validateField: ValidateField<Values> = async (name) => {
     if (fieldRegistry[name] && isFunction(fieldRegistry[name].validate)) {
       dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: true });
-      return runSingleFieldValidateHandler(name, get(state.values, name))
-        .then((error) => {
-          setFieldError(name, error);
-        })
-        .finally(() => {
-          dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: false });
-        });
+
+      const value = get(state.values, name) as PathValue<Values, typeof name>;
+      const error = (await runSingleFieldValidateHandler(
+        name,
+        value,
+      )) as FieldError<PathValue<Values, typeof name>>;
+
+      setFieldError(name, error);
+      dispatch({ type: ACTION_TYPE.SET_ISVALIDATING, payload: false });
+
+      return error;
     }
     return Promise.resolve();
   };
