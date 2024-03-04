@@ -1,6 +1,6 @@
-import { mount } from '@vue/test-utils';
+import { flushPromises, mount } from '@vue/test-utils';
 import { describe, expect, it, vi } from 'vitest';
-import { defineComponent, nextTick, ref } from 'vue';
+import { defineComponent, h, nextTick, ref, Suspense } from 'vue';
 
 import { useForm } from '../../src';
 
@@ -13,6 +13,24 @@ const setup = (setup: () => unknown) => {
   });
 
   return mount(Comp);
+};
+
+const setupSuspense = async (setup: () => unknown) => {
+  const Comp = defineComponent({
+    setup,
+    template: `<div />`,
+  });
+
+  const Root = defineComponent({
+    render() {
+      return h(Suspense, null, {
+        default: h(Comp),
+      });
+    },
+  });
+
+  await flushPromises();
+  return mount(Root);
 };
 
 const sleep = (ms?: number) => {
@@ -1214,6 +1232,28 @@ describe('useForm', () => {
       expect(errors.value).toEqual({
         name: 'name is required',
       });
+    });
+  });
+
+  it('Should return an error if the validateField function fails', async () => {
+    await setupSuspense(async () => {
+      const ERROR_MESSAGE = 'name is required';
+      const { register, validateField } = useForm({
+        initialValues: {
+          name: '',
+        },
+        onSubmit: noop,
+      });
+
+      register('name', {
+        validate() {
+          return ERROR_MESSAGE;
+        },
+      });
+
+      const error = await validateField('name');
+
+      expect(error).toEqual(ERROR_MESSAGE);
     });
   });
 });
