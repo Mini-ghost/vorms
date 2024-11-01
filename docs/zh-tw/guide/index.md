@@ -21,7 +21,7 @@ npm install @vorms/core
 <script setup lang="ts">
 import { useForm } from '@vorms/core'
 
-const sugarOptions = ['no', 'light', 'half', 'half', 'standard']
+const sugarOptions = ['no', 'light', 'half', 'standard']
 
 const { register, handleSubmit, handleReset } = useForm({
   initialValues: {
