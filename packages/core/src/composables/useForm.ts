@@ -390,14 +390,14 @@ export function useForm<
     }
   };
 
-  const handleChange: FormEventHandler['handleChange'] = () => {
-    if (validateTiming.value === 'change') {
+  const handleChange: FormEventHandler['handleChange'] = (e) => {
+    if (validateTiming.value === 'change' || isRadioOrCheckbox(e.target)) {
       runAllValidateHandler(state.values);
     }
   };
 
-  const handleInput: FormEventHandler['handleInput'] = () => {
-    if (validateTiming.value === 'input') {
+  const handleInput: FormEventHandler['handleInput'] = (e) => {
+    if (validateTiming.value === 'input' && !isRadioOrCheckbox(e.target)) {
       runAllValidateHandler(state.values);
     }
   };
@@ -696,4 +696,13 @@ function arrayMerge<T extends any[]>(target: T, source: T, options: any) {
     }
   });
   return destination;
+}
+
+function isRadioOrCheckbox(
+  target: EventTarget | null,
+): target is HTMLInputElement {
+  if (!target || !(target instanceof HTMLInputElement)) {
+    return false;
+  }
+  return target.type === 'radio' || target.type === 'checkbox';
 }
