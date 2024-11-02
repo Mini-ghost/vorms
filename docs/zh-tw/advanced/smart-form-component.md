@@ -12,7 +12,7 @@ import SmartSelect from './components/SmartSelect.vue'
 
 interface Values {
   drink: string,
-  sugar: 'no' | 'light' | 'half' | 'half' | 'standard'
+  sugar: 'no' | 'light' | 'half' | 'standard'
 }
 
 const initialValues = {
@@ -31,7 +31,7 @@ const onSubmit = (values: Values) => {
   <div>
     <SmartForm :initial-values="initialValues" @submit="onSubmit">
       <SmartTextField name="name" />
-      <SmartSelect name="sugar" :options="['no', 'light', 'half', 'half', 'standard']" />
+      <SmartSelect name="sugar" :options="['no', 'light', 'half', 'standard']" />
 
       <button type="submit">Submit</button>
     </SmartForm>

@@ -41,7 +41,7 @@ It will be exposed to global as `window.Vorms`
 ```ts
 import { useForm } from '@vorms/core'
 
-const sugarOptions = ['no', 'light', 'half', 'half', 'standard']
+const sugarOptions = ['no', 'light', 'half', 'standard']
 
 const { register, handleSubmit, handleReset } = useForm({
   initialValues: {
